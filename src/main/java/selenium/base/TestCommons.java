@@ -7,7 +7,7 @@ import org.openqa.selenium.support.PageFactory;
 public abstract class TestCommons {
 
 	protected WebDriver driver;
-	private final String url = "https://patronage20-js-master.herokuapp.com";
+	private final String url = "https://patronage20-js-master.herokuapp.com/";
 
 	public TestCommons(WebDriver driver) {
 		PageFactory.initElements(driver, this);
