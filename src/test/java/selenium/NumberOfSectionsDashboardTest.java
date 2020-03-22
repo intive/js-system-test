@@ -2,12 +2,11 @@ package selenium;
 
 import org.testng.Assert;
 import org.testng.annotations.BeforeClass;
-import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 import selenium.base.TestBase;
 import selenium.pages.DashboardPage;
 
-public class DashboardTest extends TestBase {
+public class NumberOfSectionsDashboardTest extends TestBase {
 
     private DashboardPage dashboardPage;
 

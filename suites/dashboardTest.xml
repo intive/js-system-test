@@ -3,8 +3,13 @@
 
 <suite name="Dashboard test suite">
     <test name="Number of sections test">
+    <classes>
+        <class name="selenium.NumberOfSectionsDashboardTest"></class>
+    </classes>
+    </test>
+    <test name="Upper section test">
         <classes>
-            <class name="selenium.DashboardTest"></class>
+            <class name="selenium.UpperSectionDashboardTest"></class>
         </classes>
     </test>
 </suite>
