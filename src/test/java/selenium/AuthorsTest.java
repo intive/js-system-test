@@ -32,7 +32,7 @@ public class AuthorsTest extends TestBase {
 
     @Test
     public void testHeaderText() {
-        String expectedHeader = "Authors";
+        String expectedHeader = "Autorzy";
         String actualHeader = authorsPage.getHeaderText();
 
         Assert.assertEquals(actualHeader, expectedHeader);

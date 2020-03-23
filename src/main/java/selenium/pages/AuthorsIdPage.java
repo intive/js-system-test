@@ -7,7 +7,7 @@ import selenium.base.TestCommons;
 
 public class AuthorsIdPage extends TestCommons {
 
-    @FindBy(css = "#root > div > main > h1")
+    @FindBy(css = "#root > div > div.MuiGrid-root.jss2.MuiGrid-container > div > main > h1")
     public WebElement errorMessage;
 
     public AuthorsIdPage(WebDriver driver) {
