@@ -1,9 +1,9 @@
 package selenium.base;
 
+import org.openqa.selenium.Point;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.PageFactory;
-
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
@@ -45,4 +45,21 @@ public abstract class TestCommons {
             return false;
         }
     }
+
+    protected int getElementWidth(WebElement element) {
+        double sizeDouble = element.getSize().getWidth();
+        int sizeInt = (int) Math.round(sizeDouble);
+        return sizeInt;
+    }
+
+    protected int getElementHeight(WebElement element) {
+        double sizeDouble = element.getSize().getHeight();
+        int sizeInt = (int) Math.round(sizeDouble);
+        return sizeInt;
+    }
+
+    protected Point getElementLocation(WebElement element) {
+        return element.getLocation();
+    }
+
 }

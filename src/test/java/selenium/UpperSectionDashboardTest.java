@@ -1,5 +1,6 @@
 package selenium;
 
+import org.openqa.selenium.By;
 import org.testng.Assert;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
@@ -56,6 +57,7 @@ public class UpperSectionDashboardTest extends TestBase {
     @Test
     public void testOpeningDashboardPage() {
         dashboardPage.clickDashboard();
+
         String currentURL = driver.getCurrentUrl();
         String expectedURL = "https://patronage20-js-master.herokuapp.com/";
         Assert.assertEquals(currentURL, expectedURL);

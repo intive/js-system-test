@@ -17,4 +17,9 @@
             <class name="selenium.SensorListTest"></class>
         </classes>
     </test>
+    <test name="Map test">
+        <classes>
+            <class name="selenium.MapTest"></class>
+        </classes>
+    </test>
 </suite>
