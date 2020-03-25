@@ -25,15 +25,16 @@ public class MapTest extends TestBase {
 
     @DataProvider(name = "incorrectOffsets")
     public Object[][] incorrectOffsets() {
-        return new Object[][]{{0, 100}, {0, (100 + dashboardPage.incorrectOffsetHeight())}, {0, (100 - dashboardPage.incorrectOffsetHeight())}, {-(dashboardPage.incorrectOffsetWidth()), 100}, {(dashboardPage.incorrectOffsetWidth()), 100}};
+        return new Object[][]{{0, (100 + dashboardPage.incorrectOffsetHeight())}, {0, (100 - dashboardPage.incorrectOffsetHeight())}, {-(dashboardPage.incorrectOffsetWidth()), 100}, {(dashboardPage.incorrectOffsetWidth()), 100}};
     }
 
     @Test(dataProvider = "incorrectOffsets")
-    public void testAddingPointWithin3pxCircle(Integer x, Integer y) {
-        String firstPoint = dashboardPage.getPointUniqueInformation();
+    public void testAddingPointWithin3percentCircle(Integer x, Integer y) {
+        dashboardPage.clickToAddPoint(0, 100);
+        String lastPointBeforeClick = dashboardPage.getPointUniqueInformation();
         dashboardPage.clickToAddPoint(x, y);
-        String secondPoint = dashboardPage.getPointUniqueInformation();
-        Assert.assertEquals(secondPoint, firstPoint);
+        String lastPointAfterClick = dashboardPage.getPointUniqueInformation();
+        Assert.assertEquals(lastPointAfterClick, lastPointBeforeClick);
         if (dashboardPage.checkIfGapNeededBoxIsPresent()) {
             dashboardPage.clickOffsetToGapNeededBox(400, 200);
         }
@@ -46,10 +47,10 @@ public class MapTest extends TestBase {
 
     @Test(dataProvider = "correctOffsets")
     public void testAddingNewPointOnMap(Integer x, Integer y) {
-        String firstPoint = dashboardPage.getPointUniqueInformation();
+        String lastPointBeforeClick = dashboardPage.getPointUniqueInformation();
         dashboardPage.clickToAddPoint(x, y);
-        String secondPoint = dashboardPage.getPointUniqueInformation();
-        Assert.assertNotEquals(secondPoint, firstPoint);
+        String lastPointAfterClick = dashboardPage.getPointUniqueInformation();
+        Assert.assertNotEquals(lastPointAfterClick, lastPointBeforeClick);
         Assert.assertEquals(dashboardPage.getLastPointWidth(), dashboardPage.getLastPointHeight());  //Check if point is a circle
     }
 
