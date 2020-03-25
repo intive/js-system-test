@@ -12,4 +12,9 @@
             <class name="selenium.UpperSectionDashboardTest"></class>
         </classes>
     </test>
+    <test name="Sensor list test">
+        <classes>
+            <class name="selenium.SensorListTest"></class>
+        </classes>
+    </test>
 </suite>
