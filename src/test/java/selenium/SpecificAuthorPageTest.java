@@ -13,7 +13,6 @@ import java.util.List;
 
 public class SpecificAuthorPageTest extends TestBase {
 
-    private SpecificAuthorPage specificAuthorPagePage;
     private AuthorsPage authorsPage;
     private List<String> avatarsLinks;
     private List<String> authorsNames;
@@ -37,13 +36,11 @@ public class SpecificAuthorPageTest extends TestBase {
     }
 
     @Test(dataProvider = "author")
-    public void showCaseTest(SpecificAuthorPage authorsPage, int index) {
-        specificAuthorPagePage = authorsPage;
-        specificAuthorPagePage.goTo();
-
-        Assert.assertEquals(specificAuthorPagePage.getAuthorName().charAt(0), authorsNames.get(index).charAt(0));
-        Assert.assertEquals(specificAuthorPagePage.getAvatarURL(), avatarsLinks.get(index));
-        Assert.assertTrue(specificAuthorPagePage.isImageValid());
-        Assert.assertTrue(specificAuthorPagePage.isGitHubLinkValid());
+    public void showCaseTest(SpecificAuthorPage currentAuthorPage, int index) {
+        currentAuthorPage.goTo();
+        Assert.assertEquals(currentAuthorPage.getAuthorName().charAt(0), authorsNames.get(index).charAt(0));
+        Assert.assertEquals(currentAuthorPage.getAvatarURL(), avatarsLinks.get(index));
+        Assert.assertTrue(currentAuthorPage.isImageValid());
+        Assert.assertTrue(currentAuthorPage.isGitHubLinkValid());
     }
 }
