@@ -21,7 +21,7 @@ public class AuthorsTest extends TestBase {
     }
 
     @BeforeMethod
-    public void beforeMethod(){
+    public void beforeMethod() {
         authorsPage.goTo();
     }
 
@@ -55,4 +55,5 @@ public class AuthorsTest extends TestBase {
         Assert.assertEquals(name, authorName);
         Assert.assertEquals(id, idFromURL);
     }
+
 }

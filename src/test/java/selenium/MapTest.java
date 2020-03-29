@@ -42,7 +42,7 @@ public class MapTest extends TestBase {
 
     @DataProvider(name = "correctOffsets")
     public Object[][] correctOffsets() {
-        return new Object[][]{{0, 0}, {0,dashboardPage.correctOffsetHeight()}, {0, 2 * (dashboardPage.correctOffsetHeight())}, {0, -(dashboardPage.correctOffsetHeight())}, {0, -2 * (dashboardPage.correctOffsetHeight())}, {(dashboardPage.correctOffsetWidth()), 0}, {2 * (dashboardPage.correctOffsetWidth()), 0}, {-(dashboardPage.correctOffsetWidth()), 0}, {-2 * (dashboardPage.correctOffsetWidth()), 0}};
+        return new Object[][]{{0, 0}, {0, dashboardPage.correctOffsetHeight()}, {0, 2 * (dashboardPage.correctOffsetHeight())}, {0, -(dashboardPage.correctOffsetHeight())}, {0, -2 * (dashboardPage.correctOffsetHeight())}, {(dashboardPage.correctOffsetWidth()), 0}, {2 * (dashboardPage.correctOffsetWidth()), 0}, {-(dashboardPage.correctOffsetWidth()), 0}, {-2 * (dashboardPage.correctOffsetWidth()), 0}};
     }
 
     @Test(dataProvider = "correctOffsets")

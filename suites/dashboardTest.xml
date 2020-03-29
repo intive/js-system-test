@@ -22,4 +22,9 @@
             <class name="selenium.MapTest"></class>
         </classes>
     </test>
+    <test name="Loader test">
+        <classes>
+            <class name="selenium.LoaderTest"></class>
+        </classes>
+    </test>
 </suite>

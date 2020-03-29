@@ -36,6 +36,9 @@ public class DashboardPage extends TestCommons {
     @FindBy(css = "body > div:nth-child(3) > div.MuiPaper-root.jss245.MuiPaper-elevation3.MuiPaper-rounded")
     public WebElement gapNeededBox;
 
+    @FindBy(className = "MuiCircularProgress-svg")
+    public WebElement loader;
+
 
     public DashboardPage(WebDriver driver) {
         super(driver);
@@ -46,15 +49,26 @@ public class DashboardPage extends TestCommons {
     }
 
     public int getNumberOfSections() {
+        int findSize12 = 0;
+        int findSize9 = 0;
+        int findSize3 = 0;
         int count = 0;
         for (WebElement element : allDivElements) {
             String className = element.getAttribute("class");
             if (className.contains("MuiGrid-item")) {
-                count++;
+                if (className.contains("xs-12")) {
+                    findSize12 = 1;
+                }
+                if (className.contains("xs-9")) {
+                    findSize9 = 1;
+                }
+                if (className.contains("xs-3")) {
+                    findSize3 = 1;
+                }
             }
+            count = findSize12 + findSize9 + findSize3;
         }
         return count;
-
     }
 
     public List<String> getSectionNames() {
@@ -121,14 +135,6 @@ public class DashboardPage extends TestCommons {
         return getElementAttribute(lastPoint, "style");
     }
 
-    public int getPointWidth() {
-        return getElementWidth(pointOnHomePlan);
-    }
-
-    public int getPointHeight() {
-        return getElementHeight(pointOnHomePlan);
-    }
-
     public int getLastPointWidth() {
         return getElementWidth(lastPoint);
     }
@@ -169,7 +175,7 @@ public class DashboardPage extends TestCommons {
     }
 
     public int correctOffsetHeight() {
-        int OffsetHeight = (int) Math.round(0.04*getMapHeight());
+        int OffsetHeight = (int) Math.round(0.04 * getMapHeight());
         return OffsetHeight;
     }
 
@@ -179,13 +185,17 @@ public class DashboardPage extends TestCommons {
     }
 
     public int incorrectOffsetHeight() {
-        int OffsetHeight = (int) Math.round(0.03*getMapHeight());
+        int OffsetHeight = (int) Math.round(0.03 * getMapHeight());
         return OffsetHeight;
     }
 
     public int incorrectOffsetWidth() {
         int OffsetWidth = (int) Math.round(0.03 * getMapWidth());
         return OffsetWidth;
+    }
+
+    public boolean isLoaderDisplayed() {
+        return isElementDisplayed(driver, loader);
     }
 
 }

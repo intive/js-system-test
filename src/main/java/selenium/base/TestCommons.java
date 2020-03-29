@@ -4,6 +4,9 @@ import org.openqa.selenium.Point;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.PageFactory;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
+
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
@@ -60,6 +63,18 @@ public abstract class TestCommons {
 
     protected Point getElementLocation(WebElement element) {
         return element.getLocation();
+    }
+
+    protected static boolean isElementDisplayed(WebDriver driver, WebElement element) {
+        try {
+            WebDriverWait wait = new WebDriverWait(driver, 10);
+            wait.until(ExpectedConditions.visibilityOf(element));
+            return element.isDisplayed();
+        } catch (org.openqa.selenium.NoSuchElementException
+                | org.openqa.selenium.StaleElementReferenceException
+                | org.openqa.selenium.TimeoutException e) {
+            return false;
+        }
     }
 
 }

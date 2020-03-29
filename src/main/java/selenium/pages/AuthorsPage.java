@@ -56,4 +56,5 @@ public class AuthorsPage extends TestCommons {
         char lastURLCharacter = url.charAt(url.length() - 1);
         return Character.getNumericValue(lastURLCharacter);
     }
+
 }
