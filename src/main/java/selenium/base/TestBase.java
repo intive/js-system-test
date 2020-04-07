@@ -16,7 +16,7 @@ public class TestBase {
     @BeforeSuite
     public void setChromedriverPath() {
         ClassLoader classLoader = getClass().getClassLoader();
-        String driverPath = classLoader.getResource("chromedriver.exe").getPath().toString();
+        String driverPath = classLoader.getResource("chromedriver.exe").getPath();
 
         System.setProperty("webdriver.chrome.driver", driverPath);
     }
