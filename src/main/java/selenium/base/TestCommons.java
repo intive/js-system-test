@@ -1,5 +1,6 @@
 package selenium.base;
 
+import org.openqa.selenium.Cookie;
 import org.openqa.selenium.Point;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -24,6 +25,14 @@ public abstract class TestCommons {
 
     protected void goTo(String path) {
         driver.get(url + path);
+    }
+
+    public void refreshPage(){
+        driver.get(driver.getCurrentUrl());
+    }
+
+    protected void addNewCookie(String name, String value){
+        driver.manage().addCookie(new Cookie(name, value));
     }
 
     protected void sendKeysToElement(WebElement element, String text) {

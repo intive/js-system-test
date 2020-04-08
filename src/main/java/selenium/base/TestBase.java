@@ -2,9 +2,11 @@ package selenium.base;
 
 import java.util.concurrent.TimeUnit;
 
+import org.openqa.selenium.Cookie;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
+import org.openqa.selenium.support.PageFactory;
 import org.testng.annotations.AfterTest;
 import org.testng.annotations.BeforeSuite;
 import org.testng.annotations.BeforeTest;
@@ -29,6 +31,8 @@ public class TestBase {
         driver = new ChromeDriver(options);
         driver.manage().window().maximize();
         driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
+        driver.get("https://patronage20-js-master.herokuapp.com");
+        driver.manage().addCookie(new Cookie("secret_cookie", "3241231213fsdj23kj4kl32j4"));
     }
 
     @AfterTest
