@@ -60,13 +60,13 @@ public abstract class TestCommons {
 
     protected int getElementWidth(WebElement element) {
         double sizeDouble = element.getSize().getWidth();
-        int sizeInt = (int) Math.round(sizeDouble);
+        int sizeInt = (int) Math.ceil(sizeDouble);
         return sizeInt;
     }
 
     protected int getElementHeight(WebElement element) {
         double sizeDouble = element.getSize().getHeight();
-        int sizeInt = (int) Math.round(sizeDouble);
+        int sizeInt = (int) Math.ceil(sizeDouble);
         return sizeInt;
     }
 
