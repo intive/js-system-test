@@ -1,8 +1,13 @@
 package selenium.base;
 
+import com.google.common.collect.ImmutableMap;
 import org.openqa.selenium.Point;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.remote.Command;
+import org.openqa.selenium.remote.CommandExecutor;
+import org.openqa.selenium.remote.Response;
 import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
@@ -11,6 +16,8 @@ import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.net.URL;
+import java.util.HashMap;
+import java.util.Map;
 
 public abstract class TestCommons {
 
@@ -65,6 +72,18 @@ public abstract class TestCommons {
         return element.getLocation();
     }
 
+    protected static boolean isElementDisplayed(WebDriver driver, WebElement element, int time) {
+        try {
+            WebDriverWait wait = new WebDriverWait(driver, time);
+            wait.until(ExpectedConditions.visibilityOf(element));
+            return element.isDisplayed();
+        } catch (org.openqa.selenium.NoSuchElementException
+                | org.openqa.selenium.StaleElementReferenceException
+                | org.openqa.selenium.TimeoutException e) {
+            return false;
+        }
+    }
+
     protected static boolean isElementDisplayed(WebDriver driver, WebElement element) {
         try {
             WebDriverWait wait = new WebDriverWait(driver, 10);
@@ -77,4 +96,40 @@ public abstract class TestCommons {
         }
     }
 
+    protected static boolean isElementNotDisplayed(WebDriver driver, WebElement element, int time) {
+        try {
+            WebDriverWait wait = new WebDriverWait(driver, time);
+            wait.until(ExpectedConditions.invisibilityOf(element));
+            return element.isDisplayed();
+        } catch (org.openqa.selenium.TimeoutException e) {
+            return false;
+        } catch (org.openqa.selenium.NoSuchElementException
+                | org.openqa.selenium.StaleElementReferenceException e){
+            return true;
+        }
+    }
+    public void internetConnection(boolean Online) throws IOException {
+        if (Online == false) {
+            Map map = new HashMap();
+            map.put("offline", true);
+            map.put("latency", 10000);
+            map.put("download_throughput", 0);
+            map.put("upload_throughput", 0);
+            CommandExecutor executor = ((ChromeDriver) driver).getCommandExecutor();
+            Response response = executor.execute(
+                    new Command(((ChromeDriver) driver).getSessionId(), "setNetworkConditions",
+                            ImmutableMap.of("network_conditions", ImmutableMap.copyOf(map))));
+        }
+        else {
+            Map map = new HashMap();
+            map.put("offline", false);
+            map.put("latency", 10);
+            map.put("download_throughput", 5000);
+            map.put("upload_throughput", 5000);
+            CommandExecutor executor = ((ChromeDriver) driver).getCommandExecutor();
+            Response response = executor.execute(
+                    new Command(((ChromeDriver) driver).getSessionId(), "setNetworkConditions",
+                            ImmutableMap.of("network_conditions", ImmutableMap.copyOf(map))));
+        }
+    }
 }
