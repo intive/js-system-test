@@ -24,21 +24,20 @@ public class DashboardPage extends TestCommons {
     @FindBy(tagName = "button")
     public WebElement notificationsButton;
 
-    @FindBy(xpath = "//*[@id=\"root\"]/div/div[2]/div/div[1]/div/div/img")
+    @FindBy(tagName = "img")
     public WebElement homePlan;
-
-    @FindBy(xpath = "//*[@id=\"root\"]/div/div[2]/div/div[1]/div/div/div[1]")
-    public WebElement pointOnHomePlan;
 
     @FindBy(xpath = "//*[@id=\"root\"]/div/div[2]/div/div[1]/div/div/div[last()]")
     public WebElement lastPoint;
 
-    @FindBy(css = "body > div:nth-child(3) > div.MuiPaper-root.jss245.MuiPaper-elevation3.MuiPaper-rounded")
+    @FindBy(css = "body > div:nth-child(3) > div.MuiPaper-root.jss222.MuiPaper-elevation3.MuiPaper-rounded")
     public WebElement gapNeededBox;
 
     @FindBy(className = "MuiCircularProgress-svg")
     public WebElement loader;
 
+    @FindBy(xpath = "//*[@id=\"root\"]/div/div[2]/div/div[2]/ul[1]/div[1]")
+    public WebElement firstNotConnectedSensor;
 
     public DashboardPage(WebDriver driver) {
         super(driver);
@@ -103,6 +102,10 @@ public class DashboardPage extends TestCommons {
         notificationsButton.click();
     }
 
+    public void clickFirstNotConnectedSensor() {
+        firstNotConnectedSensor.click();
+    }
+
     public String getCursorType() {
         String cursor = homePlan.getCssValue("cursor");
         return cursor;
@@ -144,11 +147,11 @@ public class DashboardPage extends TestCommons {
     }
 
     public int getPointX() {
-        return getElementLocation(pointOnHomePlan).getX();
+        return getElementLocation(lastPoint).getX();
     }
 
     public int getPointY() {
-        return getElementLocation(pointOnHomePlan).getY();
+        return getElementLocation(lastPoint).getY();
     }
 
     public int getMapX() {
@@ -159,12 +162,12 @@ public class DashboardPage extends TestCommons {
         return getElementLocation(homePlan).getY();
     }
 
-    public int getXOffsetPointToCenterOfMap() {
+    public int getXOffsetPointToMap() {
         int xOffset = getMapX() - getPointX();
         return xOffset;
     }
 
-    public int getYOffsetPointToCenterOfMap() {
+    public int getYOffsetPointToMap() {
         int yOffset = getMapY() - getPointY();
         return yOffset;
     }
