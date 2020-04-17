@@ -2,7 +2,7 @@ package selenium;
 
 import org.openqa.selenium.WebElement;
 import org.testng.Assert;
-import org.testng.annotations.BeforeClass;
+import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 import selenium.base.TestBase;
 import selenium.pages.AddSensorOnHomePlanPage;
@@ -12,37 +12,42 @@ public class AddSensorOnHomePlanTest extends TestBase {
 
     private AddSensorOnHomePlanPage addSensorOnMapPage;
 
-    @BeforeClass
-    public void beforeClass() {
+    @BeforeMethod
+    public void beforeMethod() {
         addSensorOnMapPage = new AddSensorOnHomePlanPage(driver);
+        addSensorOnMapPage.clearHomePlan();
         addSensorOnMapPage.goTo();
     }
 
     @Test
-    public void testChangeOfBackgroundColor() throws InterruptedException {
+    public void testChangeOfBackgroundColor() {
         WebElement element = addSensorOnMapPage.firstNotConnectedSensor;
+        WebElement secondElement = addSensorOnMapPage.secondNotConnectedSensor;
         String sensorTypeColor = addSensorOnMapPage.getUniversalSensorTypeColor(element);
         addSensorOnMapPage.clickNotConnectedSensorOnList();
         addSensorOnMapPage.moveMouseToElement(addSensorOnMapPage.homePlan);
-        Thread.sleep(160);
+        addSensorOnMapPage.waitForCompleteBackgroundColor(element);
         String selectedSensorBackgroundColor = addSensorOnMapPage.getElementBackgroundColor(element);
+        String notSelectedSensorBackgroundColor = addSensorOnMapPage.getElementBackgroundColor(secondElement);
+        String whiteBackgroundColor = "rgba(255, 255, 255, 1)";
+
         Assert.assertEquals(selectedSensorBackgroundColor, sensorTypeColor, "Sensor background color is not matching sensor color");
+        Assert.assertEquals(notSelectedSensorBackgroundColor, whiteBackgroundColor, "Not selected sensor background color is not white");
     }
 
     @Test
-    public void testAddingSensorOnHomePlan() throws InterruptedException {
+    public void testAddingSensorOnHomePlan() {
         String notConnectedSensorType = addSensorOnMapPage.getTextFromElement(addSensorOnMapPage.firstNotConnectedSensorType);
         String notConnectedSensorId = addSensorOnMapPage.getTextFromElement(addSensorOnMapPage.firstNotConnectedSensorId);
+        String sensorTypeColor = addSensorOnMapPage.getUniversalSensorTypeColor(addSensorOnMapPage.firstNotConnectedSensor);
         addSensorOnMapPage.clickNotConnectedSensorOnList();
         addSensorOnMapPage.moveMouseToElement(addSensorOnMapPage.homePlan);
-        Thread.sleep(160);
-        String selectedSensorColor = addSensorOnMapPage.getElementBackgroundColor(addSensorOnMapPage.firstNotConnectedSensor);
         addSensorOnMapPage.clickToAddPointOnHomePlan(0, 0);
         String sensorOnHomePlanColor = addSensorOnMapPage.getElementBackgroundColor(addSensorOnMapPage.pointOnHomePlan);
         String connectedSensorType = addSensorOnMapPage.getTextFromElement(addSensorOnMapPage.connectedSensorType);
         String connectedSensorId = addSensorOnMapPage.getTextFromElement(addSensorOnMapPage.connectedSensorId);
 
-        Assert.assertEquals(sensorOnHomePlanColor, selectedSensorColor, "Sensor on home plan color is not matching sensor type color");
+        Assert.assertEquals(sensorOnHomePlanColor, sensorTypeColor, "Sensor on home plan color is not matching sensor type color");
 
         Assert.assertEquals(notConnectedSensorType, connectedSensorType);
         Assert.assertEquals(notConnectedSensorId, connectedSensorId);

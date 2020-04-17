@@ -1,18 +1,17 @@
 package selenium;
 
 import org.testng.Assert;
-import org.testng.annotations.BeforeClass;
-import org.testng.annotations.DataProvider;
-import org.testng.annotations.Test;
+import org.testng.annotations.*;
 import selenium.base.TestBase;
 import selenium.pages.DashboardPage;
 
 public class MapTest extends TestBase {
     private DashboardPage dashboardPage;
 
-    @BeforeClass
-    public void beforeClass() {
+    @BeforeMethod
+    public void beforeMethod() {
         dashboardPage = new DashboardPage(driver);
+        dashboardPage.clearHomePlan();
         dashboardPage.goTo();
     }
 
@@ -33,6 +32,7 @@ public class MapTest extends TestBase {
 
     @Test(dataProvider = "incorrectOffsets")
     public void testAddingPointWithin3percentCircle(Integer x, Integer y) {
+        dashboardPage.waitUntilHomePlanIsLoaded();
         dashboardPage.clickFirstNotConnectedSensor();
         dashboardPage.clickToAddPoint(0, 100);
         String lastPointBeforeClick = dashboardPage.getPointUniqueInformation();
@@ -55,6 +55,7 @@ public class MapTest extends TestBase {
 
     @Test(dataProvider = "correctOffsets")
     public void testAddingNewPointOnHomePlan(Integer x, Integer y) {
+        dashboardPage.waitUntilHomePlanIsLoaded();
         dashboardPage.clickFirstNotConnectedSensor();
         dashboardPage.clickToAddPoint(0, 0);
         String lastPointBeforeClick = dashboardPage.getPointUniqueInformation();
@@ -67,6 +68,7 @@ public class MapTest extends TestBase {
 
     @Test
     public void testHomePlanRWD() {
+        dashboardPage.waitUntilHomePlanIsLoaded();
         double mapWidthBeforeResize = dashboardPage.getMapWidth();
         double mapHeightBeforeResize = dashboardPage.getMapHeight();
         dashboardPage.clickFirstNotConnectedSensor();
@@ -74,6 +76,7 @@ public class MapTest extends TestBase {
         double pointXOffsetBeforeResize = Math.abs(dashboardPage.getXOffsetPointToMap());
         double pointYOffsetBeforeResize = Math.abs(dashboardPage.getYOffsetPointToMap());
         dashboardPage.resizeBrowser();
+        dashboardPage.waitUntilHomePlanIsLoaded();
         double mapWidthAfterResize = dashboardPage.getMapWidth();
         double mapHeightAfterResize = dashboardPage.getMapHeight();
         double pointXOffsetAfterResize = Math.abs(dashboardPage.getXOffsetPointToMap());
@@ -82,8 +85,8 @@ public class MapTest extends TestBase {
         int mapHeightRatio = (int) Math.round((mapHeightAfterResize * 100) / mapHeightBeforeResize);
         int pointXOffsetRatio = (int) Math.round((pointXOffsetAfterResize * 100) / pointXOffsetBeforeResize);
         int pointYOffsetRatio = (int) Math.round((pointYOffsetAfterResize * 100) / pointYOffsetBeforeResize);
-        Assert.assertEquals(mapWidthRatio, pointXOffsetRatio);
-        Assert.assertEquals(mapHeightRatio, pointYOffsetRatio);
+        Assert.assertEquals(mapWidthRatio, pointXOffsetRatio, "Width point/map proportion not correct");
+        Assert.assertEquals(mapHeightRatio, pointYOffsetRatio, "Height point/map proportion not correct");
     }
 
 }

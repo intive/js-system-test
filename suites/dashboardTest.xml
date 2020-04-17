@@ -17,19 +17,9 @@
             <class name="selenium.SensorListTest"></class>
         </classes>
     </test>
-    <test name="Add point on home plan test">
-        <classes>
-            <class name="selenium.MapTest"></class>
-        </classes>
-    </test>
     <test name="Loader test">
         <classes>
             <class name="selenium.LoaderTest"></class>
-        </classes>
-    </test>
-    <test name="Add selected sensor on home plan test">
-        <classes>
-            <class name="selenium.AddSensorOnHomePlanTest"></class>
         </classes>
     </test>
 </suite>

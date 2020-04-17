@@ -1,6 +1,5 @@
 package selenium;
 
-import org.openqa.selenium.By;
 import org.testng.Assert;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
@@ -22,10 +21,14 @@ public class UpperSectionDashboardTest extends TestBase {
 
     @Test
     public void testSectionNameText() {
-        List<String> expectedSections = Arrays.asList("dashboard", "hvac", "autorzy");
-        List<String> actualSections = dashboardPage.getSectionNames();
-
-        Assert.assertEquals(actualSections, expectedSections);
+        List<String> expectedSectionsEn = Arrays.asList("dashboard", "hvac", "authors");
+        List<String> expectedSectionsPl = Arrays.asList("panel główny", "hvac", "autorzy");
+        dashboardPage.getPolishLanguage();
+        List<String> actualPolishSections = dashboardPage.getSectionNames();
+        dashboardPage.getEnglishLanguage();
+        List<String> actualEnglishSections = dashboardPage.getSectionNames();
+        Assert.assertEquals(actualPolishSections, expectedSectionsPl);
+        Assert.assertEquals(actualEnglishSections, expectedSectionsEn);
 
         String expectedApplicationName = "Smart Home";
         String actualApplicationName = dashboardPage.getApplicationName();
