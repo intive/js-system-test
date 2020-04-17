@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd" >
+
+<suite name="Home plan and sensors test suite">
+<test name="Add selected sensor on home plan test">
+    <classes>
+        <class name="selenium.AddSensorOnHomePlanTest"></class>
+    </classes>
+</test>
+    <test name="Add point on home plan test">
+        <classes>
+            <class name="selenium.MapTest"></class>
+        </classes>
+    </test>
+</suite>

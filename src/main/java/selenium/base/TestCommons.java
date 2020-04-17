@@ -3,7 +3,9 @@ package selenium.base;
 import org.openqa.selenium.Point;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.*;
 import org.openqa.selenium.support.PageFactory;
+import org.openqa.selenium.support.ui.ExpectedCondition;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
@@ -24,6 +26,14 @@ public abstract class TestCommons {
 
     protected void goTo(String path) {
         driver.get(url + path);
+    }
+
+    public void refreshPage() {
+        driver.get(driver.getCurrentUrl());
+    }
+
+    protected void addNewCookie(String name, String value) {
+        driver.manage().addCookie(new Cookie(name, value));
     }
 
     protected void sendKeysToElement(WebElement element, String text) {
@@ -77,4 +87,34 @@ public abstract class TestCommons {
         }
     }
 
+    protected static void waitForElementAttributeToChange(WebDriver driver, String text, String expected) {
+        WebDriverWait wait = new WebDriverWait(driver, 1);
+        wait.until(new ExpectedCondition<Boolean>() {
+            public Boolean apply(WebDriver driver) {
+                try {
+                    text.equals(expected);
+                    return true;
+                } catch
+                (org.openqa.selenium.TimeoutException e) {
+                    return false;
+                }
+            }
+        });
+    }
+
+    protected static void waitUntilVisible(WebDriver driver, WebElement element) {
+        WebDriverWait wait = new WebDriverWait(driver, 10);
+        wait.until(new ExpectedCondition<Boolean>() {
+            public Boolean apply(WebDriver driver) {
+                try {
+                    return (Boolean) ((JavascriptExecutor) driver).executeScript("return arguments[0].complete", element);
+                } catch
+                (org.openqa.selenium.TimeoutException e) {
+                    return false;
+                }
+            }
+        });
+    }
+
 }
+

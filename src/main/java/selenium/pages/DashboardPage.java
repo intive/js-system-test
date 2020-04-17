@@ -30,7 +30,7 @@ public class DashboardPage extends TestCommons {
     @FindBy(xpath = "//*[@id=\"root\"]/div/div[2]/div/div[1]/div/div/div[last()]")
     public WebElement lastPoint;
 
-    @FindBy(css = "body > div:nth-child(3) > div.MuiPaper-root.jss222.MuiPaper-elevation3.MuiPaper-rounded")
+    @FindBy(css = "body > div:nth-child(3) > div.MuiPaper-root.jss275.MuiPaper-elevation3.MuiPaper-rounded")
     public WebElement gapNeededBox;
 
     @FindBy(className = "MuiCircularProgress-svg")
@@ -39,12 +39,25 @@ public class DashboardPage extends TestCommons {
     @FindBy(xpath = "//*[@id=\"root\"]/div/div[2]/div/div[2]/ul[1]/div[1]")
     public WebElement firstNotConnectedSensor;
 
+    @FindBy(xpath = "//*[@id=\"root\"]/div/div[1]/div/div[1]/div/div[2]/div/div/div")
+    public WebElement languageListBox;
+
+    @FindBy(xpath = "//*[@id=\"menu-\"]/div[3]/ul/li[1]")
+    public WebElement languageEnglish;
+
+    @FindBy(xpath = "//*[@id=\"menu-\"]/div[3]/ul/li[2]")
+    public WebElement languagePolish;
+
     public DashboardPage(WebDriver driver) {
         super(driver);
     }
 
     public void goTo() {
         goTo("/");
+    }
+
+    public void clearHomePlan() {
+        goTo("/api/v1/dashboard/delete");
     }
 
     public int getNumberOfSections() {
@@ -199,6 +212,20 @@ public class DashboardPage extends TestCommons {
 
     public boolean isLoaderDisplayed() {
         return isElementDisplayed(driver, loader);
+    }
+
+    public void getPolishLanguage() {
+        languageListBox.click();
+        languagePolish.click();
+    }
+
+    public void getEnglishLanguage() {
+        languageListBox.click();
+        languageEnglish.click();
+    }
+
+    public void waitUntilHomePlanIsLoaded() {
+        waitUntilVisible(driver, homePlan);
     }
 
 }
