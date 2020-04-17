@@ -1,15 +1,14 @@
 package selenium.base;
 
-import java.util.concurrent.TimeUnit;
-
 import org.openqa.selenium.Cookie;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
-import org.openqa.selenium.support.PageFactory;
 import org.testng.annotations.AfterTest;
 import org.testng.annotations.BeforeSuite;
 import org.testng.annotations.BeforeTest;
+
+import java.util.concurrent.TimeUnit;
 
 public class TestBase {
 
