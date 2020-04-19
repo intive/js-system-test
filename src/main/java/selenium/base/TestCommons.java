@@ -116,19 +116,17 @@ public abstract class TestCommons {
             map.put("download_throughput", 0);
             map.put("upload_throughput", 0);
             CommandExecutor executor = ((ChromeDriver) driver).getCommandExecutor();
-            Response response = executor.execute(
-                    new Command(((ChromeDriver) driver).getSessionId(), "setNetworkConditions",
+            executor.execute(new Command(((ChromeDriver) driver).getSessionId(), "setNetworkConditions",
                             ImmutableMap.of("network_conditions", ImmutableMap.copyOf(map))));
         }
         else {
             Map map = new HashMap();
             map.put("offline", false);
             map.put("latency", 10);
-            map.put("download_throughput", 5000);
-            map.put("upload_throughput", 5000);
+            map.put("download_throughput", 1000);
+            map.put("upload_throughput", 1000);
             CommandExecutor executor = ((ChromeDriver) driver).getCommandExecutor();
-            Response response = executor.execute(
-                    new Command(((ChromeDriver) driver).getSessionId(), "setNetworkConditions",
+            executor.execute(new Command(((ChromeDriver) driver).getSessionId(), "setNetworkConditions",
                             ImmutableMap.of("network_conditions", ImmutableMap.copyOf(map))));
         }
     }
