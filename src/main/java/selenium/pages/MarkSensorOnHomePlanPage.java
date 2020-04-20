@@ -10,7 +10,7 @@ import java.util.Map;
 
 public class MarkSensorOnHomePlanPage extends TestCommons {
 
-    @FindBy(xpath = "//*[@id=\"root\"]/div/div[2]/div/div[2]/ul[1]/div[1]")
+    @FindBy(xpath = "//*[@id=\"root\"]/div/div[2]/div/div[2]/ul[1]/li[2]")
     public WebElement firstNotConnectedSensor;
 
     @FindBy(xpath = "//*[@id=\"root\"]/div/div[2]/div/div[1]/div/div/img")
@@ -19,13 +19,13 @@ public class MarkSensorOnHomePlanPage extends TestCommons {
     @FindBy(xpath = "//*[@id=\"root\"]/div/div[2]/div/div[1]/div/div/div[last()]")
     public WebElement sensorOnHomePlan;
 
-    @FindBy(xpath = "//*[@id=\"root\"]/div/div[2]/div/div[2]/ul[2]/div[last()]")
+    @FindBy(xpath = "//*[@id=\"root\"]/div/div[2]/div/div[2]/ul[2]/li[last()]")
     public WebElement sensorOnConnectedSensorsList;
 
     @FindBy(xpath = "//*[@id=\"root\"]/div/div[2]/div/div[1]/div/div/div[2]")
     public WebElement secondSensorOnHomePlan;
 
-    @FindBy(xpath = "//*[@id=\"root\"]/div/div[2]/div/div[2]/ul[2]/div[2]")
+    @FindBy(xpath = "//*[@id=\"root\"]/div/div[2]/div/div[2]/ul[2]/li[3]")
     public WebElement secondSensorOnConnectedSensorsList;
 
     public MarkSensorOnHomePlanPage(WebDriver driver) {
