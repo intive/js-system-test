@@ -36,7 +36,7 @@ public class DashboardPage extends TestCommons {
     @FindBy(className = "MuiCircularProgress-svg")
     public WebElement loader;
 
-    @FindBy(xpath = "//*[@id=\"root\"]/div/div[2]/div/div[2]/ul[1]/div[1]")
+    @FindBy(xpath = "//*[@id=\"root\"]/div/div[2]/div/div[2]/ul[1]/li[2]")
     public WebElement firstNotConnectedSensor;
 
     @FindBy(xpath = "//*[@id=\"root\"]/div/div[1]/header/div/div[2]/div/div/div")

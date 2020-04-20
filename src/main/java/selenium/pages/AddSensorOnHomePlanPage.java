@@ -10,28 +10,28 @@ import selenium.base.TestCommons;
 
 public class AddSensorOnHomePlanPage extends TestCommons {
 
-    @FindBy(xpath = "//*[@id=\"root\"]/div/div[2]/div/div[2]/ul[1]/div[1]")
+    @FindBy(xpath = "//*[@id=\"root\"]/div/div[2]/div/div[2]/ul[1]/li[2]")
     public WebElement firstNotConnectedSensor;
 
-    @FindBy(xpath = "//*[@id=\"root\"]/div/div[2]/div/div[2]/ul[1]/div[2]")
+    @FindBy(xpath = "//*[@id=\"root\"]/div/div[2]/div/div[2]/ul[1]/li[3]")
     public WebElement secondNotConnectedSensor;
 
-    @FindBy(xpath = "//*[@id=\"root\"]/div/div[2]/div/div[2]/ul[2]/div[1]")
+    @FindBy(xpath = "//*[@id=\"root\"]/div/div[2]/div/div[2]/ul[2]/li[2]")
     public WebElement connectedSensor;
 
     @FindBy(xpath = "//*[@id=\"root\"]/div/div[2]/div/div[1]/div/div/img")
     public WebElement homePlan;
 
-    @FindBy(xpath = "//*[@id=\"root\"]/div/div[2]/div/div[2]/ul[1]/div[1]/div[1]/span/span[1]")
+    @FindBy(xpath = "//*[@id=\"root\"]/div/div[2]/div/div[2]/ul[1]/li[2]/div[1]/span/span[1]")
     public WebElement firstNotConnectedSensorType;
 
-    @FindBy(xpath = "//*[@id=\"root\"]/div/div[2]/div/div[2]/ul[1]/div[1]/div[1]/span/span[2]")
+    @FindBy(xpath = "//*[@id=\"root\"]/div/div[2]/div/div[2]/ul[1]/li[2]/div[1]/span/span[2]")
     public WebElement firstNotConnectedSensorId;
 
-    @FindBy(xpath = "//*[@id=\"root\"]/div/div[2]/div/div[2]/ul[2]/div/div[1]/span/span[1]")
+    @FindBy(xpath = "//*[@id=\"root\"]/div/div[2]/div/div[2]/ul[2]/li[2]/div[1]/span/span[1]")
     public WebElement connectedSensorType;
 
-    @FindBy(xpath = "//*[@id=\"root\"]/div/div[2]/div/div[2]/ul[2]/div/div[1]/span/span[2]")
+    @FindBy(xpath = "//*[@id=\"root\"]/div/div[2]/div/div[2]/ul[2]/li[2]/div[1]/span/span[2]")
     public WebElement connectedSensorId;
 
     @FindBy(xpath = "//*[@id=\"root\"]/div/div[2]/div/div[1]/div/div/div[last()]")
@@ -127,10 +127,10 @@ public class AddSensorOnHomePlanPage extends TestCommons {
             case "Rolety":
                 return "rgba(247, 212, 228, 1)";
             case "RFID":
-                return "rgba(255, 236, 235)";
+                return "rgba(255, 236, 235, 1)";
             case "Smoke sensor":
             case "Czujnik dymu":
-                return "rgba(204, 204, 204)";
+                return "rgba(204, 204, 204, 1)";
             default:
                 throw new IllegalStateException("Unexpected value: " + getSensorType(element));
         }
