@@ -23,15 +23,15 @@ public class AddSensorOnHomePlanTest extends TestBase {
     public void testChangeOfBackgroundColor() {
         WebElement element = addSensorOnMapPage.firstNotConnectedSensor;
         WebElement secondElement = addSensorOnMapPage.secondNotConnectedSensor;
-        String sensorTypeColor = addSensorOnMapPage.getUniversalSensorTypeColor(element);
+        String sensorTypeBackgroundColor = addSensorOnMapPage.getSensorTypeBackgroundColor(element);
         addSensorOnMapPage.clickNotConnectedSensorOnList();
         addSensorOnMapPage.moveMouseToElement(addSensorOnMapPage.homePlan);
         addSensorOnMapPage.waitForCompleteBackgroundColor(element);
         String selectedSensorBackgroundColor = addSensorOnMapPage.getElementBackgroundColor(element);
         String notSelectedSensorBackgroundColor = addSensorOnMapPage.getElementBackgroundColor(secondElement);
-        String whiteBackgroundColor = "rgba(255, 255, 255, 1)";
+        String whiteBackgroundColor = "rgba(0, 0, 0, 0)";
 
-        Assert.assertEquals(selectedSensorBackgroundColor, sensorTypeColor, "Sensor background color is not matching sensor color");
+        Assert.assertEquals(selectedSensorBackgroundColor, sensorTypeBackgroundColor, "Sensor background color is not matching sensor color");
         Assert.assertEquals(notSelectedSensorBackgroundColor, whiteBackgroundColor, "Not selected sensor background color is not white");
     }
 
