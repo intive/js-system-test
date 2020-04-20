@@ -15,7 +15,7 @@ public class DashboardPage extends TestCommons {
     @FindBy(tagName = "div")
     public List<WebElement> allDivElements;
 
-    @FindBy(tagName = "h5")
+    @FindBy(tagName = "h6")
     public WebElement appName;
 
     @FindBy(className = "MuiTab-wrapper")
@@ -30,7 +30,7 @@ public class DashboardPage extends TestCommons {
     @FindBy(xpath = "//*[@id=\"root\"]/div/div[2]/div/div[1]/div/div/div[last()]")
     public WebElement lastPoint;
 
-    @FindBy(css = "body > div:nth-child(3) > div.MuiPaper-root.jss275.MuiPaper-elevation3.MuiPaper-rounded")
+    @FindBy(xpath = "/html/body/div[2]/div[3]")
     public WebElement gapNeededBox;
 
     @FindBy(className = "MuiCircularProgress-svg")
@@ -39,7 +39,7 @@ public class DashboardPage extends TestCommons {
     @FindBy(xpath = "//*[@id=\"root\"]/div/div[2]/div/div[2]/ul[1]/div[1]")
     public WebElement firstNotConnectedSensor;
 
-    @FindBy(xpath = "//*[@id=\"root\"]/div/div[1]/div/div[1]/div/div[2]/div/div/div")
+    @FindBy(xpath = "//*[@id=\"root\"]/div/div[1]/header/div/div[2]/div/div/div")
     public WebElement languageListBox;
 
     @FindBy(xpath = "//*[@id=\"menu-\"]/div[3]/ul/li[1]")

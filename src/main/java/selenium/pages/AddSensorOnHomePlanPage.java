@@ -1,5 +1,6 @@
 package selenium.pages;
 
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
@@ -108,6 +109,31 @@ public class AddSensorOnHomePlanPage extends TestCommons {
         String partialStringFromBackgroundColor = getCompleteTransitionOfColor(element);
         String expected = ", 1";
         waitForElementAttributeToChange(driver, partialStringFromBackgroundColor, expected);
+    }
+
+    public String getSensorType(WebElement element) {
+        return element.findElement(By.tagName("p")).getText();
+    }
+
+    public String getSensorTypeBackgroundColor(WebElement element) {
+        switch (getSensorType(element)) {
+            case "Temperature":
+            case "Temperatura":
+                return "rgba(255, 230, 204, 1)";
+            case "Window":
+            case "Okno":
+                return "rgba(238, 229, 255, 1)";
+            case "Window blind":
+            case "Rolety":
+                return "rgba(247, 212, 228, 1)";
+            case "RFID":
+                return "rgba(255, 236, 235)";
+            case "Smoke sensor":
+            case "Czujnik dymu":
+                return "rgba(204, 204, 204)";
+            default:
+                throw new IllegalStateException("Unexpected value: " + getSensorType(element));
+        }
     }
 
 }
