@@ -5,6 +5,9 @@ import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.FindBy;
 import selenium.base.TestCommons;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class MarkSensorOnHomePlanPage extends TestCommons {
 
     @FindBy(xpath = "//*[@id=\"root\"]/div/div[2]/div/div[2]/ul[1]/div[1]")
@@ -59,7 +62,10 @@ public class MarkSensorOnHomePlanPage extends TestCommons {
     }
 
     public void resizeBrowser() {
-        Dimension dimension = new Dimension(1200, 600);
+        Dimension browserDimension = driver.manage().window().getSize();
+        int xBrowser = browserDimension.getWidth();
+        int yBrowser = (int) ((browserDimension.getHeight())*0.7);
+        Dimension dimension = new Dimension(xBrowser, yBrowser);
         driver.manage().window().setSize(dimension);
     }
 
@@ -76,41 +82,40 @@ public class MarkSensorOnHomePlanPage extends TestCommons {
         isElementDisplayed(driver, element);
     }
 
-    /*public String getCompleteTransitionOfColor(WebElement element) {
-        String fullString = element.getCssValue("background-color");
-        int beginIndex = fullString.length() - 4;
-        int endIndex = fullString.length() - 1;
-        String partialString = fullString.substring(beginIndex, endIndex);
-        return partialString;
-    } */
-
-    public void waitForCompleteBackgroundColor(WebElement element) {
-        waitForElementAttributeToChange(driver, getElementBackgroundColor(element), getSensorTypeColor(element));
-    }
 
     public String getSensorType(WebElement element) {
         return element.findElement(By.tagName("p")).getText();
     }
 
-    public String getSensorTypeColor(WebElement element) {
+    public String getSensorTypeBackgroundColor(WebElement element) {
         switch (getSensorType(element)) {
             case "Temperature":
             case "Temperatura":
-                return "rgba(255, 153, 51, 1)";
+                return "rgba(255, 230, 204,";
             case "Window":
             case "Okno":
-                return "rgba(136, 77, 255, 1)";
+                return "rgba(238, 229, 255,";
             case "Window blind":
             case "Rolety":
-                return "rgba(224, 81, 148, 1)";
+                return "rgba(247, 212, 228,";
             case "RFID":
-                return "rgba(255, 141, 133, 1)";
+                return "rgba(255, 236, 235,";
             case "Smoke sensor":
             case "Czujnik dymu":
-                return "rgba(128, 128, 128, 1)";
+                return "rgba(204, 204, 204,";
             default:
                 throw new IllegalStateException("Unexpected value: " + getSensorType(element));
         }
+    }
+
+    public Map<String, String> sensorBackgroundAndBorderColorMap() {
+        Map<String, String> backgroundAndBorderColor = new HashMap<>();
+        backgroundAndBorderColor.put("rgba(255, 153, 51, 1)", "rgb(153, 77, 0)");
+        backgroundAndBorderColor.put("rgba(136, 77, 255, 1)", "rgb(59, 0, 179)");
+        backgroundAndBorderColor.put("rgba(224, 82, 148, 1)", "rgb(130, 23, 73)");
+        backgroundAndBorderColor.put("rgba(255, 141, 133, 1)", "rgb(235, 16, 0)");
+        backgroundAndBorderColor.put("rgba(128, 128, 128, 1)", "rgb(51, 51, 51)");
+        return backgroundAndBorderColor;
     }
 
 }
