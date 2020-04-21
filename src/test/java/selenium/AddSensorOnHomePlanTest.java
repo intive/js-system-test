@@ -52,7 +52,7 @@ public class AddSensorOnHomePlanTest extends TestBase {
         Assert.assertEquals(notConnectedSensorType, connectedSensorType);
         Assert.assertEquals(notConnectedSensorId, connectedSensorId);
 
-        Assert.assertEquals(addSensorOnMapPage.isSensorNotClickable(), "true", "Sensors is clickable");
+        Assert.assertEquals(addSensorOnMapPage.isSensorNotClickable(), null, "Sensors is not clickable");
     }
 
     @Test
