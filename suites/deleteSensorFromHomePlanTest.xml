@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd" >
+
+<suite name="Delete selected sensor test suite">
+    <test name="Delete sensor from home plan test">
+        <classes>
+            <class name="selenium.DeleteSensorFromHomePlanTest"></class>
+        </classes>
+    </test>
+</suite>
