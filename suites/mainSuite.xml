@@ -4,6 +4,7 @@
     <suite-files>
         <suite-file path="dashboardTest.xml"></suite-file>
         <suite-file path="authorsTest.xml"></suite-file>
+        <suite-file path="cookieAuthorizationTest.xml"></suite-file>
         <suite-file path="snackbarsTest.xml"></suite-file>
     </suite-files>
 </suite>

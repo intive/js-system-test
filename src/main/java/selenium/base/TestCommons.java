@@ -34,14 +34,6 @@ public abstract class TestCommons {
         driver.get(url + path);
     }
 
-    public void refreshPage(){
-        driver.get(driver.getCurrentUrl());
-    }
-
-    protected void addNewCookie(String name, String value){
-        driver.manage().addCookie(new Cookie(name, value));
-    }
-
     protected void sendKeysToElement(WebElement element, String text) {
         element.sendKeys(text);
     }

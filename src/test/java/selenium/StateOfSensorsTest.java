@@ -3,8 +3,6 @@ package selenium;
 import org.openqa.selenium.WebElement;
 import org.testng.Assert;
 import org.testng.annotations.BeforeClass;
-import org.testng.annotations.BeforeMethod;
-import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Test;
 import org.testng.asserts.Assertion;
 import selenium.base.TestBase;
@@ -21,7 +19,6 @@ public class StateOfSensorsTest extends TestBase {
         stateOfSensors.resetSensorsOnMap();
         stateOfSensors.goTo();
         stateOfSensors.lastSensorIsDisplayed(stateOfSensors.lastSensor);
-
     }
 
     @Test
@@ -59,7 +56,6 @@ public class StateOfSensorsTest extends TestBase {
     public void apiResponseFailureSnackbar() throws IOException {
 
         stateOfSensors.internetConnection(false);
-
         WebElement snackBarApi;
         WebElement theIncorrectSnackBar;
         WebElement theRightExitButton;
@@ -91,9 +87,9 @@ public class StateOfSensorsTest extends TestBase {
         snackBarExistenceConfirmation = stateOfSensors.snackBarExist(snackBarApi, 5);
         Assert.assertEquals(snackBarExistenceConfirmation, true, "Snackbar API nie pojawił się ponownie.");
 
+
         String snackApiColour = stateOfSensors.snackBarApiColour(snackBarApi);
         Assert.assertEquals(snackApiColour, "rgba(255, 160, 0, 1)", "Snackbar API ma nieprawidłowy kolor.");
-
         boolean[] snackBars = new boolean[2];
         boolean[] expectedSnackBars = {true,true};
         boolean[] expectedSnackBarsInOnlineMode = {false,false};
