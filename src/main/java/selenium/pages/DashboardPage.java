@@ -15,7 +15,7 @@ public class DashboardPage extends TestCommons {
     @FindBy(tagName = "div")
     public List<WebElement> allDivElements;
 
-    @FindBy(tagName = "h5")
+    @FindBy(tagName = "h6")
     public WebElement appName;
 
     @FindBy(className = "MuiTab-wrapper")
@@ -24,21 +24,29 @@ public class DashboardPage extends TestCommons {
     @FindBy(tagName = "button")
     public WebElement notificationsButton;
 
-    @FindBy(xpath = "//*[@id=\"root\"]/div/div[2]/div/div[1]/div/div/img")
+    @FindBy(tagName = "img")
     public WebElement homePlan;
-
-    @FindBy(xpath = "//*[@id=\"root\"]/div/div[2]/div/div[1]/div/div/div[1]")
-    public WebElement pointOnHomePlan;
 
     @FindBy(xpath = "//*[@id=\"root\"]/div/div[2]/div/div[1]/div/div/div[last()]")
     public WebElement lastPoint;
 
-    @FindBy(css = "body > div:nth-child(3) > div.MuiPaper-root.jss245.MuiPaper-elevation3.MuiPaper-rounded")
+    @FindBy(xpath = "/html/body/div[2]/div[3]")
     public WebElement gapNeededBox;
 
     @FindBy(className = "MuiCircularProgress-svg")
     public WebElement loader;
 
+    @FindBy(xpath = "//*[@id=\"root\"]/div/div[2]/div/div[2]/ul[1]/li[2]")
+    public WebElement firstNotConnectedSensor;
+
+    @FindBy(xpath = "//*[@id=\"root\"]/div/div[1]/header/div/div[2]/div/div/div")
+    public WebElement languageListBox;
+
+    @FindBy(xpath = "//*[@id=\"menu-\"]/div[3]/ul/li[1]")
+    public WebElement languageEnglish;
+
+    @FindBy(xpath = "//*[@id=\"menu-\"]/div[3]/ul/li[2]")
+    public WebElement languagePolish;
 
     public DashboardPage(WebDriver driver) {
         super(driver);
@@ -46,6 +54,10 @@ public class DashboardPage extends TestCommons {
 
     public void goTo() {
         goTo("/");
+    }
+
+    public void clearHomePlan() {
+        goTo("/api/v1/dashboard/delete");
     }
 
     public int getNumberOfSections() {
@@ -103,6 +115,10 @@ public class DashboardPage extends TestCommons {
         notificationsButton.click();
     }
 
+    public void clickFirstNotConnectedSensor() {
+        firstNotConnectedSensor.click();
+    }
+
     public String getCursorType() {
         String cursor = homePlan.getCssValue("cursor");
         return cursor;
@@ -144,11 +160,11 @@ public class DashboardPage extends TestCommons {
     }
 
     public int getPointX() {
-        return getElementLocation(pointOnHomePlan).getX();
+        return getElementLocation(lastPoint).getX();
     }
 
     public int getPointY() {
-        return getElementLocation(pointOnHomePlan).getY();
+        return getElementLocation(lastPoint).getY();
     }
 
     public int getMapX() {
@@ -159,12 +175,12 @@ public class DashboardPage extends TestCommons {
         return getElementLocation(homePlan).getY();
     }
 
-    public int getXOffsetPointToCenterOfMap() {
+    public int getXOffsetPointToMap() {
         int xOffset = getMapX() - getPointX();
         return xOffset;
     }
 
-    public int getYOffsetPointToCenterOfMap() {
+    public int getYOffsetPointToMap() {
         int yOffset = getMapY() - getPointY();
         return yOffset;
     }
@@ -196,6 +212,20 @@ public class DashboardPage extends TestCommons {
 
     public boolean isLoaderDisplayed() {
         return isElementDisplayed(driver, loader);
+    }
+
+    public void getPolishLanguage() {
+        languageListBox.click();
+        languagePolish.click();
+    }
+
+    public void getEnglishLanguage() {
+        languageListBox.click();
+        languageEnglish.click();
+    }
+
+    public void waitUntilHomePlanIsLoaded() {
+        waitUntilVisible(driver, homePlan);
     }
 
 }

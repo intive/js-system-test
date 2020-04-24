@@ -8,8 +8,9 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.remote.Command;
 import org.openqa.selenium.remote.CommandExecutor;
-import org.openqa.selenium.remote.Response;
+import org.openqa.selenium.*;
 import org.openqa.selenium.support.PageFactory;
+import org.openqa.selenium.support.ui.ExpectedCondition;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
@@ -32,6 +33,14 @@ public abstract class TestCommons {
 
     protected void goTo(String path) {
         driver.get(url + path);
+    }
+
+    public void refreshPage() {
+        driver.get(driver.getCurrentUrl());
+    }
+
+    protected void addNewCookie(String name, String value) {
+        driver.manage().addCookie(new Cookie(name, value));
     }
 
     protected void sendKeysToElement(WebElement element, String text) {
@@ -59,13 +68,13 @@ public abstract class TestCommons {
 
     protected int getElementWidth(WebElement element) {
         double sizeDouble = element.getSize().getWidth();
-        int sizeInt = (int) Math.round(sizeDouble);
+        int sizeInt = (int) Math.ceil(sizeDouble);
         return sizeInt;
     }
 
     protected int getElementHeight(WebElement element) {
         double sizeDouble = element.getSize().getHeight();
-        int sizeInt = (int) Math.round(sizeDouble);
+        int sizeInt = (int) Math.ceil(sizeDouble);
         return sizeInt;
     }
 
@@ -109,6 +118,7 @@ public abstract class TestCommons {
             return true;
         }
     }
+
     public void internetConnection(boolean Online) throws IOException {
         if (Online == false) {
             Map map = new HashMap();
@@ -131,4 +141,34 @@ public abstract class TestCommons {
                             ImmutableMap.of("network_conditions", ImmutableMap.copyOf(map))));
         }
     }
+
+    protected static void waitForElementAttributeToChange(WebDriver driver, String text, String expected) {
+        WebDriverWait wait = new WebDriverWait(driver, 1);
+        wait.until(new ExpectedCondition<Boolean>() {
+            public Boolean apply(WebDriver driver) {
+                try {
+                    text.equals(expected);
+                    return true;
+                } catch
+                (org.openqa.selenium.TimeoutException e) {
+                    return false;
+                }
+            }
+        });
+    }
+
+    protected static void waitUntilVisible(WebDriver driver, WebElement element) {
+        WebDriverWait wait = new WebDriverWait(driver, 10);
+        wait.until(new ExpectedCondition<Boolean>() {
+            public Boolean apply(WebDriver driver) {
+                try {
+                    return (Boolean) ((JavascriptExecutor) driver).executeScript("return arguments[0].complete", element);
+                } catch
+                (org.openqa.selenium.TimeoutException e) {
+                    return false;
+                }
+            }
+        });
+    }
 }
+
