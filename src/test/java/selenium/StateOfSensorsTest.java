@@ -3,6 +3,8 @@ package selenium;
 import org.openqa.selenium.WebElement;
 import org.testng.Assert;
 import org.testng.annotations.BeforeClass;
+import org.testng.annotations.BeforeMethod;
+import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Test;
 import org.testng.asserts.Assertion;
 import selenium.base.TestBase;
@@ -16,12 +18,10 @@ public class StateOfSensorsTest extends TestBase {
     @BeforeClass
     public void startPage() throws IOException {
         stateOfSensors = new NoConnectionPage(driver);
-        // W razie czego czyszczę czujniki z mapy przed testem.
         stateOfSensors.resetSensorsOnMap();
         stateOfSensors.goTo();
-        // poniższa linijka upewnia się, że wszystkie czujniki w liście są widoczne, a nie tylko sam WebElement listy
         stateOfSensors.lastSensorIsDisplayed(stateOfSensors.lastSensor);
-        stateOfSensors.internetConnection(false);
+
     }
 
     @Test
@@ -31,10 +31,10 @@ public class StateOfSensorsTest extends TestBase {
         stateOfSensors.clickToAddPoint(-50, -75);
         stateOfSensors.clickElement(stateOfSensors.sensor2);
         stateOfSensors.clickToAddPoint(150, 125);
-        stateOfSensors.internetConnection(false);
         List<WebElement> sensors = stateOfSensors.getListOfSensors();
         List<String> sensorValuesFirstRequest = stateOfSensors.getListOfSensorValues(sensors);
         Thread.sleep(5000);
+        stateOfSensors.internetConnection(false);
         List<String> sensorValuesSecondRequest = stateOfSensors.getListOfSensorValues(sensors);
         Assert.assertEquals(sensorValuesFirstRequest, sensorValuesSecondRequest, "Wartości czujników powinny były pozostać niezmienione.");
         stateOfSensors.internetConnection(true);
@@ -57,6 +57,8 @@ public class StateOfSensorsTest extends TestBase {
 
     @Test
     public void apiResponseFailureSnackbar() throws IOException {
+
+        stateOfSensors.internetConnection(false);
 
         WebElement snackBarApi;
         WebElement theIncorrectSnackBar;
@@ -89,11 +91,9 @@ public class StateOfSensorsTest extends TestBase {
         snackBarExistenceConfirmation = stateOfSensors.snackBarExist(snackBarApi, 5);
         Assert.assertEquals(snackBarExistenceConfirmation, true, "Snackbar API nie pojawił się ponownie.");
 
-        // Sprawdzenie, czy snackbar ma poprawny kolor
         String snackApiColour = stateOfSensors.snackBarApiColour(snackBarApi);
         Assert.assertEquals(snackApiColour, "rgba(255, 160, 0, 1)", "Snackbar API ma nieprawidłowy kolor.");
 
-        // Sprawdzenie, czy oba snackbary potrafią występować jednocześnie
         boolean[] snackBars = new boolean[2];
         boolean[] expectedSnackBars = {true,true};
         boolean[] expectedSnackBarsInOnlineMode = {false,false};
@@ -101,11 +101,9 @@ public class StateOfSensorsTest extends TestBase {
         snackBars[1] = stateOfSensors.snackBarExist(snackBarApi,1);
         Assert.assertEquals(snackBars, expectedSnackBars, "Oba snackbary nie pojawiły się jednocześnie.");
 
-        // Sprawdzenie, czy oba snackbary znikną po wznowieniu połączenia internetowego
         stateOfSensors.internetConnection(true);
         snackBars[0] = stateOfSensors.snackBarDoesntExist(snackBarApi,5);
         snackBars[1] = stateOfSensors.snackBarDoesntExist(theIncorrectSnackBar,5);
         Assert.assertEquals(snackBars, expectedSnackBarsInOnlineMode, "Snackbary nie zniknęły.");
-
-}
+    }
 }

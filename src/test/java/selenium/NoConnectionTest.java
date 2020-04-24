@@ -24,20 +24,6 @@ public class NoConnectionTest extends TestBase {
         WebElement theIncorrectSnackBar;
         WebElement theRightExitButton;
 
-//        Alternative approach, for future use.
-//        if (noConnectionPage.snackBar.getText().contains("Hej, coś nie styka! Sprawdź połączenie.")) {
-//            theRightSnackBar = noConnectionPage.snackBar;
-//            theRightExitButton = noConnectionPage.exitButton;
-//            theIncorrectSnackBar = noConnectionPage.snackBar2;
-//        } else if (noConnectionPage.snackBar2.getText().contains("Hej, coś nie styka! Sprawdź połączenie.")) {
-//            theRightSnackBar = noConnectionPage.snackBar2;
-//            theRightExitButton = noConnectionPage.exitButton2;
-//            theIncorrectSnackBar = noConnectionPage.snackBar;
-//        } else {
-//            Assert.assertEquals(1, 2);
-//        }
-
-
         try {
             Assert.assertEquals(noConnectionPage.snackBar.getText(), "Hej, coś nie styka! Sprawdź połączenie.");
             theRightSnackBar = noConnectionPage.snackBar;

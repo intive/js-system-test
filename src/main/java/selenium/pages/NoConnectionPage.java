@@ -25,15 +25,15 @@ public class NoConnectionPage extends TestCommons {
     public WebElement exitButton2;
     @FindBy(xpath = "/html/body/div/div/div[2]/div/div[2]/ul[1]/div[5]")
     public WebElement lastSensor;
-    @FindBy(xpath = "/html/body/div/div/div[2]/div/div[2]/ul[1]/div[1]")
+    @FindBy(xpath = "/html/body/div/div/div[2]/div/div[2]/ul[1]/li[2]")
     public WebElement sensor1;
-    @FindBy(xpath = "/html/body/div/div/div[2]/div/div[2]/ul[1]/div[2]")
+    @FindBy(xpath = "/html/body/div/div/div[2]/div/div[2]/ul[1]/li[3]")
     public WebElement sensor2;
-    @FindBy(xpath = "/html/body/div/div/div[2]/div/div[2]/ul[1]/div[3]")
+    @FindBy(xpath = "/html/body/div/div/div[2]/div/div[2]/ul[1]/li[4]")
     public WebElement sensor3;
-    @FindBy(xpath = "/html/body/div/div/div[2]/div/div[2]/ul[2]/div[1]")
+    @FindBy(xpath = "/html/body/div/div/div[2]/div/div[2]/ul[2]/li[2]")
     public WebElement sensor4;
-    @FindBy(xpath = "/html/body/div/div/div[2]/div/div[2]/ul[2]/div[2]")
+    @FindBy(xpath = "/html/body/div/div/div[2]/div/div[2]/ul[2]/li[3]")
     public WebElement sensor5;
     @FindBy(xpath = "//*[@id=\"root\"]/div/div[2]/div/div[1]/div/div/img")
     public WebElement homePlan;
