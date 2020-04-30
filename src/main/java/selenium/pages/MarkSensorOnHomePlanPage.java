@@ -78,10 +78,23 @@ public class MarkSensorOnHomePlanPage extends TestCommons {
         return yElement <= yBrowser;
     }
 
-    public void waitForScrollToComplete(WebElement element) {
-        isElementDisplayed(driver, element);
+    public void waitForScrollToComplete(WebElement element) throws InterruptedException {
+
+        long endWaitTime = System.currentTimeMillis() + 5* 1000;
+        boolean isConditionMet = false;
+        while (System.currentTimeMillis() < endWaitTime && !isConditionMet) {
+            isConditionMet = isSensorInViewPort(element);
+            if (isConditionMet) {
+                break;
+            } else {
+                Thread.sleep(10);
+            }
+        }
     }
 
+    public void waitUntilHomePlanIsLoaded() {
+        waitUntilVisible(driver, homePlan);
+    }
 
     public String getSensorType(WebElement element) {
         return element.findElement(By.tagName("p")).getText();

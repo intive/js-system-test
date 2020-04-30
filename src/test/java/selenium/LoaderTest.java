@@ -16,8 +16,8 @@ public class LoaderTest extends TestBase {
     }
 
     @Test
-    public void testLoaderOnDashboardPage() {
-        Assert.assertTrue(dashboardPage.isLoaderDisplayed());
+    public void testLoaderOnDashboardPage() throws InterruptedException {
+        Assert.assertTrue(dashboardPage.isLoaderDisplayed(dashboardPage.loader));
     }
 
 }
