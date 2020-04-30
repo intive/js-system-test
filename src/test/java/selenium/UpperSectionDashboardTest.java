@@ -55,6 +55,7 @@ public class UpperSectionDashboardTest extends TestBase {
         String currentURL = driver.getCurrentUrl();
         String expectedURL = "https://patronage20-js-master.herokuapp.com/";
         Assert.assertEquals(currentURL, expectedURL);
+        dashboardPage.closeNotifications();
     }
 
     @Test

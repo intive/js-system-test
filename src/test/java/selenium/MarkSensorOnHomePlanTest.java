@@ -53,8 +53,9 @@ public class MarkSensorOnHomePlanTest extends TestBase {
     }
 
     @Test
-    public void testScrollAutoToSelectedSensor() {
+    public void testScrollAutoToSelectedSensor() throws InterruptedException {
         markSensorOnHomePlanPage.resizeBrowser();
+        markSensorOnHomePlanPage.waitUntilHomePlanIsLoaded();
         WebElement sensor = markSensorOnHomePlanPage.sensorOnConnectedSensorsList;
         Assert.assertFalse(markSensorOnHomePlanPage.isSensorInViewPort(sensor));
         markSensorOnHomePlanPage.clickLastSensorOnHomePlan();

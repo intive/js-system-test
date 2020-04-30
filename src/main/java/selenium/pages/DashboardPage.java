@@ -48,6 +48,9 @@ public class DashboardPage extends TestCommons {
     @FindBy(xpath = "//*[@id=\"menu-\"]/div[3]/ul/li[2]")
     public WebElement languagePolish;
 
+    @FindBy(id = "root")
+    public WebElement notificationBackground;
+
     public DashboardPage(WebDriver driver) {
         super(driver);
     }
@@ -113,6 +116,11 @@ public class DashboardPage extends TestCommons {
 
     public void clickNotifications() {
         notificationsButton.click();
+    }
+
+    public void closeNotifications() {
+        Actions builder = new Actions(driver);
+        builder.moveToElement(notificationBackground, 0, 0).click().perform();
     }
 
     public void clickFirstNotConnectedSensor() {
@@ -210,8 +218,19 @@ public class DashboardPage extends TestCommons {
         return OffsetWidth;
     }
 
-    public boolean isLoaderDisplayed() {
-        return isElementDisplayed(driver, loader);
+    public boolean isLoaderDisplayed(WebElement element) throws InterruptedException {
+
+        long endWaitTime = System.currentTimeMillis() + 1* 1000;
+        boolean isConditionMet = false;
+        while (System.currentTimeMillis() < endWaitTime && !isConditionMet) {
+            isConditionMet = element.isDisplayed();
+            if (isConditionMet) {
+                break;
+            } else {
+                Thread.sleep(10);
+            }
+        }
+        return isConditionMet;
     }
 
     public void getPolishLanguage() {
