@@ -31,16 +31,13 @@ public class NoConnectionTest extends TestBase {
             theIncorrectSnackBar = noConnectionPage.snackBar2;
         } catch (AssertionError e) {
             try {
-                Assert.assertEquals(noConnectionPage.snackBar2.getText(), "Hej, coś nie styka! Sprawdź połączenie.", "Brak snackbaru o prawidłowej nazwie.");
+                Assert.assertEquals(noConnectionPage.snackBar2.getText(), "Hej, coś nie styka! Sprawdź połączenie.");
                 theRightSnackBar = noConnectionPage.snackBar2;
                 theRightExitButton = noConnectionPage.exitButton2;
                 theIncorrectSnackBar = noConnectionPage.snackBar;
             }
             catch (AssertionError e2){
-                theRightSnackBar = null;
-                theIncorrectSnackBar = null;
-                theRightExitButton = null;
-                Assert.fail();
+                throw e2;
             }
         }
         noConnectionPage.snackBarExist(theIncorrectSnackBar,10);

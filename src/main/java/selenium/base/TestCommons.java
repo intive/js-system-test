@@ -170,5 +170,18 @@ public abstract class TestCommons {
             }
         });
     }
+
+    protected static boolean isElementNotDisplayed(WebDriver driver, WebElement element) {
+        try {
+            WebDriverWait wait = new WebDriverWait(driver, 10);
+            wait.until(ExpectedConditions.invisibilityOf(element));
+            return !(element.isDisplayed());
+        } catch (org.openqa.selenium.NoSuchElementException
+                | org.openqa.selenium.StaleElementReferenceException
+                | org.openqa.selenium.TimeoutException e) {
+            return true;
+        }
+    }
 }
+
 
