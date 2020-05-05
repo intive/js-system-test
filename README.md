@@ -2,7 +2,7 @@
 Framework for Selenium tests
 
 ### Command:
-``` mvn clean test -Dsuites=suiteFile.xml```
+``` mvn clean test -Dsuites=suiteFile.xml -DappUrl=http://urlToApplication.com```
 
 ### Built with:
 

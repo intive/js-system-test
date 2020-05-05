@@ -18,7 +18,6 @@ public class TestBase {
     public void setChromedriverPath() {
         ClassLoader classLoader = getClass().getClassLoader();
         String driverPath = classLoader.getResource("chromedriver.exe").getPath();
-
         System.setProperty("webdriver.chrome.driver", driverPath);
     }
 
@@ -30,7 +29,7 @@ public class TestBase {
         driver = new ChromeDriver(options);
         driver.manage().window().maximize();
         driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
-        driver.get("https://patronage20-js-master.herokuapp.com");
+        driver.get(UrlReader.INSTANCE.getAppUrl());
         driver.manage().addCookie(new Cookie("secret_cookie", "3241231213fsdj23kj4kl32j4"));
     }
 

@@ -1,8 +1,5 @@
 package selenium.base;
 
-import org.openqa.selenium.Point;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
 import org.openqa.selenium.*;
 import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.ExpectedCondition;
@@ -17,7 +14,6 @@ import java.net.URL;
 public abstract class TestCommons {
 
     protected WebDriver driver;
-    private final String url = "https://patronage20-js-master.herokuapp.com";
 
     public TestCommons(WebDriver driver) {
         PageFactory.initElements(driver, this);
@@ -25,7 +21,7 @@ public abstract class TestCommons {
     }
 
     protected void goTo(String path) {
-        driver.get(url + path);
+        driver.get(UrlReader.INSTANCE.getAppUrl() + path);
     }
 
     public void refreshPage() {
