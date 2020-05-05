@@ -15,48 +15,51 @@ public class MarkSensorOnHomePlanTest extends TestBase {
     @BeforeClass
     public void beforeClass() {
         markSensorOnHomePlanPage = new MarkSensorOnHomePlanPage(driver);
-        markSensorOnHomePlanPage.clearHomePlan();
         markSensorOnHomePlanPage.goTo();
+        markSensorOnHomePlanPage.deleteSensorsWhenRequired();
     }
 
-    @DataProvider(name = "positionsOnHomePlan")
-    public Object[][] positionsOnHomePlan() {
-        return new Object[][]{{0, 0}, {-100, 0}, {100, 0}, {0, -100}, {0, 100}};
+    @DataProvider(name = "offsets")
+    public Object[][] offsets() {
+        return new Object[][]{{0, 0}, {0, 50}, {50, 0}, {-50, 0}, {0, -50}, {0, 100}, {0, -100}, {100, 0}, {-100, 0}, {-150, 0}, {150, 0}};
     }
 
-    @Test(dataProvider = "positionsOnHomePlan")
+    @Test(dataProvider = "offsets")
     public void testABorderOfSelectedSensorOnHomePlan(Integer x, Integer y) {
-        markSensorOnHomePlanPage.clickFirstNotConnectedSensorOnList();
-        markSensorOnHomePlanPage.clickOnHomePlan(x, y);  // Add sensor on home plan
-        markSensorOnHomePlanPage.clickOnHomePlan(x, y);  // Click on sensor on home plan to select it
+        markSensorOnHomePlanPage.addPointsOnHomePlan(x, y);
+        markSensorOnHomePlanPage.clickOnHomePlan(x, y); // Click on sensor on home plan to select it
+        String actualSensorOnHomePlanBorderColor = markSensorOnHomePlanPage.getElementBorderColor(markSensorOnHomePlanPage.lastSensorOnHomePlan);
+        String actualSensorOnConnectedSensorsListBackgroundColor = markSensorOnHomePlanPage.getElementBackgroundColor(markSensorOnHomePlanPage.lastSensorOnConnectedSensorsList);
+        String expectedSensorOnHomePlanBorderColor = markSensorOnHomePlanPage.getElementBorderColor(markSensorOnHomePlanPage.lastSensorOnConnectedSensorsList);
+        String expectedCharSequenceInBackgroundColor = markSensorOnHomePlanPage.getSensorTypeBackgroundColor(markSensorOnHomePlanPage.lastSensorOnConnectedSensorsList);
+        String actualElevationValue = markSensorOnHomePlanPage.elevationValueOfSensorOnHomePlan(markSensorOnHomePlanPage.lastSensorOnHomePlan);
+        String notExpectedElevationValue = "none";
 
-        String actualSensorOnHomePlanBorderColor = markSensorOnHomePlanPage.getElementBorderColor(markSensorOnHomePlanPage.sensorOnHomePlan);
-        String actualSensorOnConnectedSensorsListBackgroundColor = markSensorOnHomePlanPage.getElementBackgroundColor(markSensorOnHomePlanPage.sensorOnConnectedSensorsList);
-        String sensorOnHomePlanBackgroundColor = markSensorOnHomePlanPage.getElementBackgroundColor(markSensorOnHomePlanPage.sensorOnHomePlan);
-        String expectedSensorOnHomePlanBorderColor = markSensorOnHomePlanPage.sensorBackgroundAndBorderColorMap().get(sensorOnHomePlanBackgroundColor);
-        String expectedCharSequenceInBackgroundColor = markSensorOnHomePlanPage.getSensorTypeBackgroundColor(markSensorOnHomePlanPage.sensorOnConnectedSensorsList);
-
-        Assert.assertEquals(actualSensorOnHomePlanBorderColor, expectedSensorOnHomePlanBorderColor); //Check if selected sensor on home plan has border color of color matching sensor type
-        Assert.assertTrue(actualSensorOnConnectedSensorsListBackgroundColor.contains(expectedCharSequenceInBackgroundColor)); //Check if selected sensor on connected sensors list has background color of color matching sensor type
+        Assert.assertNotEquals(actualElevationValue, notExpectedElevationValue, "Sensor on home plan does not have elevation");
+        Assert.assertTrue(actualSensorOnConnectedSensorsListBackgroundColor.contains(expectedCharSequenceInBackgroundColor), "Incorrect background color of sensor on list");
+        if (!(markSensorOnHomePlanPage.getSensorId(markSensorOnHomePlanPage.lastSensorOnConnectedSensorsList).contains("sensor2"))) {
+            Assert.assertEquals(actualSensorOnHomePlanBorderColor, expectedSensorOnHomePlanBorderColor, "Incorrect border color of sensor on home plan");
+        }
     }
 
     @Test
     public void testBorderAndBackgroundColorOfNotSelectedSensorOnHomePlan() {
-        markSensorOnHomePlanPage.clickOnHomePlan(0, 0);  // Select first sensor on home plan
+        markSensorOnHomePlanPage.clickSensorOnHomePlan(markSensorOnHomePlanPage.firstSensorOnHomePlan);  // Select first sensor on home plan
         String actualBorderColor = markSensorOnHomePlanPage.getElementBorderColor(markSensorOnHomePlanPage.secondSensorOnHomePlan);
-        String expectedBorderColor = "rgb(0, 0, 0)";
+        String expectedBorderColor = markSensorOnHomePlanPage.getElementBorderColor(markSensorOnHomePlanPage.secondSensorOnConnectedSensorsList);
         String actualBackgroundColor = markSensorOnHomePlanPage.getElementBackgroundColor(markSensorOnHomePlanPage.secondSensorOnConnectedSensorsList);
-        String expectedBackgroundColor = "rgba(0, 0, 0, 0)";
-
+        String expectedBackgroundColor = "rgba(255, 255, 255, 1)";
+        String actualElevationValue = markSensorOnHomePlanPage.elevationValueOfSensorOnHomePlan(markSensorOnHomePlanPage.secondSensorOnHomePlan);
         Assert.assertEquals(actualBorderColor, expectedBorderColor);
         Assert.assertEquals(actualBackgroundColor, expectedBackgroundColor);
+        Assert.assertEquals(actualElevationValue, "none");
     }
 
     @Test
     public void testScrollAutoToSelectedSensor() throws InterruptedException {
         markSensorOnHomePlanPage.resizeBrowser();
         markSensorOnHomePlanPage.waitUntilHomePlanIsLoaded();
-        WebElement sensor = markSensorOnHomePlanPage.sensorOnConnectedSensorsList;
+        WebElement sensor = markSensorOnHomePlanPage.lastSensorOnConnectedSensorsList;
         Assert.assertFalse(markSensorOnHomePlanPage.isSensorInViewPort(sensor));
         markSensorOnHomePlanPage.clickLastSensorOnHomePlan();
         markSensorOnHomePlanPage.waitForScrollToComplete(sensor);

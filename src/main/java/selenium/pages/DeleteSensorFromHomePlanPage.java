@@ -2,6 +2,7 @@ package selenium.pages;
 
 import com.google.common.collect.ImmutableMap;
 import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
@@ -20,19 +21,16 @@ import java.util.Map;
 
 public class DeleteSensorFromHomePlanPage extends TestCommons {
 
-    @FindBy(xpath = "//*[@id=\"root\"]/div/div[2]/div/div[2]/ul[1]/li[2]")
+    @FindBy(xpath = "//*[@id=\"root\"]/div/div[2]/div/div[2]/ul[1]/div[1]")
     public WebElement firstNotConnectedSensor;
 
-    @FindBy(tagName = "img")
-    public WebElement homePlan;
-
     @FindBy(xpath = "//*[@id=\"root\"]/div/div[2]/div/div[1]/div/div")
-    public WebElement homePlanByDiv;
+    private WebElement homePlanByDiv;
 
-    @FindBy(xpath = "//*[@id=\"root\"]/div/div[2]/div/div[2]/ul[2]/li[2]")
+    @FindBy(xpath = "//*[@id=\"root\"]/div/div[2]/div/div[2]/ul[2]/div[1]")
     public WebElement firstConnectedSensor;
 
-    @FindBy(xpath = "//*[@id=\"root\"]/div/div[2]/div/div[2]/ul[2]/li[3]")
+    @FindBy(xpath = "//*[@id=\"root\"]/div/div[2]/div/div[2]/ul[2]/div[2]")
     public WebElement secondConnectedSensor;
 
     @FindBy(xpath = "/html/body/div[2]/div[3]/div/div[3]/button[1]")
@@ -42,13 +40,16 @@ public class DeleteSensorFromHomePlanPage extends TestCommons {
     public WebElement okButton;
 
     @FindBy(xpath = "//*[@id=\"root\"]/div/div[2]/div/div[2]/ul[1]")
-    public WebElement notConnectedSensorsList;
+    private WebElement notConnectedSensorsList;
 
     @FindBy(id = "client-snackbar")
-    public List<WebElement> snackbars;
+    private List<WebElement> snackbars;
 
     @FindBy(xpath = "//*[@id=\"root\"]/div/div[3]")
-    public WebElement snackbarBox;
+    private WebElement snackbarBox;
+
+    @FindBy(xpath = "//*[@id=\"root\"]/div/div[2]/div/div[1]/div/div/div[1]")
+    public WebElement firstSensorOnHomePlan;
 
     public DeleteSensorFromHomePlanPage(WebDriver driver) {
         super(driver);
@@ -58,17 +59,17 @@ public class DeleteSensorFromHomePlanPage extends TestCommons {
         goTo("/");
     }
 
-    public void clearHomePlan() {
-        goTo("/api/v1/dashboard/delete");
-    }
-
     public void clickSensorOnList(WebElement element) {
         clickElement(element);
     }
 
     public void clickOnHomePlan(int xOffset, int yOffset) {
         Actions builder = new Actions(driver);
-        builder.moveToElement(homePlan, xOffset, yOffset).click().perform();
+        builder.moveToElement(homePlanByDiv, xOffset, yOffset).click().perform();
+    }
+
+    public void clickSensorOnHomePlan() {
+        firstSensorOnHomePlan.click();
     }
 
     public WebElement deleteButton(WebElement element) {
@@ -93,7 +94,7 @@ public class DeleteSensorFromHomePlanPage extends TestCommons {
     }
 
     public String getSensorId() {
-        return getElementAttribute(firstConnectedSensor, "id");
+        return getElementAttribute(firstConnectedSensor.findElement(By.tagName("li")), "id");
     }
 
     public WebElement notConnectedSensorById(String idText) {
@@ -164,8 +165,35 @@ public class DeleteSensorFromHomePlanPage extends TestCommons {
         return !isConditionMet;
     }
 
-    public void waitUntilHomePlanIsLoaded() {
-        waitUntilVisible(driver, homePlan);
+    public void clickOnCoordinates(int xOffset, int yOffset) {
+        Actions builder = new Actions(driver);
+        builder.moveByOffset(xOffset, yOffset).click().perform();
     }
 
+    public void clickNotConnectedSensorOnList(WebElement element) {
+        WebElement pointToClick = element.findElement(By.tagName("p"));
+        scrollIntoView(element);
+        clickElement(pointToClick);
+    }
+
+    public void scrollIntoView(WebElement element) {
+        JavascriptExecutor js = (JavascriptExecutor) driver;
+        js.executeScript("arguments[0].scrollIntoView();", element);
+    }
+
+    public void addPointOnHomePlan(int x, int y) {
+        clickNotConnectedSensorOnList(firstNotConnectedSensor);
+        clickOnHomePlan(x, y);
+        clickOnCoordinates(60, 180); // In case Gap Needed box is present, it will close the box
+    }
+
+    public void addPointsOnHomePlanWhenRequired() {
+        int x = 0;
+        int y = 0;
+        while (pointsOnHomePlan().size() < 3) {
+            addPointOnHomePlan(x, y);
+            x = x + 30;
+            y = y + 30;
+        }
+    }
 }

@@ -1,8 +1,6 @@
 package selenium.pages;
 
-import org.openqa.selenium.Dimension;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
+import org.openqa.selenium.*;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.FindBy;
 import selenium.base.TestCommons;
@@ -13,43 +11,67 @@ import java.util.stream.Collectors;
 public class DashboardPage extends TestCommons {
 
     @FindBy(tagName = "div")
-    public List<WebElement> allDivElements;
+    private List<WebElement> allDivElements;
 
     @FindBy(tagName = "h6")
-    public WebElement appName;
+    private WebElement appName;
 
     @FindBy(className = "MuiTab-wrapper")
-    public List<WebElement> sectionName;
+    private List<WebElement> sectionName;
 
     @FindBy(tagName = "button")
-    public WebElement notificationsButton;
+    private WebElement notificationsButton;
 
     @FindBy(tagName = "img")
-    public WebElement homePlan;
+    private WebElement homePlan;
+
+    @FindBy(xpath = "//*[@id=\"root\"]/div/div[2]/div/div[1]/div/div")
+    private WebElement homePlanByDiv;
 
     @FindBy(xpath = "//*[@id=\"root\"]/div/div[2]/div/div[1]/div/div/div[last()]")
     public WebElement lastPoint;
 
+    @FindBy(xpath = "//*[@id=\"root\"]/div/div[2]/div/div[1]/div/div/div[1]")
+    public WebElement firstPoint;
+
     @FindBy(xpath = "/html/body/div[2]/div[3]")
-    public WebElement gapNeededBox;
+    private WebElement gapNeededBox;
 
     @FindBy(className = "MuiCircularProgress-svg")
     public WebElement loader;
 
-    @FindBy(xpath = "//*[@id=\"root\"]/div/div[2]/div/div[2]/ul[1]/li[2]")
+    @FindBy(xpath = "//*[@id=\"root\"]/div/div[2]/div/div[2]/ul[1]/div[1]")
     public WebElement firstNotConnectedSensor;
 
+    @FindBy(xpath = "//*[@id=\"root\"]/div/div[2]/div/div[2]/ul[2]/div[1]")
+    public WebElement firstConnectedSensor;
+
+    @FindBy(xpath = "//*[@id=\"root\"]/div/div[2]/div/div[2]/ul[2]/div[last()]")
+    public WebElement lastConnectedSensor;
+
     @FindBy(xpath = "//*[@id=\"root\"]/div/div[1]/header/div/div[2]/div/div/div")
-    public WebElement languageListBox;
+    private WebElement languageListBox;
 
     @FindBy(xpath = "//*[@id=\"menu-\"]/div[3]/ul/li[1]")
-    public WebElement languageEnglish;
+    private WebElement languageEnglish;
 
     @FindBy(xpath = "//*[@id=\"menu-\"]/div[3]/ul/li[2]")
-    public WebElement languagePolish;
+    private WebElement languagePolish;
 
     @FindBy(id = "root")
-    public WebElement notificationBackground;
+    private WebElement notificationBackground;
+
+    @FindBy(xpath = "//*[@id=\"root\"]/div/div[2]/div/div[2]/ul[1]")
+    private WebElement notConnectedSensorsList;
+
+    @FindBy(xpath = "//*[@id=\"root\"]/div/div[2]/div/div[2]/ul[2]")
+    private WebElement connectedSensorsList;
+
+    @FindBy(xpath = "/html/body/div[2]/div[3]/div/div[3]/button[2]")
+    private WebElement okButtonOnDeletingSensorBox;
+
+    @FindBy(xpath = "/html/body/div[2]/div[3]/div/div[3]/button")
+    private WebElement closeButtonOnGapNeededBox;
 
     public DashboardPage(WebDriver driver) {
         super(driver);
@@ -57,10 +79,6 @@ public class DashboardPage extends TestCommons {
 
     public void goTo() {
         goTo("/");
-    }
-
-    public void clearHomePlan() {
-        goTo("/api/v1/dashboard/delete");
     }
 
     public int getNumberOfSections() {
@@ -118,13 +136,24 @@ public class DashboardPage extends TestCommons {
         notificationsButton.click();
     }
 
+    public void clickCloseButtonOnGapNeededBox() {
+        closeButtonOnGapNeededBox.click();
+    }
+
     public void closeNotifications() {
         Actions builder = new Actions(driver);
         builder.moveToElement(notificationBackground, 0, 0).click().perform();
     }
 
     public void clickFirstNotConnectedSensor() {
-        firstNotConnectedSensor.click();
+        WebElement element = firstNotConnectedSensor.findElement(By.tagName("p"));
+        scrollIntoView(firstNotConnectedSensor);
+        clickElement(element);
+    }
+
+    public void scrollIntoView(WebElement element) {
+        JavascriptExecutor js = (JavascriptExecutor) driver;
+        js.executeScript("arguments[0].scrollIntoView();", element);
     }
 
     public String getCursorType() {
@@ -142,28 +171,22 @@ public class DashboardPage extends TestCommons {
 
     public void clickToAddPoint(int xOffset, int yOffset) {
         Actions builder = new Actions(driver);
-        builder.moveToElement(homePlan, xOffset, yOffset).click().perform();
-    }
-
-    public void clickOffsetToGapNeededBox(int xOffset, int yOffset) {
-        Actions builder = new Actions(driver);
-        builder.moveToElement(gapNeededBox, xOffset, yOffset).click().perform();
+        builder.moveToElement(homePlanByDiv, xOffset, yOffset).click().perform();
     }
 
     public boolean checkIfGapNeededBoxIsPresent() {
-        if (gapNeededBox.isDisplayed()) return true;
-        else return false;
+        return isElementDisplayed(driver, gapNeededBox);
     }
 
     public String getPointUniqueInformation() {
-        return getElementAttribute(lastPoint, "style");
+        return getElementAttribute(lastConnectedSensor.findElement(By.tagName("li")), "id");
     }
 
-    public int getLastPointWidth() {
+    public int getSecondPointWidth() {
         return getElementWidth(lastPoint);
     }
 
-    public int getLastPointHeight() {
+    public int getSecondPointHeight() {
         return getElementHeight(lastPoint);
     }
 
@@ -204,7 +227,7 @@ public class DashboardPage extends TestCommons {
     }
 
     public int correctOffsetWidth() {
-        int OffsetWidth = (int) Math.round(0.04 * getMapWidth());
+        int OffsetWidth = (int) Math.round(0.05 * getMapWidth());
         return OffsetWidth;
     }
 
@@ -214,13 +237,13 @@ public class DashboardPage extends TestCommons {
     }
 
     public int incorrectOffsetWidth() {
-        int OffsetWidth = (int) Math.round(0.03 * getMapWidth());
+        int OffsetWidth = (int) Math.round(0.04 * getMapWidth());
         return OffsetWidth;
     }
 
     public boolean isLoaderDisplayed(WebElement element) throws InterruptedException {
 
-        long endWaitTime = System.currentTimeMillis() + 1* 1000;
+        long endWaitTime = System.currentTimeMillis() + 1 * 1000;
         boolean isConditionMet = false;
         while (System.currentTimeMillis() < endWaitTime && !isConditionMet) {
             isConditionMet = element.isDisplayed();
@@ -247,6 +270,51 @@ public class DashboardPage extends TestCommons {
         waitUntilVisible(driver, homePlan);
     }
 
+    public void deleteFirstSensorFromHomePlan() {
+        scrollIntoView(firstConnectedSensor);
+        clickElement(firstPoint);
+        clickElement(firstConnectedSensor.findElement(By.tagName("button")));
+        clickElement(okButtonOnDeletingSensorBox);
+    }
+
+    public void deleteSecondSensorFromHomePlan() {
+        scrollIntoView(lastConnectedSensor);
+        clickElement(lastConnectedSensor);
+        clickElement(lastConnectedSensor.findElement(By.tagName("button")));
+        clickElement(okButtonOnDeletingSensorBox);
+    }
+
+    public void deleteSensorsWhenRequired() {
+        while (connectedSensorsOnList().size() != 0) {
+            String firstConnectedSensorId = getSensorId(firstConnectedSensor);
+            deleteFirstSensorFromHomePlan();
+            waitForDeletedSensor(firstConnectedSensorId);
+        }
+
+    }
+
+    public List<WebElement> connectedSensorsOnList() {
+        List<WebElement> allConnectedSensorsOnList = connectedSensorsList.findElements(By.tagName("li"));
+        allConnectedSensorsOnList.remove(0);
+        return allConnectedSensorsOnList;
+    }
+
+    public void waitForDeletedSensor(String idText) {
+        isElementDisplayed(driver, notConnectedSensorById(idText));
+    }
+
+    public WebElement notConnectedSensorById(String idText) {
+        return notConnectedSensorsList.findElement(By.id(idText));
+    }
+
+    public String getSensorId(WebElement element) {
+        return getElementAttribute(element.findElement(By.tagName("li")), "id");
+    }
+
+    public void clickOnCoordinates(int xOffset, int yOffset) {
+        Actions builder = new Actions(driver);
+        builder.moveByOffset(xOffset, yOffset).click().perform();
+    }
 }
 
 
