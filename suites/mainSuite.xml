@@ -7,5 +7,6 @@
         <suite-file path="cookieAuthorizationTest.xml"></suite-file>
         <suite-file path="addSensorAndMapTest.xml"></suite-file>
         <suite-file path="markSensorOnHomePlanTest.xml"></suite-file>
+        <suite-file path="deleteSensorFromHomePlanTest.xml"></suite-file>
     </suite-files>
 </suite>
