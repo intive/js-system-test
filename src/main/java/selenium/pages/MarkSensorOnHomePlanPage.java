@@ -6,6 +6,7 @@ import org.openqa.selenium.support.FindBy;
 import selenium.base.TestCommons;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class MarkSensorOnHomePlanPage extends TestCommons {
@@ -16,11 +17,14 @@ public class MarkSensorOnHomePlanPage extends TestCommons {
     @FindBy(xpath = "//*[@id=\"root\"]/div/div[2]/div/div[1]/div/div/img")
     public WebElement homePlan;
 
+    @FindBy(xpath = "//*[@id=\"root\"]/div/div[2]/div/div[1]/div/div/div[1]")
+    public WebElement firstSensorOnHomePlan;
+
     @FindBy(xpath = "//*[@id=\"root\"]/div/div[2]/div/div[1]/div/div/div[last()]")
-    public WebElement sensorOnHomePlan;
+    public WebElement lastSensorOnHomePlan;
 
     @FindBy(xpath = "//*[@id=\"root\"]/div/div[2]/div/div[2]/ul[2]/li[last()]")
-    public WebElement sensorOnConnectedSensorsList;
+    public WebElement lastSensorOnConnectedSensorsList;
 
     @FindBy(xpath = "//*[@id=\"root\"]/div/div[2]/div/div[1]/div/div/div[2]")
     public WebElement secondSensorOnHomePlan;
@@ -28,16 +32,18 @@ public class MarkSensorOnHomePlanPage extends TestCommons {
     @FindBy(xpath = "//*[@id=\"root\"]/div/div[2]/div/div[2]/ul[2]/li[3]")
     public WebElement secondSensorOnConnectedSensorsList;
 
+    @FindBy(xpath = "//*[@id=\"root\"]/div/div[2]/div/div[2]/ul[2]")
+    public WebElement connectedSensorsList;
+
+    @FindBy(xpath = "//*[@id=\"root\"]/div/div[2]/div/div[1]/div/div")
+    public WebElement homePlanByDiv;
+
     public MarkSensorOnHomePlanPage(WebDriver driver) {
         super(driver);
     }
 
     public void goTo() {
         goTo("/");
-    }
-
-    public void clearHomePlan() {
-        goTo("/api/v1/dashboard/delete");
     }
 
     public String getElementBackgroundColor(WebElement element) {
@@ -53,18 +59,18 @@ public class MarkSensorOnHomePlanPage extends TestCommons {
     }
 
     public void clickLastSensorOnHomePlan() {
-        clickElement(sensorOnHomePlan);
+        clickElement(lastSensorOnHomePlan);
     }
 
     public void clickOnHomePlan(int xOffset, int yOffset) {
         Actions builder = new Actions(driver);
-        builder.moveToElement(homePlan, xOffset, yOffset).click().perform();
+        builder.moveToElement(homePlanByDiv, xOffset, yOffset).click().perform();
     }
 
     public void resizeBrowser() {
         Dimension browserDimension = driver.manage().window().getSize();
         int xBrowser = browserDimension.getWidth();
-        int yBrowser = (int) ((browserDimension.getHeight())*0.7);
+        int yBrowser = (int) ((browserDimension.getHeight()) * 0.7);
         Dimension dimension = new Dimension(xBrowser, yBrowser);
         driver.manage().window().setSize(dimension);
     }
@@ -80,7 +86,7 @@ public class MarkSensorOnHomePlanPage extends TestCommons {
 
     public void waitForScrollToComplete(WebElement element) throws InterruptedException {
 
-        long endWaitTime = System.currentTimeMillis() + 5* 1000;
+        long endWaitTime = System.currentTimeMillis() + 5 * 1000;
         boolean isConditionMet = false;
         while (System.currentTimeMillis() < endWaitTime && !isConditionMet) {
             isConditionMet = isSensorInViewPort(element);
@@ -129,6 +135,50 @@ public class MarkSensorOnHomePlanPage extends TestCommons {
         backgroundAndBorderColor.put("rgba(255, 141, 133, 1)", "rgb(235, 16, 0)");
         backgroundAndBorderColor.put("rgba(128, 128, 128, 1)", "rgb(51, 51, 51)");
         return backgroundAndBorderColor;
+    }
+
+    public List<WebElement> pointsOnHomePlan() {
+        List<WebElement> allPointsOnHomePlan = homePlanByDiv.findElements(By.tagName("div"));
+        return allPointsOnHomePlan;
+    }
+
+    public void clickOnCoordinates(int xOffset, int yOffset) {
+        Actions builder = new Actions(driver);
+        builder.moveByOffset(xOffset, yOffset).click().perform();
+    }
+
+    public void addPointsOnHomePlan(int x, int y) {
+        if (pointsOnHomePlan().size() < 5) {
+            clickFirstNotConnectedSensorOnList();
+            clickOnHomePlan(x, y);
+            clickOnCoordinates(60, 180); // In case Gap Needed box is present, it will close the box
+        }
+    }
+
+    public void addPointsOnHomePlanWhenRequired() {
+        addPointsOnHomePlan(0, 0);
+        addPointsOnHomePlan(0, 20);
+        addPointsOnHomePlan(0, 40);
+        addPointsOnHomePlan(0, 80);
+        addPointsOnHomePlan(0, 100);
+        addPointsOnHomePlan(20, 0);
+        addPointsOnHomePlan(40, 0);
+        addPointsOnHomePlan(80, 0);
+        addPointsOnHomePlan(100, 0);
+        addPointsOnHomePlan(20, 20);
+        addPointsOnHomePlan(40, 40);
+        addPointsOnHomePlan(80, 80);
+        addPointsOnHomePlan(100, 100);
+    }
+
+    public void clickSensorOnHomePlan(WebElement element) {
+        clickElement(element);
+    }
+
+    public List<WebElement> sensorsOnList() {
+        List<WebElement> allSensorsOnHomePlan = connectedSensorsList.findElements(By.tagName("li"));
+        allSensorsOnHomePlan.remove(0);
+        return allSensorsOnHomePlan;
     }
 
 }

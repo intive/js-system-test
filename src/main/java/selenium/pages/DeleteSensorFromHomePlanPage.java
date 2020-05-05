@@ -50,6 +50,10 @@ public class DeleteSensorFromHomePlanPage extends TestCommons {
     @FindBy(xpath = "//*[@id=\"root\"]/div/div[3]")
     public WebElement snackbarBox;
 
+    @FindBy(xpath = "//*[@id=\"root\"]/div/div[2]/div/div[1]/div/div/div[1]")
+    public WebElement firstSensorOnHomePlan;
+
+
     public DeleteSensorFromHomePlanPage(WebDriver driver) {
         super(driver);
     }
@@ -58,17 +62,17 @@ public class DeleteSensorFromHomePlanPage extends TestCommons {
         goTo("/");
     }
 
-    public void clearHomePlan() {
-        goTo("/api/v1/dashboard/delete");
-    }
-
     public void clickSensorOnList(WebElement element) {
         clickElement(element);
     }
 
     public void clickOnHomePlan(int xOffset, int yOffset) {
         Actions builder = new Actions(driver);
-        builder.moveToElement(homePlan, xOffset, yOffset).click().perform();
+        builder.moveToElement(homePlanByDiv, xOffset, yOffset).click().perform();
+    }
+
+    public void clickSensorOnHomePlan() {
+        firstSensorOnHomePlan.click();
     }
 
     public WebElement deleteButton(WebElement element) {
@@ -164,8 +168,27 @@ public class DeleteSensorFromHomePlanPage extends TestCommons {
         return !isConditionMet;
     }
 
-    public void waitUntilHomePlanIsLoaded() {
-        waitUntilVisible(driver, homePlan);
+    public void clickOnCoordinates(int xOffset, int yOffset) {
+        Actions builder = new Actions(driver);
+        builder.moveByOffset(xOffset, yOffset).click().perform();
     }
 
+    public void addPointsOnHomePlan(int x, int y) {
+        if (pointsOnHomePlan().size() < 3) {
+            clickSensorOnList(firstNotConnectedSensor);
+            clickOnHomePlan(x, y); //First sensor
+            clickOnCoordinates(60, 180); // In case Gap Needed box is present, it will close the box
+            clickSensorOnList(firstNotConnectedSensor);
+            clickOnHomePlan(x, y + 50); //Second sensor
+            clickOnCoordinates(60, 180); // In case Gap Needed box is present, it will close the box
+            clickSensorOnList(firstNotConnectedSensor);
+            clickOnHomePlan(x + 50, y); //Third sensor
+            clickOnCoordinates(60, 180); // In case Gap Needed box is present, it will close the box
+        }
+    }
+
+    public void addPointsOnHomePlanWhenRequired() {
+        addPointsOnHomePlan(0, 0);
+        addPointsOnHomePlan(20, 20);
+    }
 }

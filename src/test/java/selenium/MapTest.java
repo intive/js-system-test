@@ -8,11 +8,12 @@ import selenium.pages.DashboardPage;
 public class MapTest extends TestBase {
     private DashboardPage dashboardPage;
 
-    @BeforeMethod
-    public void beforeMethod() {
+    @BeforeClass
+    public void beforeClass() {
         dashboardPage = new DashboardPage(driver);
-        dashboardPage.clearHomePlan();
         dashboardPage.goTo();
+        dashboardPage.deleteSensorsWhenRequired();
+        dashboardPage.addPointsOnHomePlanWhenRequired(-50, -100);
     }
 
     @Test
@@ -27,14 +28,17 @@ public class MapTest extends TestBase {
     public Object[] incorrectOffsets() {
         int incorrectOffsetHeight = dashboardPage.incorrectOffsetHeight();
         int incorrectOffsetWidth = dashboardPage.incorrectOffsetWidth();
-        return new Object[][]{{0, 100 + incorrectOffsetHeight}, {0, (100 - incorrectOffsetHeight)}, {-(incorrectOffsetWidth), 100}, {(incorrectOffsetWidth), 100}};
+        return new Object[][]{{0, (-100 + incorrectOffsetHeight)}, {0, (-100 - incorrectOffsetHeight)}, {-(incorrectOffsetWidth), -100}, {(incorrectOffsetWidth), -100}};
     }
 
     @Test(dataProvider = "incorrectOffsets")
     public void testAddingPointWithin3percentCircle(Integer x, Integer y) {
         dashboardPage.waitUntilHomePlanIsLoaded();
+        String secondSensorId = dashboardPage.getSensorId(dashboardPage.secondConnectedSensor);
+        dashboardPage.deleteSecondSensorFromHomePlan();
+        dashboardPage.waitForDeletedSensor(secondSensorId);
         dashboardPage.clickFirstNotConnectedSensor();
-        dashboardPage.clickToAddPoint(0, 100);
+        dashboardPage.clickToAddPoint(0, -100);
         String lastPointBeforeClick = dashboardPage.getPointUniqueInformation();
         dashboardPage.clickFirstNotConnectedSensor();
         dashboardPage.clickToAddPoint(x, y);
@@ -58,12 +62,15 @@ public class MapTest extends TestBase {
         dashboardPage.waitUntilHomePlanIsLoaded();
         dashboardPage.clickFirstNotConnectedSensor();
         dashboardPage.clickToAddPoint(0, 0);
-        String lastPointBeforeClick = dashboardPage.getPointUniqueInformation();
+        String secondPointBeforeClick = dashboardPage.getPointUniqueInformation();
         dashboardPage.clickFirstNotConnectedSensor();
         dashboardPage.clickToAddPoint(x, y);
-        String lastPointAfterClick = dashboardPage.getPointUniqueInformation();
-        Assert.assertNotEquals(lastPointAfterClick, lastPointBeforeClick, "Point was not added on home plan");
-        Assert.assertEquals(dashboardPage.getLastPointWidth(), dashboardPage.getLastPointHeight(), "Point is not a circle");  //Check if point is a circle
+        String secondPointAfterClick = dashboardPage.getPointUniqueInformation();
+        Assert.assertNotEquals(secondPointAfterClick, secondPointBeforeClick, "Point was not added on home plan");
+        Assert.assertEquals(dashboardPage.getSecondPointWidth(), dashboardPage.getSecondPointHeight(), "Point is not a circle");  //Check if point is a circle
+        String secondSensorId = dashboardPage.getSensorId(dashboardPage.secondConnectedSensor);
+        dashboardPage.deleteSecondSensorFromHomePlan();
+        dashboardPage.waitForDeletedSensor(secondSensorId);
     }
 
     @Test

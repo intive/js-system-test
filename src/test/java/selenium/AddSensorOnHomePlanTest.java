@@ -2,7 +2,7 @@ package selenium;
 
 import org.openqa.selenium.WebElement;
 import org.testng.Assert;
-import org.testng.annotations.BeforeMethod;
+import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 import selenium.base.TestBase;
 import selenium.pages.AddSensorOnHomePlanPage;
@@ -12,11 +12,11 @@ public class AddSensorOnHomePlanTest extends TestBase {
 
     private AddSensorOnHomePlanPage addSensorOnMapPage;
 
-    @BeforeMethod
-    public void beforeMethod() {
+    @BeforeClass
+    public void beforeClass() {
         addSensorOnMapPage = new AddSensorOnHomePlanPage(driver);
-        addSensorOnMapPage.clearHomePlan();
         addSensorOnMapPage.goTo();
+        addSensorOnMapPage.deleteSensorsWhenRequired();
     }
 
     @Test
@@ -29,7 +29,7 @@ public class AddSensorOnHomePlanTest extends TestBase {
         addSensorOnMapPage.waitForCompleteBackgroundColor(element);
         String selectedSensorBackgroundColor = addSensorOnMapPage.getElementBackgroundColor(element);
         String notSelectedSensorBackgroundColor = addSensorOnMapPage.getElementBackgroundColor(secondElement);
-        String whiteBackgroundColor = "rgba(0, 0, 0, 0)";
+        String whiteBackgroundColor = "rgba(255, 255, 255, 1)";
 
         Assert.assertEquals(selectedSensorBackgroundColor, sensorTypeBackgroundColor, "Sensor background color is not matching sensor color");
         Assert.assertEquals(notSelectedSensorBackgroundColor, whiteBackgroundColor, "Not selected sensor background color is not white");

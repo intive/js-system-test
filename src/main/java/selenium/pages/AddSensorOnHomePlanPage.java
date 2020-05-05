@@ -7,6 +7,8 @@ import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.FindBy;
 import selenium.base.TestCommons;
 
+import java.util.List;
+
 
 public class AddSensorOnHomePlanPage extends TestCommons {
 
@@ -17,7 +19,7 @@ public class AddSensorOnHomePlanPage extends TestCommons {
     public WebElement secondNotConnectedSensor;
 
     @FindBy(xpath = "//*[@id=\"root\"]/div/div[2]/div/div[2]/ul[2]/li[2]")
-    public WebElement connectedSensor;
+    public WebElement firstConnectedSensor;
 
     @FindBy(xpath = "//*[@id=\"root\"]/div/div[2]/div/div[1]/div/div/img")
     public WebElement homePlan;
@@ -37,16 +39,21 @@ public class AddSensorOnHomePlanPage extends TestCommons {
     @FindBy(xpath = "//*[@id=\"root\"]/div/div[2]/div/div[1]/div/div/div[last()]")
     public WebElement pointOnHomePlan;
 
+    @FindBy(xpath = "//*[@id=\"root\"]/div/div[2]/div/div[2]/ul[1]")
+    public WebElement notConnectedSensorsList;
+
+    @FindBy(xpath = "//*[@id=\"root\"]/div/div[2]/div/div[2]/ul[2]")
+    public WebElement connectedSensorsList;
+
+    @FindBy(xpath = "/html/body/div[2]/div[3]/div/div[3]/button[2]")
+    public WebElement okButtonOnDeletingSensorBox;
+
     public AddSensorOnHomePlanPage(WebDriver driver) {
         super(driver);
     }
 
     public void goTo() {
         goTo("/");
-    }
-
-    public void clearHomePlan() {
-        goTo("/api/v1/dashboard/delete");
     }
 
     public String getColorOfSensorLeftBorder(WebElement element) {
@@ -67,7 +74,7 @@ public class AddSensorOnHomePlanPage extends TestCommons {
     }
 
     public String isSensorNotClickable() {
-        return getElementAttribute(connectedSensor, "aria-disabled");
+        return getElementAttribute(firstConnectedSensor, "aria-disabled");
     }
 
     public String getTextFromElement(WebElement element) {
@@ -135,5 +142,39 @@ public class AddSensorOnHomePlanPage extends TestCommons {
                 throw new IllegalStateException("Unexpected value: " + getSensorType(element));
         }
     }
+
+    public void deleteFirstSensorFromHomePlan() {
+        clickElement(firstConnectedSensor);
+        clickElement(firstConnectedSensor.findElement(By.tagName("button")));
+        clickElement(okButtonOnDeletingSensorBox);
+    }
+
+    public void deleteSensorsWhenRequired() {
+        while (connectedSensorsOnList().size() != 0) {
+            String firstConnectedSensorId = getSensorId(firstConnectedSensor);
+            deleteFirstSensorFromHomePlan();
+            waitForDeletedSensor(firstConnectedSensorId);
+        }
+
+    }
+
+    public List<WebElement> connectedSensorsOnList() {
+        List<WebElement> allNotConnectedSensorsOnList = connectedSensorsList.findElements(By.tagName("li"));
+        allNotConnectedSensorsOnList.remove(0);
+        return allNotConnectedSensorsOnList;
+    }
+
+    public void waitForDeletedSensor(String idText) {
+        isElementDisplayed(driver, notConnectedSensorById(idText));
+    }
+
+    public WebElement notConnectedSensorById(String idText) {
+        return notConnectedSensorsList.findElement(By.id(idText));
+    }
+
+    public String getSensorId(WebElement element) {
+        return getElementAttribute(element, "id");
+    }
+
 
 }

@@ -1,5 +1,6 @@
 package selenium.pages;
 
+import org.openqa.selenium.By;
 import org.openqa.selenium.Dimension;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -27,8 +28,11 @@ public class DashboardPage extends TestCommons {
     @FindBy(tagName = "img")
     public WebElement homePlan;
 
-    @FindBy(xpath = "//*[@id=\"root\"]/div/div[2]/div/div[1]/div/div/div[last()]")
-    public WebElement lastPoint;
+    @FindBy(xpath = "//*[@id=\"root\"]/div/div[2]/div/div[1]/div/div")
+    public WebElement homePlanByDiv;
+
+    @FindBy(xpath = "//*[@id=\"root\"]/div/div[2]/div/div[1]/div/div/div[2]")
+    public WebElement secondPoint;
 
     @FindBy(xpath = "/html/body/div[2]/div[3]")
     public WebElement gapNeededBox;
@@ -38,6 +42,15 @@ public class DashboardPage extends TestCommons {
 
     @FindBy(xpath = "//*[@id=\"root\"]/div/div[2]/div/div[2]/ul[1]/li[2]")
     public WebElement firstNotConnectedSensor;
+
+    @FindBy(xpath = "//*[@id=\"root\"]/div/div[2]/div/div[2]/ul[1]/li[last()]")
+    public WebElement lastNotConnectedSensor;
+
+    @FindBy(xpath = "//*[@id=\"root\"]/div/div[2]/div/div[2]/ul[2]/li[2]")
+    public WebElement firstConnectedSensor;
+
+    @FindBy(xpath = "//*[@id=\"root\"]/div/div[2]/div/div[2]/ul[2]/li[3]")
+    public WebElement secondConnectedSensor;
 
     @FindBy(xpath = "//*[@id=\"root\"]/div/div[1]/header/div/div[2]/div/div/div")
     public WebElement languageListBox;
@@ -51,16 +64,21 @@ public class DashboardPage extends TestCommons {
     @FindBy(id = "root")
     public WebElement notificationBackground;
 
+    @FindBy(xpath = "//*[@id=\"root\"]/div/div[2]/div/div[2]/ul[1]")
+    public WebElement notConnectedSensorsList;
+
+    @FindBy(xpath = "//*[@id=\"root\"]/div/div[2]/div/div[2]/ul[2]")
+    public WebElement connectedSensorsList;
+
+    @FindBy(xpath = "/html/body/div[2]/div[3]/div/div[3]/button[2]")
+    public WebElement okButtonOnDeletingSensorBox;
+
     public DashboardPage(WebDriver driver) {
         super(driver);
     }
 
     public void goTo() {
         goTo("/");
-    }
-
-    public void clearHomePlan() {
-        goTo("/api/v1/dashboard/delete");
     }
 
     public int getNumberOfSections() {
@@ -142,7 +160,7 @@ public class DashboardPage extends TestCommons {
 
     public void clickToAddPoint(int xOffset, int yOffset) {
         Actions builder = new Actions(driver);
-        builder.moveToElement(homePlan, xOffset, yOffset).click().perform();
+        builder.moveToElement(homePlanByDiv, xOffset, yOffset).click().perform();
     }
 
     public void clickOffsetToGapNeededBox(int xOffset, int yOffset) {
@@ -156,23 +174,23 @@ public class DashboardPage extends TestCommons {
     }
 
     public String getPointUniqueInformation() {
-        return getElementAttribute(lastPoint, "style");
+        return getElementAttribute(secondPoint, "style");
     }
 
-    public int getLastPointWidth() {
-        return getElementWidth(lastPoint);
+    public int getSecondPointWidth() {
+        return getElementWidth(secondPoint);
     }
 
-    public int getLastPointHeight() {
-        return getElementHeight(lastPoint);
+    public int getSecondPointHeight() {
+        return getElementHeight(secondPoint);
     }
 
     public int getPointX() {
-        return getElementLocation(lastPoint).getX();
+        return getElementLocation(secondPoint).getX();
     }
 
     public int getPointY() {
-        return getElementLocation(lastPoint).getY();
+        return getElementLocation(secondPoint).getY();
     }
 
     public int getMapX() {
@@ -220,7 +238,7 @@ public class DashboardPage extends TestCommons {
 
     public boolean isLoaderDisplayed(WebElement element) throws InterruptedException {
 
-        long endWaitTime = System.currentTimeMillis() + 1* 1000;
+        long endWaitTime = System.currentTimeMillis() + 1 * 1000;
         boolean isConditionMet = false;
         while (System.currentTimeMillis() < endWaitTime && !isConditionMet) {
             isConditionMet = element.isDisplayed();
@@ -245,6 +263,61 @@ public class DashboardPage extends TestCommons {
 
     public void waitUntilHomePlanIsLoaded() {
         waitUntilVisible(driver, homePlan);
+    }
+
+    public void deleteFirstSensorFromHomePlan() {
+        clickElement(firstConnectedSensor);
+        clickElement(firstConnectedSensor.findElement(By.tagName("button")));
+        clickElement(okButtonOnDeletingSensorBox);
+    }
+
+    public void deleteSecondSensorFromHomePlan() {
+        clickElement(secondConnectedSensor);
+        clickElement(secondConnectedSensor.findElement(By.tagName("button")));
+        clickElement(okButtonOnDeletingSensorBox);
+    }
+
+    public void deleteSensorsWhenRequired() {
+        while (connectedSensorsOnList().size() != 0) {
+            String firstConnectedSensorId = getSensorId(firstConnectedSensor);
+            deleteFirstSensorFromHomePlan();
+            waitForDeletedSensor(firstConnectedSensorId);
+        }
+
+    }
+
+    public List<WebElement> connectedSensorsOnList() {
+        List<WebElement> allNotConnectedSensorsOnList = connectedSensorsList.findElements(By.tagName("li"));
+        allNotConnectedSensorsOnList.remove(0);
+        return allNotConnectedSensorsOnList;
+    }
+
+    public void clickOnCoordinates(int xOffset, int yOffset) {
+        Actions builder = new Actions(driver);
+        builder.moveByOffset(xOffset, yOffset).click().perform();
+    }
+
+    public void addPointsOnHomePlanWhenRequired(int x, int y) {
+        if (connectedSensorsOnList().size() == 0) {
+            clickElement(lastNotConnectedSensor);
+            clickToAddPoint(x, y); //First sensor
+            clickOnCoordinates(60, 180); // In case Gap Needed box is present, it will close the box
+            clickElement(lastNotConnectedSensor);
+            clickToAddPoint(x, y + 50); //Second sensor
+            clickOnCoordinates(60, 180); // In case Gap Needed box is present, it will close the box
+        }
+    }
+
+    public void waitForDeletedSensor(String idText) {
+        isElementDisplayed(driver, notConnectedSensorById(idText));
+    }
+
+    public WebElement notConnectedSensorById(String idText) {
+        return notConnectedSensorsList.findElement(By.id(idText));
+    }
+
+    public String getSensorId(WebElement element) {
+        return getElementAttribute(element, "id");
     }
 
 }
