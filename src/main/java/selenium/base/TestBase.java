@@ -32,6 +32,7 @@ public class TestBase {
         driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
         driver.get("https://patronage20-js-master.herokuapp.com");
         driver.manage().addCookie(new Cookie("secret_cookie", "3241231213fsdj23kj4kl32j4"));
+        driver.manage().addCookie(new Cookie("SuperToken", "59c5f5b2cb7ca698b5b9dd199a10914dc6047ef1afe07d2879c89637fef05ae2"));
     }
 
     @AfterTest

@@ -5,28 +5,45 @@ import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.FindBy;
 import selenium.base.TestCommons;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.List;
 
 public class MarkSensorOnHomePlanPage extends TestCommons {
 
-    @FindBy(xpath = "//*[@id=\"root\"]/div/div[2]/div/div[2]/ul[1]/li[2]")
+    @FindBy(xpath = "//*[@id=\"root\"]/div/div[2]/div/div[2]/ul[1]/div[1]")
     public WebElement firstNotConnectedSensor;
 
+    @FindBy(xpath = "//*[@id=\"root\"]/div/div[2]/div/div[2]/ul[2]/div[1]")
+    public WebElement firstConnectedSensor;
+
     @FindBy(xpath = "//*[@id=\"root\"]/div/div[2]/div/div[1]/div/div/img")
-    public WebElement homePlan;
+    private WebElement homePlan;
+
+    @FindBy(xpath = "//*[@id=\"root\"]/div/div[2]/div/div[1]/div/div/div[1]")
+    public WebElement firstSensorOnHomePlan;
 
     @FindBy(xpath = "//*[@id=\"root\"]/div/div[2]/div/div[1]/div/div/div[last()]")
-    public WebElement sensorOnHomePlan;
+    public WebElement lastSensorOnHomePlan;
 
-    @FindBy(xpath = "//*[@id=\"root\"]/div/div[2]/div/div[2]/ul[2]/li[last()]")
-    public WebElement sensorOnConnectedSensorsList;
+    @FindBy(xpath = "//*[@id=\"root\"]/div/div[2]/div/div[2]/ul[2]/div[last()]")
+    public WebElement lastSensorOnConnectedSensorsList;
 
     @FindBy(xpath = "//*[@id=\"root\"]/div/div[2]/div/div[1]/div/div/div[2]")
     public WebElement secondSensorOnHomePlan;
 
-    @FindBy(xpath = "//*[@id=\"root\"]/div/div[2]/div/div[2]/ul[2]/li[3]")
+    @FindBy(xpath = "//*[@id=\"root\"]/div/div[2]/div/div[2]/ul[2]/div[2]")
     public WebElement secondSensorOnConnectedSensorsList;
+
+    @FindBy(xpath = "//*[@id=\"root\"]/div/div[2]/div/div[2]/ul[2]")
+    private WebElement connectedSensorsList;
+
+    @FindBy(xpath = "//*[@id=\"root\"]/div/div[2]/div/div[2]/ul[1]")
+    public WebElement notConnectedSensorsList;
+
+    @FindBy(xpath = "//*[@id=\"root\"]/div/div[2]/div/div[1]/div/div")
+    private WebElement homePlanByDiv;
+
+    @FindBy(xpath = "/html/body/div[2]/div[3]/div/div[3]/button[2]")
+    private WebElement okButtonOnDeletingSensorBox;
 
     public MarkSensorOnHomePlanPage(WebDriver driver) {
         super(driver);
@@ -34,10 +51,6 @@ public class MarkSensorOnHomePlanPage extends TestCommons {
 
     public void goTo() {
         goTo("/");
-    }
-
-    public void clearHomePlan() {
-        goTo("/api/v1/dashboard/delete");
     }
 
     public String getElementBackgroundColor(WebElement element) {
@@ -48,23 +61,25 @@ public class MarkSensorOnHomePlanPage extends TestCommons {
         return element.getCssValue("border-color");
     }
 
-    public void clickFirstNotConnectedSensorOnList() {
-        clickElement(firstNotConnectedSensor);
+    public void clickNotConnectedSensorOnList(WebElement element) {
+        WebElement pointToClick = element.findElement(By.tagName("p"));
+        scrollIntoView(element);
+        clickElement(pointToClick);
     }
 
     public void clickLastSensorOnHomePlan() {
-        clickElement(sensorOnHomePlan);
+        clickElement(lastSensorOnHomePlan);
     }
 
     public void clickOnHomePlan(int xOffset, int yOffset) {
         Actions builder = new Actions(driver);
-        builder.moveToElement(homePlan, xOffset, yOffset).click().perform();
+        builder.moveToElement(homePlanByDiv, xOffset, yOffset).click().perform();
     }
 
     public void resizeBrowser() {
         Dimension browserDimension = driver.manage().window().getSize();
         int xBrowser = browserDimension.getWidth();
-        int yBrowser = (int) ((browserDimension.getHeight())*0.7);
+        int yBrowser = (int) ((browserDimension.getHeight()) * 0.7);
         Dimension dimension = new Dimension(xBrowser, yBrowser);
         driver.manage().window().setSize(dimension);
     }
@@ -80,7 +95,7 @@ public class MarkSensorOnHomePlanPage extends TestCommons {
 
     public void waitForScrollToComplete(WebElement element) throws InterruptedException {
 
-        long endWaitTime = System.currentTimeMillis() + 5* 1000;
+        long endWaitTime = System.currentTimeMillis() + 5 * 1000;
         boolean isConditionMet = false;
         while (System.currentTimeMillis() < endWaitTime && !isConditionMet) {
             isConditionMet = isSensorInViewPort(element);
@@ -116,19 +131,73 @@ public class MarkSensorOnHomePlanPage extends TestCommons {
             case "Smoke sensor":
             case "Czujnik dymu":
                 return "rgba(204, 204, 204,";
+            case "Light":
+            case "Światło":
+                return "rgba(194, 239, 201,";
             default:
                 throw new IllegalStateException("Unexpected value: " + getSensorType(element));
         }
     }
 
-    public Map<String, String> sensorBackgroundAndBorderColorMap() {
-        Map<String, String> backgroundAndBorderColor = new HashMap<>();
-        backgroundAndBorderColor.put("rgba(255, 153, 51, 1)", "rgb(153, 77, 0)");
-        backgroundAndBorderColor.put("rgba(136, 77, 255, 1)", "rgb(59, 0, 179)");
-        backgroundAndBorderColor.put("rgba(224, 82, 148, 1)", "rgb(130, 23, 73)");
-        backgroundAndBorderColor.put("rgba(255, 141, 133, 1)", "rgb(235, 16, 0)");
-        backgroundAndBorderColor.put("rgba(128, 128, 128, 1)", "rgb(51, 51, 51)");
-        return backgroundAndBorderColor;
+    public List<WebElement> pointsOnHomePlan() {
+        List<WebElement> allPointsOnHomePlan = homePlanByDiv.findElements(By.tagName("div"));
+        return allPointsOnHomePlan;
     }
 
+    public void clickOnCoordinates(int xOffset, int yOffset) {
+        Actions builder = new Actions(driver);
+        builder.moveByOffset(xOffset, yOffset).click().perform();
+    }
+
+    public void addPointsOnHomePlan(int x, int y) {
+        clickNotConnectedSensorOnList(firstNotConnectedSensor);
+        clickOnHomePlan(x, y);
+        clickOnCoordinates(60, 180); // In case Gap Needed box is present, it will close the box
+    }
+
+    public void clickSensorOnHomePlan(WebElement element) {
+        clickElement(element);
+    }
+
+    public void deleteFirstSensorFromHomePlan() {
+        scrollIntoView(firstConnectedSensor);
+        clickElement(firstSensorOnHomePlan);
+        clickElement(firstConnectedSensor.findElement(By.tagName("button")));
+        clickElement(okButtonOnDeletingSensorBox);
+    }
+
+    public void deleteSensorsWhenRequired() {
+        while (connectedSensorsOnList().size() != 0) {
+            String firstConnectedSensorId = getSensorId(firstConnectedSensor);
+            deleteFirstSensorFromHomePlan();
+            waitForDeletedSensor(firstConnectedSensorId);
+        }
+
+    }
+
+    public List<WebElement> connectedSensorsOnList() {
+        List<WebElement> allConnectedSensorsOnList = connectedSensorsList.findElements(By.tagName("div"));
+        return allConnectedSensorsOnList;
+    }
+
+    public void waitForDeletedSensor(String idText) {
+        isElementDisplayed(driver, notConnectedSensorById(idText));
+    }
+
+    public WebElement notConnectedSensorById(String idText) {
+        return notConnectedSensorsList.findElement(By.id(idText));
+    }
+
+    public String getSensorId(WebElement element) {
+        return getElementAttribute(element.findElement(By.tagName("li")), "id");
+    }
+
+    public void scrollIntoView(WebElement element) {
+        JavascriptExecutor js = (JavascriptExecutor) driver;
+        js.executeScript("arguments[0].scrollIntoView();", element);
+    }
+
+    public String elevationValueOfSensorOnHomePlan(WebElement element) {
+        return element.getCssValue("box-shadow");
+    }
 }

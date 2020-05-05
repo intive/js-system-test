@@ -15,24 +15,17 @@ public class DeleteSensorFromHomePlanTest extends TestBase {
     @BeforeClass
     public void beforeClass() {
         deleteSensorFromHomePlanPage = new DeleteSensorFromHomePlanPage(driver);
-        deleteSensorFromHomePlanPage.clearHomePlan();
         deleteSensorFromHomePlanPage.goTo();
-        deleteSensorFromHomePlanPage.waitUntilHomePlanIsLoaded();
-        deleteSensorFromHomePlanPage.clickSensorOnList(deleteSensorFromHomePlanPage.firstNotConnectedSensor);
-        deleteSensorFromHomePlanPage.clickOnHomePlan(0, 50); //First sensor
-        deleteSensorFromHomePlanPage.clickSensorOnList(deleteSensorFromHomePlanPage.firstNotConnectedSensor);
-        deleteSensorFromHomePlanPage.clickOnHomePlan(0, -50); //Second sensor
-        deleteSensorFromHomePlanPage.clickSensorOnList(deleteSensorFromHomePlanPage.firstNotConnectedSensor);
-        deleteSensorFromHomePlanPage.clickOnHomePlan(0, 0); //Third sensor
+        deleteSensorFromHomePlanPage.addPointsOnHomePlanWhenRequired();
     }
 
     @Test
     public void testAPresenceOfDeleteButtonOnSensor() {
 
-        deleteSensorFromHomePlanPage.clickOnHomePlan(0, 50); //Select sensor on map
-        Assert.assertEquals(deleteSensorFromHomePlanPage.isDeleteButtonDisplayed(deleteSensorFromHomePlanPage.firstConnectedSensor), "block");
-        deleteSensorFromHomePlanPage.clickSensorOnList(deleteSensorFromHomePlanPage.secondConnectedSensor); //Select sensor on list
-        Assert.assertEquals(deleteSensorFromHomePlanPage.isDeleteButtonDisplayed(deleteSensorFromHomePlanPage.secondConnectedSensor), "block");
+        deleteSensorFromHomePlanPage.clickSensorOnHomePlan();
+        Assert.assertEquals(deleteSensorFromHomePlanPage.isDeleteButtonDisplayed(deleteSensorFromHomePlanPage.firstConnectedSensor), "flex");
+        deleteSensorFromHomePlanPage.clickSensorOnList(deleteSensorFromHomePlanPage.secondConnectedSensor);
+        Assert.assertEquals(deleteSensorFromHomePlanPage.isDeleteButtonDisplayed(deleteSensorFromHomePlanPage.secondConnectedSensor), "flex");
     }
 
     @Test
@@ -79,5 +72,4 @@ public class DeleteSensorFromHomePlanTest extends TestBase {
         Assert.assertEquals(connectedSensorsAfterDeletingOnline, connectedSensors - 1);
         Assert.assertTrue(deleteSensorFromHomePlanPage.isSnackbarNotDisplayed(), "Snackbar is displayed");
     }
-
 }
