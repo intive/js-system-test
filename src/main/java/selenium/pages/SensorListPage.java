@@ -11,14 +11,14 @@ import java.util.stream.Collectors;
 
 public class SensorListPage extends TestCommons {
 
-    @FindBy(css = "#root > div > div.MuiGrid-root.jss2.MuiGrid-container > div > div.MuiGrid-root.jss250.jss252.MuiGrid-item.MuiGrid-grid-xs-3")
-    public WebElement sensorList;
+    @FindBy(css = "#root > div > div:nth-child(2) > div > div:nth-child(2)")
+    private WebElement sensorList;
 
-    @FindBy(css = "#root > div > div.MuiGrid-root.jss2.MuiGrid-container > div > div.MuiGrid-root.jss250.jss252.MuiGrid-item.MuiGrid-grid-xs-3 > ul > li")
-    public List<WebElement> sensorListSections;
+    @FindBy(css = "#root > div > div:nth-child(2) > div > div:nth-child(2) > ul > li:first-child")
+    private List<WebElement> sensorListSections;
 
     @FindBy(css = "div.MuiButtonBase-root.MuiListItem-root.jss263.MuiListItem-gutters.MuiListItem-button")
-    public List<WebElement> listOfAllSensors;
+    private List<WebElement> listOfAllSensors;
 
     public SensorListPage(WebDriver driver) {
         super(driver);

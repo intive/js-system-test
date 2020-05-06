@@ -6,9 +6,9 @@ import selenium.base.TestCommons;
 
 public abstract class SpecificAuthorPage extends TestCommons {
 
-    public WebElement name;
-    public WebElement github;
-    public WebElement avatar;
+    private WebElement name;
+    private WebElement github;
+    private WebElement avatar;
 
     public SpecificAuthorPage(WebDriver driver) {
         super(driver);

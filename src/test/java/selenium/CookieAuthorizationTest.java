@@ -4,6 +4,7 @@ import org.testng.Assert;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
+import org.testng.asserts.SoftAssert;
 import selenium.base.TestBase;
 import selenium.pages.CookieAuthorizationPage;
 
@@ -22,51 +23,58 @@ public class CookieAuthorizationTest extends TestBase {
     @Test
     public void enterWebsiteWithNoCookieTest() {
         cookieAuthorizationPage.deleteAllCookies();
+        SoftAssert softAssert = new SoftAssert();
         for (String path : pathList) {
             cookieAuthorizationPage.goTo(path);
             String actualErrorText = cookieAuthorizationPage.getBodyText();
 
-            Assert.assertEquals(actualErrorText, expectedErrorText);
+            softAssert.assertEquals(actualErrorText, expectedErrorText);
         }
+        softAssert.assertAll();
     }
 
     @DataProvider(name = "cookieNameAndValueProvider")
     public static Object[][] cookieNameAndValueProvider() {
         return new Object[][]{
                 {"incorrect_name", "incorrect_value"},
-                {"secret_cookie", "incorrect_value"},
-                {"incorrect_name", "3241231213fsdj23kj4kl32j4"},
+                {"SuperToken", "incorrect_value"},
+                {"incorrect_name", "59c5f5b2cb7ca698b5b9dd199a10914dc6047ef1afe07d2879c89637fef05ae2"},
                 {"incorrect_name", ""},
-                {"secret_cookie", ""}};
+                {"SuperToken", ""}};
     }
 
     @Test(dataProvider = "cookieNameAndValueProvider")
     public void enterWebsiteWithWrongCookieTest(String cookieName, String cookieValue) {
         cookieAuthorizationPage.deleteAllCookies();
         cookieAuthorizationPage.addNewCookie(cookieName, cookieValue);
+        SoftAssert softAssert = new SoftAssert();
         for (String path : pathList) {
             cookieAuthorizationPage.goTo(path);
             String actualErrorText = cookieAuthorizationPage.getBodyText();
 
-            Assert.assertEquals(actualErrorText, expectedErrorText);
+            softAssert.assertEquals(actualErrorText, expectedErrorText);
         }
+        softAssert.assertAll();
     }
 
     @Test
     public void enterWebsiteWithCorrectCookieTest() {
         cookieAuthorizationPage.deleteAllCookies();
-        cookieAuthorizationPage.addNewCookie("secret_cookie", "3241231213fsdj23kj4kl32j4");
+        cookieAuthorizationPage.addNewCookie("SuperToken", "59c5f5b2cb7ca698b5b9dd199a10914dc6047ef1afe07d2879c89637fef05ae2");
+
+        SoftAssert softAssert = new SoftAssert();
         for (String path : pathList) {
             cookieAuthorizationPage.goTo(path);
             String actualErrorText = cookieAuthorizationPage.getBodyText();
 
-            Assert.assertNotEquals(actualErrorText, expectedErrorText);
+            softAssert.assertNotEquals(actualErrorText, expectedErrorText);
         }
+        softAssert.assertAll();
     }
 
     @Test
     public void deleteCookiesWhenOnWebsiteTest() {
-        cookieAuthorizationPage.addNewCookie("secret_cookie", "3241231213fsdj23kj4kl32j4");
+        cookieAuthorizationPage.addNewCookie("SuperToken", "59c5f5b2cb7ca698b5b9dd199a10914dc6047ef1afe07d2879c89637fef05ae2");
         cookieAuthorizationPage.goTo("/");
         cookieAuthorizationPage.deleteAllCookies();
 
@@ -79,7 +87,7 @@ public class CookieAuthorizationTest extends TestBase {
         cookieAuthorizationPage.deleteAllCookies();
         Assert.assertTrue(cookieAuthorizationPage.isSnackbarDisplayed());
 
-        cookieAuthorizationPage.addNewCookie("secret_cookie", "3241231213fsdj23kj4kl32j4");
+        cookieAuthorizationPage.addNewCookie("SuperToken", "59c5f5b2cb7ca698b5b9dd199a10914dc6047ef1afe07d2879c89637fef05ae2");
         Assert.assertTrue(cookieAuthorizationPage.isSnackbarHidden());
     }
 
