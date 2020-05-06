@@ -4,6 +4,7 @@ import org.openqa.selenium.WebElement;
 import org.testng.Assert;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
+import org.testng.asserts.SoftAssert;
 import selenium.base.TestBase;
 import selenium.pages.SensorListPage;
 
@@ -24,7 +25,7 @@ public class SensorListTest extends TestBase {
     @Test
     public void listSectionsOrderTest() {
         List<String> sectionNamesList = sensorListPage.getListSectionNames();
-        String firstSectionExpectedName = "Nie umieszczone na mapie";
+        String firstSectionExpectedName = "Nieumieszczone na mapie";
         String secondSectionExpectedName = "Widoczne na mapie";
 
         Assert.assertEquals(sectionNamesList.get(0), firstSectionExpectedName);
@@ -38,20 +39,24 @@ public class SensorListTest extends TestBase {
 
     @Test
     public void sensorColorAccordingToTypeTest() {
+        SoftAssert softAssert = new SoftAssert();
         for (WebElement element : sensorListPage.getListOfAllSensors()) {
             String sensorType = sensorListPage.getSensorsType(element);
             String expectedColor = sensorTypeAndColorMap().get(sensorType);
             String actualColor = sensorListPage.getSensorsColor(element);
 
-            Assert.assertEquals(actualColor, expectedColor, "In sensor type: <" + sensorType + "> ->");
+            softAssert.assertEquals(actualColor, expectedColor, "In sensor type: <" + sensorType + "> ->");
         }
+        softAssert.assertAll();
     }
 
     @Test
     public void sensorValueTypeTest() {
+        SoftAssert softAssert = new SoftAssert();
         for (WebElement element : sensorListPage.getListOfAllSensors()) {
-            Assert.assertTrue(isValueTypeMatching(element), sensorListPage.getSensorsType(element) + " " + sensorListPage.getSensorsValue(element));
+            softAssert.assertTrue(isValueTypeMatching(element), sensorListPage.getSensorsType(element) + " " + sensorListPage.getSensorsValue(element));
         }
+        softAssert.assertAll();
     }
 
     public Map<String, String> sensorTypeAndColorMap() {

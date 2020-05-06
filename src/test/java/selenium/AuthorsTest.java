@@ -1,10 +1,12 @@
 package selenium;
 
+import org.openqa.selenium.WebElement;
 import org.testng.Assert;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
+import org.testng.asserts.SoftAssert;
 import selenium.base.TestBase;
 import selenium.pages.AuthorsPage;
 
@@ -32,7 +34,7 @@ public class AuthorsTest extends TestBase {
 
     @Test
     public void testHeaderText() {
-        String expectedHeader = "Autorzy";
+        String expectedHeader = "AUTORZY";
         String actualHeader = authorsPage.getHeaderText();
 
         Assert.assertEquals(actualHeader, expectedHeader);
@@ -56,4 +58,14 @@ public class AuthorsTest extends TestBase {
         Assert.assertEquals(id, idFromURL);
     }
 
+    @Test
+    public void testAuthorsAvatars() {
+        SoftAssert softAssert = new SoftAssert();
+
+        for (WebElement avatar : authorsPage.getAuthorsAvatars()) {
+            softAssert.assertTrue(authorsPage.isAvatarValidImage(avatar));
+        }
+
+        softAssert.assertAll();
+    }
 }

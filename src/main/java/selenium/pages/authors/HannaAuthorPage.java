@@ -7,14 +7,14 @@ import selenium.pages.SpecificAuthorPage;
 
 public class HannaAuthorPage extends SpecificAuthorPage {
 
-    @FindBy(css = "#root > div > div.MuiGrid-root.jss2.MuiGrid-container > div > div.MuiGrid-root.jss190.MuiGrid-container.MuiGrid-direction-xs-column > div.MuiGrid-root.jss194.MuiGrid-container > div.MuiGrid-root.jss191.MuiGrid-container.MuiGrid-direction-xs-column > p.jss196")
-    public WebElement name;
+    @FindBy(css = "#root > div > div:nth-child(2) > div > div > div > div:nth-child(2) > p")
+    private WebElement name;
 
-    @FindBy(css = "#root > div > div.MuiGrid-root.jss2.MuiGrid-container > div > div.MuiGrid-root.jss190.MuiGrid-container.MuiGrid-direction-xs-column > div.MuiBox-root.jss242 > div.MuiBox-root.jss260 > div > div.MuiGrid-root.jss262.MuiGrid-container.MuiGrid-spacing-xs-1 > div.MuiGrid-root.MuiGrid-item.MuiGrid-grid-xs-6 > a")
-    public WebElement github;
+    @FindBy(css = "#root > div > div:nth-child(2) > div > div > div:nth-child(2) > div:nth-child(2) > div > div:nth-child(5) > div:nth-child(2) > a")
+    private WebElement github;
 
-    @FindBy(css = "#root > div > div.MuiGrid-root.jss2.MuiGrid-container > div > div.MuiGrid-root.jss190.MuiGrid-container.MuiGrid-direction-xs-column > div.MuiGrid-root.jss194.MuiGrid-container > div.MuiAvatar-root.MuiAvatar-circle.jss195 > img")
-    public WebElement avatar;
+    @FindBy(css = "#root > div > div:nth-child(2) > div > div > div > div > img")
+    private WebElement avatar;
 
     public HannaAuthorPage(WebDriver driver) {
         super(driver);

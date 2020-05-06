@@ -8,13 +8,13 @@ import selenium.pages.SpecificAuthorPage;
 public class KarolAuthorPage extends SpecificAuthorPage {
 
     @FindBy(xpath = "//*[@id=\"root\"]/div/div[2]/div/div[1]/div[2]/h3")
-    public WebElement name;
+    private WebElement name;
 
     @FindBy(xpath = "//*[@id=\"root\"]/div/div[2]/div/div[2]/div[1]/div/a[1]")
-    public WebElement github;
+    private WebElement github;
 
     @FindBy(xpath = "//*[@id=\"root\"]/div/div[2]/div/div[1]/div[1]/a/div/img")
-    public WebElement avatar;
+    private WebElement avatar;
 
     public KarolAuthorPage(WebDriver driver) {
         super(driver);

@@ -1,27 +1,23 @@
 package selenium.pages;
 
-import java.util.List;
-import java.util.stream.Collectors;
-
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
-
 import selenium.base.TestCommons;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 public class AuthorsPage extends TestCommons {
 
-    @FindBy(css = "#root > div > div.MuiGrid-root.jss2.MuiGrid-container > ul > ul > div")
-    public WebElement header;
+    @FindBy(css = "#root > div > div > header > div > div:nth-child(2) > div > div > a:nth-child(3) > span")
+    private WebElement header;
 
-    @FindBy(css = "div.MuiCardHeader-content > span.MuiTypography-root.MuiCardHeader-title.MuiTypography-body2.MuiTypography-displayBlock")
-    public List<WebElement> authorsNames;
-
-    @FindBy(css = "#root > ul > ul > li")
-    public List<WebElement> authorsItemsList;
+    @FindBy(css = "#root > div > div:nth-child(2) > div > div > div")
+    private List<WebElement> authorsDivs;
 
     @FindBy(className = "MuiAvatar-img")
-    public List<WebElement> authorsAvatars;
+    private List<WebElement> authorsAvatars;
 
     public AuthorsPage(WebDriver driver) {
         super(driver);
@@ -36,7 +32,11 @@ public class AuthorsPage extends TestCommons {
     }
 
     public List<String> getAllAuthorsNames() {
-        return authorsNames.stream().map(x -> x.getText()).collect(Collectors.toList());
+        return authorsDivs.stream().map(x -> x.getText()).collect(Collectors.toList());
+    }
+
+    public List<WebElement> getAuthorsAvatars() {
+        return authorsAvatars;
     }
 
     public List<String> getAllAuthorsAvatarsLinks() {
@@ -44,11 +44,11 @@ public class AuthorsPage extends TestCommons {
     }
 
     public String getAuthorName(int id) {
-        return authorsNames.get(id - 1).getText();
+        return authorsDivs.get(id - 1).getText();
     }
 
     public void clickOnAuthorItem(int id) {
-        clickElement(authorsNames.get(id - 1));
+        clickElement(authorsDivs.get(id - 1));
     }
 
     public int getAuthorIdFromURL() {
@@ -57,4 +57,7 @@ public class AuthorsPage extends TestCommons {
         return Character.getNumericValue(lastURLCharacter);
     }
 
+    public Boolean isAvatarValidImage(WebElement avatarLink) {
+        return isImageValid(avatarLink);
+    }
 }

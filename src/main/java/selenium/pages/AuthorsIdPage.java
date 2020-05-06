@@ -8,7 +8,7 @@ import selenium.base.TestCommons;
 public class AuthorsIdPage extends TestCommons {
 
     @FindBy(css = "#root > div > div.MuiGrid-root.jss2.MuiGrid-container > div > main > h1")
-    public WebElement errorMessage;
+    private WebElement errorMessage;
 
     public AuthorsIdPage(WebDriver driver) {
         super(driver);
@@ -19,7 +19,7 @@ public class AuthorsIdPage extends TestCommons {
         goTo("/authors/" + idString);
     }
 
-    public String getErrorMessageText(){
+    public String getErrorMessageText() {
         return errorMessage.getText();
     }
 
