@@ -4,7 +4,6 @@ import org.openqa.selenium.WebElement;
 import org.testng.Assert;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
-import org.testng.asserts.Assertion;
 import selenium.base.TestBase;
 import selenium.pages.NoConnectionPage;
 import java.io.IOException;
@@ -14,7 +13,7 @@ public class StateOfSensorsTest extends TestBase {
     private NoConnectionPage stateOfSensors;
 
     @BeforeClass
-    public void startPage() throws IOException {
+    public void startPage() {
         stateOfSensors = new NoConnectionPage(driver);
         stateOfSensors.resetSensorsOnMap();
         stateOfSensors.goTo();
