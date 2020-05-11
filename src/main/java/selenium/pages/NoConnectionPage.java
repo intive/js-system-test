@@ -42,7 +42,6 @@ public class NoConnectionPage extends TestCommons {
     public WebElement homePlan;
 
     List<WebElement> sensorList = new ArrayList<>();
-    List<WebElement> sensorList2 = new ArrayList<>();
 
     public NoConnectionPage(WebDriver driver) {
         super(driver);
@@ -81,7 +80,6 @@ public class NoConnectionPage extends TestCommons {
 
     public List<WebElement> getListOfSensorsCheck2() {
         sensorList.clear();
-        System.out.println("drugicheck");
         sensorList.add(sensor1);
         sensorList.add(sensor4);
         sensorList.add(sensorAdded1);
