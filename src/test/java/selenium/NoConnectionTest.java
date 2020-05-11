@@ -35,8 +35,7 @@ public class NoConnectionTest extends TestBase {
                 theRightSnackBar = noConnectionPage.snackBar2;
                 theRightExitButton = noConnectionPage.exitButton2;
                 theIncorrectSnackBar = noConnectionPage.snackBar;
-            }
-            catch (AssertionError e2){
+            } catch (AssertionError e2){
                 throw e2;
             }
         }
