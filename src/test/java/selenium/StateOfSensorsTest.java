@@ -21,7 +21,7 @@ public class StateOfSensorsTest extends TestBase {
         stateOfSensors.lastSensorIsDisplayed(stateOfSensors.lastSensor);
     }
 
-    @Test
+    @Test (priority = 0)
     public void responseFailureDataUpdate() throws InterruptedException, IOException {
 
         stateOfSensors.clickElement(stateOfSensors.sensor1);
@@ -29,13 +29,12 @@ public class StateOfSensorsTest extends TestBase {
         stateOfSensors.clickElement(stateOfSensors.sensor2);
         stateOfSensors.clickToAddPoint(150, 125);
         List<WebElement> sensors = stateOfSensors.getListOfSensors();
+        List<WebElement> sensorsCheck2 = stateOfSensors.getListOfSensorsCheck2();
         List<String> sensorValuesFirstRequest = stateOfSensors.getListOfSensorValues(sensors);
-        Thread.sleep(5000);
         stateOfSensors.internetConnection(false);
-        List<String> sensorValuesSecondRequest = stateOfSensors.getListOfSensorValues(sensors);
+        Thread.sleep(5000);
+        List<String> sensorValuesSecondRequest = stateOfSensors.getListOfSensorValues(sensorsCheck2);
         Assert.assertEquals(sensorValuesFirstRequest, sensorValuesSecondRequest, "Wartości czujników powinny były pozostać niezmienione.");
-        stateOfSensors.internetConnection(true);
-        stateOfSensors.resetSensorsOnMap();
     }
 
 //              Ze względu na mockowe wartości, poniższy test obecnie nie ma możliwości przejść,
@@ -52,9 +51,8 @@ public class StateOfSensorsTest extends TestBase {
 //
 //    }
 
-    @Test
+    @Test (priority = 1)
     public void apiResponseFailureSnackbar() throws IOException {
-
         stateOfSensors.internetConnection(false);
         WebElement snackBarApi;
         WebElement theIncorrectSnackBar;
@@ -70,11 +68,8 @@ public class StateOfSensorsTest extends TestBase {
                 snackBarApi = stateOfSensors.snackBar2;
                 theRightExitButton = stateOfSensors.exitButton2;
                 theIncorrectSnackBar = stateOfSensors.snackBar;
-            } catch (AssertionError e2) {
-                snackBarApi = null;
-                theIncorrectSnackBar = null;
-                theRightExitButton = null;
-                throw new AssertionError();
+            } catch (AssertionError e2){
+                throw e2;
             }
         }
         stateOfSensors.snackBarExist(theIncorrectSnackBar, 10);
@@ -101,5 +96,6 @@ public class StateOfSensorsTest extends TestBase {
         snackBars[0] = stateOfSensors.snackBarDoesntExist(snackBarApi,5);
         snackBars[1] = stateOfSensors.snackBarDoesntExist(theIncorrectSnackBar,5);
         Assert.assertEquals(snackBars, expectedSnackBarsInOnlineMode, "Snackbary nie zniknęły.");
+        stateOfSensors.resetSensorsOnMap();
     }
 }

@@ -5,7 +5,6 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.FindBy;
-import org.openqa.selenium.support.ui.WebDriverWait;
 import selenium.base.TestCommons;
 
 import java.util.ArrayList;
@@ -25,20 +24,25 @@ public class NoConnectionPage extends TestCommons {
     public WebElement exitButton2;
     @FindBy(xpath = "/html/body/div/div/div[2]/div/div[2]/ul[1]/div[5]")
     public WebElement lastSensor;
-    @FindBy(xpath = "/html/body/div/div/div[2]/div/div[2]/ul[1]/li[2]")
+    @FindBy(xpath = "/html/body/div/div/div[2]/div/div[2]/ul[1]/div[1]")
     public WebElement sensor1;
-    @FindBy(xpath = "/html/body/div/div/div[2]/div/div[2]/ul[1]/li[3]")
+    @FindBy(xpath = "/html/body/div/div/div[2]/div/div[2]/ul[1]/div[2]")
     public WebElement sensor2;
-    @FindBy(xpath = "/html/body/div/div/div[2]/div/div[2]/ul[1]/li[4]")
+    @FindBy(xpath = "/html/body/div/div/div[2]/div/div[2]/ul[1]/div[3]")
     public WebElement sensor3;
-    @FindBy(xpath = "/html/body/div/div/div[2]/div/div[2]/ul[2]/li[2]")
+    @FindBy(xpath = "/html/body/div/div/div[2]/div/div[2]/ul[1]/div[4]")
     public WebElement sensor4;
-    @FindBy(xpath = "/html/body/div/div/div[2]/div/div[2]/ul[2]/li[3]")
-    public WebElement sensor5;
+    @FindBy(xpath = "/html/body/div/div/div[2]/div/div[2]/ul[2]/div[1]")
+    public WebElement sensorAdded1;
+    @FindBy(xpath = "/html/body/div/div/div[2]/div/div[2]/ul[2]/div[2]")
+    public WebElement sensorAdded2;
+    @FindBy(xpath = "/html/body/div/div/div[2]/div/div[2]/ul[1]/div[6]")
+    public WebElement sensor6;
     @FindBy(xpath = "//*[@id=\"root\"]/div/div[2]/div/div[1]/div/div/img")
     public WebElement homePlan;
 
     List<WebElement> sensorList = new ArrayList<>();
+    List<WebElement> sensorList2 = new ArrayList<>();
 
     public NoConnectionPage(WebDriver driver) {
         super(driver);
@@ -71,10 +75,20 @@ public class NoConnectionPage extends TestCommons {
         sensorList.add(sensor1);
         sensorList.add(sensor2);
         sensorList.add(sensor3);
-        sensorList.add(sensor4);
-        sensorList.add(sensor5);
+        sensorList.add(sensor6);
         return sensorList;
     }
+
+    public List<WebElement> getListOfSensorsCheck2() {
+        sensorList.clear();
+        System.out.println("drugicheck");
+        sensorList.add(sensor1);
+        sensorList.add(sensor4);
+        sensorList.add(sensorAdded1);
+        sensorList.add(sensorAdded2);
+        return sensorList;
+    }
+
 
     public String getSensorValue(WebElement element) {
         return element.findElement(By.className("MuiListItemSecondaryAction-root")).getText();
