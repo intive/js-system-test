@@ -114,7 +114,7 @@ public abstract class TestCommons {
         } catch (org.openqa.selenium.TimeoutException e) {
             return false;
         } catch (org.openqa.selenium.NoSuchElementException
-                | org.openqa.selenium.StaleElementReferenceException e){
+                | org.openqa.selenium.StaleElementReferenceException e) {
             return true;
         }
     }
@@ -128,9 +128,8 @@ public abstract class TestCommons {
             map.put("upload_throughput", 0);
             CommandExecutor executor = ((ChromeDriver) driver).getCommandExecutor();
             executor.execute(new Command(((ChromeDriver) driver).getSessionId(), "setNetworkConditions",
-                            ImmutableMap.of("network_conditions", ImmutableMap.copyOf(map))));
-        }
-        else {
+                    ImmutableMap.of("network_conditions", ImmutableMap.copyOf(map))));
+        } else {
             Map map = new HashMap();
             map.put("offline", false);
             map.put("latency", 10);
@@ -138,7 +137,7 @@ public abstract class TestCommons {
             map.put("upload_throughput", 1000);
             CommandExecutor executor = ((ChromeDriver) driver).getCommandExecutor();
             executor.execute(new Command(((ChromeDriver) driver).getSessionId(), "setNetworkConditions",
-                            ImmutableMap.of("network_conditions", ImmutableMap.copyOf(map))));
+                    ImmutableMap.of("network_conditions", ImmutableMap.copyOf(map))));
         }
     }
 
@@ -169,18 +168,6 @@ public abstract class TestCommons {
                 }
             }
         });
-    }
-
-    protected static boolean isElementNotDisplayed(WebDriver driver, WebElement element) {
-        try {
-            WebDriverWait wait = new WebDriverWait(driver, 10);
-            wait.until(ExpectedConditions.invisibilityOf(element));
-            return !(element.isDisplayed());
-        } catch (org.openqa.selenium.NoSuchElementException
-                | org.openqa.selenium.StaleElementReferenceException
-                | org.openqa.selenium.TimeoutException e) {
-            return true;
-        }
     }
 }
 
