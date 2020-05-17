@@ -25,17 +25,17 @@ public class NoConnectionPage extends TestCommons {
     @FindBy(xpath = "/html/body/div/div/div[2]/div/div[2]/ul[1]/div[2]")
     public WebElement sensor2;
     @FindBy(xpath = "/html/body/div/div/div[2]/div/div[2]/ul[1]/div[3]")
-    public WebElement sensor3;
+    private WebElement sensor3;
     @FindBy(xpath = "/html/body/div/div/div[2]/div/div[2]/ul[1]/div[4]")
-    public WebElement sensor4;
+    private WebElement sensor4;
     @FindBy(xpath = "/html/body/div/div/div[2]/div/div[2]/ul[2]/div[1]")
-    public WebElement sensorAdded1;
+    private WebElement sensorAdded1;
     @FindBy(xpath = "/html/body/div/div/div[2]/div/div[2]/ul[2]/div[2]")
-    public WebElement sensorAdded2;
+    private WebElement sensorAdded2;
     @FindBy(xpath = "/html/body/div/div/div[2]/div/div[2]/ul[1]/div[6]")
-    public WebElement sensor6;
+    private WebElement sensor6;
     @FindBy(xpath = "//*[@id=\"root\"]/div/div[2]/div/div[1]/div/div/img")
-    public WebElement homePlan;
+    private WebElement homePlan;
 
     List<WebElement> sensorList = new ArrayList<>();
 
