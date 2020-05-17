@@ -6,14 +6,10 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.FindBy;
 import selenium.base.TestCommons;
-
 import java.util.ArrayList;
 import java.util.List;
 
-
 public class NoConnectionPage extends TestCommons {
-
-
     @FindBy(xpath = "/html/body/div/div/div[3]/div[1]/div/div/div/div")
     public WebElement snackBar;
     @FindBy(xpath = "/html/body/div/div/div[3]/div[1]/div/div/div/div/div[2]/button")
@@ -48,17 +44,11 @@ public class NoConnectionPage extends TestCommons {
     }
 
     public boolean snackBarExist(WebElement webElement, int time) {
-        if (isElementDisplayed(driver, webElement, time)==true) {
-            return true;
-        }
-        return false;
+        return isElementDisplayed(driver, webElement, time);
     }
 
     public boolean snackBarDoesntExist(WebElement webElement, int time) {
-        if (isElementNotDisplayed(driver, webElement, time)==true) {
-            return true;
-        }
-        return false;
+        return isElementNotDisplayed(driver, webElement, time );
     }
 
     @Override
@@ -87,7 +77,6 @@ public class NoConnectionPage extends TestCommons {
         return sensorList;
     }
 
-
     public String getSensorValue(WebElement element) {
         return element.findElement(By.className("MuiListItemSecondaryAction-root")).getText();
     }
@@ -104,6 +93,8 @@ public class NoConnectionPage extends TestCommons {
     {
     isElementDisplayed(driver, lastSensor, 5);
     }
+
+    public void isMapLoaded() { isElementDisplayed(driver, homePlan, 5); }
 
     public String snackBarApiColour(WebElement snackBar) {
         return snackBar.getCssValue("background-color");
