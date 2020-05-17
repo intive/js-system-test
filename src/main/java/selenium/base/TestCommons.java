@@ -109,6 +109,7 @@ public abstract class TestCommons {
     protected static boolean isElementNotDisplayed(WebDriver driver, WebElement element, int time) {
         try {
             WebDriverWait wait = new WebDriverWait(driver, time);
+            wait.ignoring(StaleElementReferenceException.class);
             wait.until(ExpectedConditions.invisibilityOf(element));
             return element.isDisplayed();
         } catch (org.openqa.selenium.TimeoutException e) {
