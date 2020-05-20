@@ -4,6 +4,7 @@ import org.openqa.selenium.Cookie;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
+import org.testng.ITestContext;
 import org.testng.annotations.AfterTest;
 import org.testng.annotations.BeforeSuite;
 import org.testng.annotations.BeforeTest;
@@ -21,9 +22,13 @@ public class TestBase {
     }
 
     @BeforeTest
-    public void setUp() {
+    public void setUp (ITestContext context) {
         ChromeOptions options = new ChromeOptions();
         options.addArguments("--incognito");
+        String language = context.getCurrentXmlTest().getParameter("browserLanguage");
+        if(language!=null) {
+            options.addArguments("--lang=" + language);
+        }
         driver = new ChromeDriver(options);
         driver.manage().window().maximize();
         driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
