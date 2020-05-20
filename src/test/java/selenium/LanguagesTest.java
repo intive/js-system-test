@@ -22,14 +22,11 @@ public class LanguagesTest extends TestBase {
 
     @Test(priority = 0)
     public void languageLabelsAndSnackbarsTest () throws IOException, InterruptedException {
-        WebDriverWait wait = new WebDriverWait(driver, 5000);
-        wait.until(ExpectedConditions.visibilityOf(languagePage.homePlan));
+        languagePage.mapLoaded(languagePage.homePlan, 5);
         languagePage.waitingForLanguageLabelVisibility();
-        Thread.sleep(10000);
-//        Sprawdzanie poprawności tłumaczenia labelek i komunikatów, także przy zmianie języka, gdy nie ma połączenai internetowego
-//        languagePage.internetConnection(false);
+//          Sprawdzanie poprawności tłumaczenia labelek i komunikatów, także przy zmianie języka, gdy nie ma połączenai internetowego
         languagePage.verifyPlTranslation();
-//        languagePage.internetConnection(false);
+        languagePage.internetConnection(false);
         languagePage.verifySnackbarsPl();
         languagePage.clickElement(languagePage.languageLabel);
         languagePage.clickElement(languagePage.enLanguageLabel);
@@ -40,12 +37,14 @@ public class LanguagesTest extends TestBase {
         languagePage.verifySnackbarsPlAfterLanguageChange();
         languagePage.clickElement(languagePage.sensor1);
         languagePage.clickToAddPoint(-50, -75);
-//Tu chcę zaimplementować metodę, która będzie sprawdzać treść snacka o nieudanym umijecowieniu czujnika. Obecnie tego nie robię, gdyż metoda powinna być zmieniona na bardziej generyczną
+//          Tu chcę zaimplementować kod, który będzie sprawdzać treść snacka o nieudanym umiejscowieniu czujnika.
+//          Obecnie tego nie robię, gdyż taki kod powinien być bardziej generyczny.
         languagePage.internetConnection(true);
+        Thread.sleep(1000);
         languagePage.goTo();
         languagePage.internetConnection(false);
-//       Sprawdzenie komunikatu o nieudanym załadowaniu mapy Home oraz tłumaczenia przycisku odświeżania
-//       Zmieniany jest też język, aby sprawdzić te 2 napisy w wersji angielskiej
+//         Sprawdzenie komunikatu o nieudanym załadowaniu mapy Home oraz tłumaczenia przycisku odświeżania
+//         Zmieniany jest też język, aby sprawdzić te 2 napisy w wersji angielskiej
         String loadMapSnackBar = languagePage.loadMapSnackBar.getText();
         String refreshButton = languagePage.refreshButton.getText();
         languagePage.verifyLoadMapPl(loadMapSnackBar, refreshButton);
@@ -58,16 +57,15 @@ public class LanguagesTest extends TestBase {
         languagePage.internetConnection(true);
         languagePage.clickElement(languagePage.languageLabel);
         languagePage.clickElement(languagePage.plLanguageLabel);
-       }
+    }
 
     @Test(priority = 1)
     public void languageChoiceMemory () throws IOException, InterruptedException {
+//        Test sprawdza, czy strona zapamiętuje wybór użytkownika w kontekście wybranego wcześniej języka.
         languagePage.goTo();
         languagePage.waitingForLanguageLabelVisibility();
-        WebDriverWait wait = new WebDriverWait(driver, 5000);
-        wait.until(ExpectedConditions.visibilityOf(languagePage.homePlan));
+        languagePage.mapLoaded(languagePage.homePlan, 5);
         Thread.sleep(1000);
-//        Test sprawdza, czy strona zapamiętuje wybór użytkownika w kontekście wybranego wcześniej języka.
         Assert.assertEquals(languagePage.getElementTranslations(languagePage.languageLabel), "PL", "Przeglądarka nie jest odpalona w języku polskim.");
         languagePage.verifyPlTranslation();
         languagePage.clickElement(languagePage.languageLabel);
@@ -80,27 +78,9 @@ public class LanguagesTest extends TestBase {
         languagePage.waitingForLanguageLabelVisibility();
         Assert.assertEquals(languagePage.getElementTranslations(languagePage.languageLabel), "EN", "Nie zapamiętano uprzednio wybranego języka");
         languagePage.verifyEnTranslation();
-        //        powrot do stanu poczatkowego
+//          powrot do stanu poczatkowego
         languagePage.internetConnection(true);
         languagePage.clickElement(languagePage.languageLabel);
         languagePage.clickElement(languagePage.plLanguageLabel);
     }
-
-    @Test(priority = 2)
-    public void defaultLanguageTest() throws IOException {
-//        Ten będzie działał na 100% dobrze jak tylko zaimplementuę metodę z wywoływaniem zestawu testów z parametrem dla języka.
-        Assert.assertEquals(languagePage.getElementTranslations(languagePage.languageLabel), "EN", "Język angielski nie jest językiem domyślnym.");
-        languagePage.verifyEnTranslation();
-        languagePage.internetConnection(false);
-        languagePage.verifySnackbarsEn();
-//        powrot do stanu poczatkowego
-        languagePage.internetConnection(true);
-        languagePage.clickElement(languagePage.languageLabel);
-        languagePage.clickElement(languagePage.plLanguageLabel);
-
-    }
-//        listOfSensorsNames = languagePage.getSensorStrings();
-//        Assert.assertEquals(listOfSensorsNames, correctListTranslationPl, "Nieprawidłowości w tłumaczeniu tytułów list lub nazw i wartości czujników" );
-//        listOfSensorsNames = languagePage.getSensorStrings();
-//        Assert.assertEquals(listOfSensorsNames, correctListTranslationPl, "Nieprawidłowości w tłumaczeniu tytułów list lub nazw i wartości czujników" );
 }

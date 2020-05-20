@@ -25,10 +25,6 @@ public class LanguageDashboardPage extends TestCommons {
     public WebElement hvacTile;
     @FindBy(xpath = "/html/body/div/div/div[1]/header/div/div[1]/div/div/a[3]/span[1]")
     public WebElement authorsTile;
-    @FindBy(xpath = "/html/body/div/div/div[2]/div/div[2]/ul[1]/li")
-    public WebElement notPlacedSensorsTitle;
-    @FindBy(xpath = "/html/body/div/div/div[2]/div/div[2]/ul[2]/li")
-    public WebElement placedSensorsTitle;
     @FindBy(xpath = "/html/body/div/div/div[3]/div[1]/div/div/div/div")
     public WebElement snackBar;
     @FindBy(xpath = "/html/body/div/div/div[3]/div[2]/div/div/div/div")
@@ -45,20 +41,23 @@ public class LanguageDashboardPage extends TestCommons {
     public WebElement sensor1;
     @FindBy(xpath = "//*[@id=\"root\"]/div/div[2]/div/div[1]/div/div/img")
     public WebElement homePlan;
-    @FindBy(xpath = "/html/body/div/div/div[3]/div[3]/div/div/div")
-    public WebElement sensorAddSnackbar;
-
+    
+//    @FindBy(xpath = "/html/body/div/div/div[3]/div[3]/div/div/div")
+//    public WebElement sensorAddSnackbar;
+//    @FindBy(xpath = "/html/body/div/div/div[2]/div/div[2]/ul[1]/li")
+//    public WebElement notPlacedSensorsTitle;
+//    @FindBy(xpath = "/html/body/div/div/div[2]/div/div[2]/ul[2]/li")
+//    public WebElement placedSensorsTitle;
 
     ArrayList<String> listOfSensorsTextsPl = new ArrayList<>();
     ArrayList<String> listOfSensorsTextsEn = new ArrayList<>();
-    ArrayList<String> listOfExpectedSensorsTextsPl = new ArrayList<>();
+//    ArrayList<String> listOfExpectedSensorsTextsPl = new ArrayList<>();
 
     public ArrayList<String> getSensorStringsPl(){
         listOfSensorsTextsPl.add(inactiveList.getText());
         listOfSensorsTextsPl.add(activeList.getText());
         return listOfSensorsTextsPl;
     }
-
 
     public List<String> getSensorStringsEn(){
         listOfSensorsTextsEn.add(inactiveList.getText());
@@ -133,6 +132,7 @@ public class LanguageDashboardPage extends TestCommons {
         Assert.assertEquals(loadMapSnackBar, "Something went wrong....", "Nieprawidłowy komunikat niepowodzenia wczytania mapy Home EN.");
         Assert.assertEquals(refreshButton, "REFRESH", "Nieprawidłowa nazwa przycisku odświeżania EN.");
     }
+//    dla uzycia w przyszlosci
     public void verifySensorAddSnackbarPl(String sensorAddSnackbarPl){
         Assert.assertEquals(sensorAddSnackbarPl, "Czujnik 61 nie został dodany." );
     }
@@ -140,20 +140,16 @@ public class LanguageDashboardPage extends TestCommons {
         Assert.assertEquals(sensorAddSnackbarEn, "Sensor 61 could not be added." );
     }
 
+    public boolean mapLoaded(WebElement webElement, int time){
+       return isElementDisplayed(driver, webElement, time);
+    }
 
     public boolean snackBarExist(WebElement webElement, int time) {
-        if (isElementDisplayed(driver, webElement, time)==true) {
-            return true;
-        }
-        return false;
+        return isElementDisplayed(driver, webElement, time);
     }
 
     public void clickToAddPoint(int xOffset, int yOffset) {
         Actions builder = new Actions(driver);
         builder.moveToElement(homePlan, xOffset, yOffset).click().perform();
-    }
-
-    public void polishSensorsNames(){
-
     }
 }
