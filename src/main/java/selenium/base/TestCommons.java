@@ -170,6 +170,13 @@ public abstract class TestCommons {
             }
         });
     }
+
+    protected double convertPixelCssValueToDouble(String cssValue){
+        String trimmedValue = cssValue.replaceFirst("px", "");
+        return Double.parseDouble(trimmedValue);
+    }
+
+    public void removeAllSensorsFromMap(){
+        goTo("/api/v1/dashboard/delete");
+    }
 }
-
-
