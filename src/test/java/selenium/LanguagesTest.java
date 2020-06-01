@@ -1,7 +1,5 @@
 package selenium;
 
-import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.WebDriverWait;
 import selenium.base.TestBase;
 import org.testng.Assert;
 import org.testng.annotations.BeforeClass;
