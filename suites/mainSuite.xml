@@ -10,5 +10,6 @@
         <suite-file path="markSensorOnHomePlanTest.xml"></suite-file>
         <suite-file path="deleteSensorFromHomePlanTest.xml"></suite-file>
         <suite-file path="notificationsPageTest.xml"></suite-file>
+        <suite-file path="saveSensorToBackendTest.xml"></suite-file>
     </suite-files>
 </suite>
