@@ -18,21 +18,21 @@ public class LanguageDashboardPage extends TestCommons {
     @FindBy(xpath = "/html/body/div[2]/div[3]/ul/li[2]")
     public WebElement plLanguageLabel;
     @FindBy(xpath = "/html/body/div[1]/div/div[1]/header/div/h6")
-    public WebElement title;
+    private WebElement title;
     @FindBy(xpath = "/html/body/div/div/div[1]/header/div/div[1]/div/div/a[1]/span[1]")
-    public WebElement mainPanelTile;
+    private WebElement mainPanelTile;
     @FindBy(xpath =  "/html/body/div/div/div[1]/header/div/div[1]/div/div/a[2]/span[1]")
-    public WebElement hvacTile;
+    private WebElement hvacTile;
     @FindBy(xpath = "/html/body/div/div/div[1]/header/div/div[1]/div/div/a[3]/span[1]")
-    public WebElement authorsTile;
+    private WebElement authorsTile;
     @FindBy(xpath = "/html/body/div/div/div[3]/div[1]/div/div/div/div")
-    public WebElement snackBar;
+    private WebElement snackBar;
     @FindBy(xpath = "/html/body/div/div/div[3]/div[2]/div/div/div/div")
-    public WebElement snackBar2;
+    private WebElement snackBar2;
     @FindBy(xpath = "/html/body/div/div/div[2]/div/div[2]/ul[1]")
-    public WebElement inactiveList;
+    private WebElement inactiveList;
     @FindBy(xpath = "/html/body/div/div/div[2]/div/div[2]/ul[2]")
-    public WebElement activeList;
+    private WebElement activeList;
     @FindBy(xpath = "/html/body/div/div/div[2]/div/h2/div")
     public WebElement loadMapSnackBar;
     @FindBy(xpath = "/html/body/div/div/div[2]/div/button")
@@ -41,7 +41,7 @@ public class LanguageDashboardPage extends TestCommons {
     public WebElement sensor1;
     @FindBy(xpath = "//*[@id=\"root\"]/div/div[2]/div/div[1]/div/div/img")
     public WebElement homePlan;
-    
+
 //    @FindBy(xpath = "/html/body/div/div/div[3]/div[3]/div/div/div")
 //    public WebElement sensorAddSnackbar;
 //    @FindBy(xpath = "/html/body/div/div/div[2]/div/div[2]/ul[1]/li")
@@ -59,6 +59,11 @@ public class LanguageDashboardPage extends TestCommons {
         return listOfSensorsTextsPl;
     }
 
+    @Override
+    public void clickElement(WebElement element) {
+        super.clickElement(element);
+    }
+
     public List<String> getSensorStringsEn(){
         listOfSensorsTextsEn.add(inactiveList.getText());
         listOfSensorsTextsEn.add(activeList.getText());
@@ -67,11 +72,6 @@ public class LanguageDashboardPage extends TestCommons {
 
     public String getElementTranslations(WebElement element){
         return element.getText();
-    }
-
-    @Override
-    public void clickElement(WebElement element) {
-        super.clickElement(element);
     }
 
     public LanguageDashboardPage(WebDriver driver) {
