@@ -182,11 +182,11 @@ public class DashboardPage extends TestCommons {
         return getElementAttribute(lastConnectedSensor.findElement(By.tagName("li")), "id");
     }
 
-    public int getSecondPointWidth() {
+    public int getLastPointWidth() {
         return getElementWidth(lastPoint);
     }
 
-    public int getSecondPointHeight() {
+    public int getLastPointHeight() {
         return getElementHeight(lastPoint);
     }
 
@@ -295,7 +295,6 @@ public class DashboardPage extends TestCommons {
 
     public List<WebElement> connectedSensorsOnList() {
         List<WebElement> allConnectedSensorsOnList = connectedSensorsList.findElements(By.tagName("li"));
-        allConnectedSensorsOnList.remove(0);
         return allConnectedSensorsOnList;
     }
 
@@ -315,6 +314,7 @@ public class DashboardPage extends TestCommons {
         Actions builder = new Actions(driver);
         builder.moveByOffset(xOffset, yOffset).click().perform();
     }
+
 }
 
 

@@ -16,12 +16,14 @@ public class DeleteSensorFromHomePlanTest extends TestBase {
     public void beforeClass() {
         deleteSensorFromHomePlanPage = new DeleteSensorFromHomePlanPage(driver);
         deleteSensorFromHomePlanPage.goTo();
+        assertionIfElementWasFound(deleteSensorFromHomePlanPage.firstNotConnectedSensor, "first not connected sensor");
         deleteSensorFromHomePlanPage.addPointsOnHomePlanWhenRequired();
     }
 
     @Test
     public void testAPresenceOfDeleteButtonOnSensor() {
-
+        assertionIfElementWasFound(deleteSensorFromHomePlanPage.firstConnectedSensor, "first connected sensor");
+        assertionIfElementWasFound(deleteSensorFromHomePlanPage.secondConnectedSensor, "second connected sensor");
         deleteSensorFromHomePlanPage.clickSensorOnHomePlan();
         Assert.assertEquals(deleteSensorFromHomePlanPage.isDeleteButtonDisplayed(deleteSensorFromHomePlanPage.firstConnectedSensor), "flex");
         deleteSensorFromHomePlanPage.clickSensorOnList(deleteSensorFromHomePlanPage.secondConnectedSensor);
@@ -30,6 +32,7 @@ public class DeleteSensorFromHomePlanTest extends TestBase {
 
     @Test
     public void testDeletingSensorFromHomePlan() {
+        assertionIfElementWasFound(deleteSensorFromHomePlanPage.firstConnectedSensor, "first connected sensor");
         int connectedSensors = deleteSensorFromHomePlanPage.countPointsOnHomePlan();
         deleteSensorFromHomePlanPage.clickSensorOnList(deleteSensorFromHomePlanPage.firstConnectedSensor);
         String firstSensorId = deleteSensorFromHomePlanPage.getSensorId();
@@ -50,6 +53,7 @@ public class DeleteSensorFromHomePlanTest extends TestBase {
 
     @Test
     public void testDeletingSensorWhenOffline() throws InterruptedException, IOException {
+        assertionIfElementWasFound(deleteSensorFromHomePlanPage.firstConnectedSensor, "first connected sensor");
         int connectedSensors = deleteSensorFromHomePlanPage.countPointsOnHomePlan();
         String firstSensorId = deleteSensorFromHomePlanPage.getSensorId();
         deleteSensorFromHomePlanPage.setNetworkConnectionOffline(true);

@@ -35,24 +35,28 @@ public class NotificationsPageTest extends TestBase {
     }
 
     @Test(dependsOnMethods = {"pageIsLoaded"})
-    public void testPagination() {
+    public void testAPagination() {
         int notificationsCount = notificationsPage.countAllNotificationsOnPage();
         Assert.assertTrue(notificationsCount <= 20, "There are more than 20 notifications on first page");
-        if (notificationsCount == 20) {
-            if (notificationsPage.showMoreButtonIsDisplayed()) {
-                notificationsPage.clickShowMoreButton();
-                Assert.assertTrue(notificationsPage.countAllNotificationsOnPage() > 20, "There are less than 20 notifications on second page");
-                Assert.assertTrue(notificationsPage.countAllNotificationsOnPage() <= 40, "There are more than 40 notifications on second page");
-            }
+        int x = 20;
+        int y = 40;
+        int page = 2;
+        while (notificationsPage.showMoreButtonIsDisplayed()) {
+            notificationsPage.clickShowMoreButton();
+            Assert.assertTrue(notificationsPage.countAllNotificationsOnPage() > x, "There are less than " + x + " notifications on page " + page);
+            Assert.assertTrue(notificationsPage.countAllNotificationsOnPage() <= y, "There are more than " + y + " notifications on page " + page);
+            x = x + 20;
+            y = y + 20;
+            page++;
         }
     }
 
     @Test(dependsOnMethods = {"pageIsLoaded"})
-    public void testAccessToPageByLink() {
+    public void testTheAccessToPageByLink() {
+        notificationsPage.clickOutsideDrawer(100, 100);
         notificationsPage.clickAuthorsButton();
         notificationsPage.clickNotificationsButton();
         notificationsPage.clickLinkToNotificationsPage();
-        notificationsPage.clickOutsideDrawer(100, 100);
         String expectedUrl = "https://patronage20-js-master.herokuapp.com/notifications";
         String actualUrl = driver.getCurrentUrl();
         Assert.assertEquals(actualUrl, expectedUrl, "No access to notification page by link in drawer");
@@ -60,7 +64,10 @@ public class NotificationsPageTest extends TestBase {
     }
 
     @Test(dependsOnMethods = {"pageIsLoaded"})
-    public void testIntegrationOfNotificationPageWithCounterAndDrawer() {
+    public void testIntegrationOfNotificationPageWithCounterAndDrawer() throws InterruptedException {
+        while (notificationsPage.activeNotificationsCounter.getText().equals("99+")) {
+            notificationsPage.deleteActiveNotificationOnPage();
+        }
         int notificationsOnPage = notificationsPage.getAllActiveNotifications();
         int notificationsInCounter = notificationsPage.getActiveNotificationsFromCounter();
         notificationsPage.clickNotificationsButton();
@@ -76,19 +83,23 @@ public class NotificationsPageTest extends TestBase {
         int notificationsInCounterAfterChangeOnPage = 0;
 
         if (notificationsInCounter > 0) {
+            String firstActiveNotificationTimestamp = notificationsPage.getDataAndTimeOfNotification(notificationsPage.firstActiveNotification);
             notificationsPage.deleteActiveNotificationOnPage();
-            String expectedCounter = Integer.toString(notificationsInCounter - 1);
-            notificationsPage.waitForDeletedNotificationOnPage(expectedCounter);
-            notificationsPage.clickNotificationsButton();
-            notificationsPage.waitForDeletedNotificationInDrawer(expectedCounter);
-            notificationsInDrawerAfterChangeOnPage = notificationsPage.getAllActiveNotificationsInDrawer();
-            notificationsPage.clickOutsideDrawer(100, 100);
+            Thread.sleep(2000);
             notificationsOnPageAfterChangeOnPage = notificationsPage.getAllActiveNotifications();
             notificationsInCounterAfterChangeOnPage = notificationsPage.getActiveNotificationsFromCounter();
+            notificationsPage.clickNotificationsButton();
+            notificationsInDrawerAfterChangeOnPage = notificationsPage.getAllActiveNotificationsInDrawer();
 
-            Assert.assertEquals(notificationsOnPageAfterChangeOnPage, notificationsOnPage - 1, "Incorrect count on page");
-            Assert.assertEquals(notificationsInDrawerAfterChangeOnPage, notificationsInDrawer - 1, "Incorrect count in drawer");
-            Assert.assertEquals(notificationsInCounterAfterChangeOnPage, notificationsInCounter - 1, "Incorrect count in counter");
+            if (notificationsOnPageAfterChangeOnPage == (notificationsOnPage - 1)) {
+                Assert.assertEquals(notificationsOnPageAfterChangeOnPage, notificationsOnPage - 1, "Incorrect count on page when deleting notification on page");
+                Assert.assertEquals(notificationsInDrawerAfterChangeOnPage, notificationsInDrawer - 1, "Incorrect count in drawer when deleting notification on page");
+                Assert.assertEquals(notificationsInCounterAfterChangeOnPage, notificationsInCounter - 1, "Incorrect count in counter when deleting notification on page");
+            } else {
+                Assert.assertTrue(notificationsPage.notificationIsInactive(firstActiveNotificationTimestamp), "Notification has not been deleted");
+                Assert.assertEquals(notificationsPage.getAllActiveNotifications(), notificationsPage.getActiveNotificationsFromCounter(), "Number of notifications on page and in counter does not match after deleting notification on page");
+            }
+
         }
 
         int notificationsOnPageAfterChangeInDrawer;
@@ -96,21 +107,28 @@ public class NotificationsPageTest extends TestBase {
         int notificationsInCounterAfterChangeInDrawer;
 
         if (notificationsInCounterAfterChangeOnPage > 0) {
-            notificationsPage.clickNotificationsButton();
-            notificationsPage.deleteNotificationInDrawer();
-            String expectedCounter = Integer.toString(notificationsInCounterAfterChangeOnPage - 1);
-            notificationsPage.waitForDeletedNotificationInDrawer(expectedCounter);
             notificationsPage.clickOutsideDrawer(100, 100);
-            notificationsPage.waitForDeletedNotificationOnPage(expectedCounter);
-            notificationsOnPageAfterChangeInDrawer = notificationsPage.getAllActiveNotifications();
-            notificationsInCounterAfterChangeInDrawer = notificationsPage.getActiveNotificationsFromCounter();
+            notificationsInCounter = notificationsPage.getActiveNotificationsFromCounter();
+            notificationsOnPage = notificationsPage.getAllActiveNotifications();
             notificationsPage.clickNotificationsButton();
+            notificationsInDrawer = notificationsPage.getAllActiveNotificationsInDrawer();
+            String firstActiveNotificationTimestamp = notificationsPage.getDataAndTimeOfNotification(notificationsPage.firstNotificationInDrawer);
+            notificationsPage.deleteNotificationInDrawer();
+            Thread.sleep(2000);
             notificationsInDrawerAfterChangeInDrawer = notificationsPage.getAllActiveNotificationsInDrawer();
             notificationsPage.clickOutsideDrawer(100, 100);
+            notificationsOnPageAfterChangeInDrawer = notificationsPage.getAllActiveNotifications();
+            notificationsInCounterAfterChangeInDrawer = notificationsPage.getActiveNotificationsFromCounter();
 
-            Assert.assertEquals(notificationsOnPageAfterChangeInDrawer, notificationsOnPage - 2, "Incorrect count on page");
-            Assert.assertEquals(notificationsInDrawerAfterChangeInDrawer, notificationsInDrawer - 2, "Incorrect count in drawer");
-            Assert.assertEquals(notificationsInCounterAfterChangeInDrawer, notificationsInCounter - 2, "Incorrect count in counter");
+            if (notificationsOnPageAfterChangeInDrawer == (notificationsInDrawer - 1)) {
+                Assert.assertEquals(notificationsOnPageAfterChangeInDrawer, notificationsOnPage - 1, "Incorrect count on page when deleting notification in drawer");
+                Assert.assertEquals(notificationsInDrawerAfterChangeInDrawer, notificationsInDrawer - 1, "Incorrect count in drawer when deleting notification in drawer");
+                Assert.assertEquals(notificationsInCounterAfterChangeInDrawer, notificationsInCounter - 1, "Incorrect count in counter when deleting notification in drawer");
+            } else {
+                Assert.assertTrue(notificationsPage.notificationIsInactive(firstActiveNotificationTimestamp), "Notification has not been deleted");
+                Assert.assertEquals(notificationsPage.getAllActiveNotifications(), notificationsPage.getActiveNotificationsFromCounter(), "Number of notifications on page and in counter does not match after deleting notification in drawer");
+            }
         }
+
     }
 }

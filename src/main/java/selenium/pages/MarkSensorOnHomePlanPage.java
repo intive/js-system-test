@@ -99,49 +99,12 @@ public class MarkSensorOnHomePlanPage extends TestCommons {
         boolean isConditionMet = false;
         while (System.currentTimeMillis() < endWaitTime && !isConditionMet) {
             isConditionMet = isSensorInViewPort(element);
-            if (isConditionMet) {
-                break;
-            } else {
-                Thread.sleep(10);
-            }
+            Thread.sleep(100);
         }
     }
 
     public void waitUntilHomePlanIsLoaded() {
         waitUntilVisible(driver, homePlan);
-    }
-
-    public String getSensorType(WebElement element) {
-        return element.findElement(By.tagName("p")).getText();
-    }
-
-    public String getSensorTypeBackgroundColor(WebElement element) {
-        switch (getSensorType(element)) {
-            case "Temperature":
-            case "Temperatura":
-                return "rgba(255, 230, 204,";
-            case "Window":
-            case "Okno":
-                return "rgba(238, 229, 255,";
-            case "Window blind":
-            case "Rolety":
-                return "rgba(247, 212, 228,";
-            case "RFID":
-                return "rgba(255, 236, 235,";
-            case "Smoke sensor":
-            case "Czujnik dymu":
-                return "rgba(204, 204, 204,";
-            case "Light":
-            case "Światło":
-                return "rgba(194, 239, 201,";
-            default:
-                throw new IllegalStateException("Unexpected value: " + getSensorType(element));
-        }
-    }
-
-    public List<WebElement> pointsOnHomePlan() {
-        List<WebElement> allPointsOnHomePlan = homePlanByDiv.findElements(By.tagName("div"));
-        return allPointsOnHomePlan;
     }
 
     public void clickOnCoordinates(int xOffset, int yOffset) {
@@ -197,7 +160,8 @@ public class MarkSensorOnHomePlanPage extends TestCommons {
         js.executeScript("arguments[0].scrollIntoView();", element);
     }
 
-    public String elevationValueOfSensorOnHomePlan(WebElement element) {
+    public String elevationValueOfSensor(WebElement element) {
         return element.getCssValue("box-shadow");
     }
+
 }

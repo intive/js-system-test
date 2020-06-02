@@ -2,13 +2,17 @@ package selenium.base;
 
 import org.openqa.selenium.Cookie;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
 import org.testng.ITestContext;
+import org.testng.Assert;
 import org.testng.annotations.AfterTest;
 import org.testng.annotations.BeforeSuite;
 import org.testng.annotations.BeforeTest;
 import java.util.concurrent.TimeUnit;
+
+import static selenium.base.TestCommons.isElementDisplayed;
 
 public class TestBase {
 
@@ -39,5 +43,9 @@ public class TestBase {
     @AfterTest
     public void tearDown() {
         driver.quit();
+    }
+
+    protected void assertionIfElementWasFound(WebElement element, String nameOfElement) {
+        Assert.assertTrue(isElementDisplayed(driver, element), "Element " + nameOfElement + " cannot be found on webside");
     }
 }
