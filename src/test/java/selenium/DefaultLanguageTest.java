@@ -1,13 +1,11 @@
 package selenium;
 
-import org.testng.Assert;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
+import org.testng.asserts.SoftAssert;
 import selenium.base.TestBase;
 import selenium.pages.LanguageDashboardPage;
-
 import java.io.IOException;
-import java.util.concurrent.TimeUnit;
 
 public class DefaultLanguageTest extends TestBase{
     private LanguageDashboardPage languagePage;
@@ -19,13 +17,13 @@ public class DefaultLanguageTest extends TestBase{
     }
     @Test
     public void defaultLanguageTest() throws IOException {
-        Assert.assertEquals(languagePage.getElementTranslations(languagePage.languageLabel), "EN", "Język angielski nie jest językiem domyślnym.");
-        languagePage.verifyEnTranslation();
+        SoftAssert total_Assertion = new SoftAssert();
+        languagePage.verifyChosenLanguageEn();
+        languagePage.verifyEnTranslation(total_Assertion);
         languagePage.internetConnection(false);
-        languagePage.verifySnackbarsEn();
+        languagePage.verifySnackbarsEn(total_Assertion);
 //        powrot do stanu poczatkowego
         languagePage.internetConnection(true);
-        languagePage.clickElement(languagePage.languageLabel);
-        languagePage.clickElement(languagePage.plLanguageLabel);
+        languagePage.switchLanguage("pl");
     }
 }
