@@ -17,21 +17,21 @@ public class AddSensorOnHomePlanPage extends TestCommons {
     public WebElement secondNotConnectedSensor;
 
     @FindBy(xpath = "//*[@id=\"root\"]/div/div[2]/div/div[2]/ul[2]/div[1]")
-    private WebElement firstConnectedSensor;
+    public WebElement firstConnectedSensor;
 
     @FindBy(xpath = "//*[@id=\"root\"]/div/div[2]/div/div[1]/div/div/img")
     public WebElement homePlan;
 
-    @FindBy(xpath = "//*[@id=\"root\"]/div/div[2]/div/div[2]/ul[1]/div[1]/div[1]/div[1]/li/div[1]/span/span[1]")
+    @FindBy(xpath = "//*[@id=\"root\"]/div/div[2]/div/div[2]/ul[1]/div[1]/div[1]/div[1]/div[1]/li/div[2]/span/span[1]")
     public WebElement firstNotConnectedSensorType;
 
-    @FindBy(xpath = "//*[@id=\"root\"]/div/div[2]/div/div[2]/ul[1]/div[1]/div[1]/div[1]/li/div[1]/span/span[2]")
+    @FindBy(xpath = "//*[@id=\"root\"]/div/div[2]/div/div[2]/ul[1]/div[1]/div[1]/div[1]/div[1]/li/div[2]/span/span[2]")
     public WebElement firstNotConnectedSensorId;
 
-    @FindBy(xpath = "//*[@id=\"root\"]/div/div[2]/div/div[2]/ul[2]/div[1]/div[1]/div[1]/li/div[1]/span/span[1]")
+    @FindBy(xpath = "//*[@id=\"root\"]/div/div[2]/div/div[2]/ul[2]/div[1]/div[1]/div[1]/div[1]/li/div[2]/span/span[1]")
     public WebElement firstConnectedSensorType;
 
-    @FindBy(xpath = "//*[@id=\"root\"]/div/div[2]/div/div[2]/ul[2]/div[1]/div[1]/div[1]/li/div[1]/span/span[2]")
+    @FindBy(xpath = "//*[@id=\"root\"]/div/div[2]/div/div[2]/ul[2]/div[1]/div[1]/div[1]/div[1]/li/div[2]/span/span[2]")
     public WebElement firstConnectedSensorId;
 
     @FindBy(xpath = "//*[@id=\"root\"]/div/div[2]/div/div[1]/div/div/div[last()]")
@@ -90,50 +90,7 @@ public class AddSensorOnHomePlanPage extends TestCommons {
         builder.moveToElement(homePlan, xOffset, yOffset).click().perform();
     }
 
-    public String getCompleteTransitionOfColor(WebElement element) {
-        String fullString = element.getCssValue("background-color");
-        int beginIndex = fullString.length() - 4;
-        int endIndex = fullString.length() - 1;
-        String partialString = fullString.substring(beginIndex, endIndex);
-        return partialString;
-    }
-
-    public void waitForCompleteBackgroundColor(WebElement element) {
-        String partialStringFromBackgroundColor = getCompleteTransitionOfColor(element);
-        String expected = ", 1";
-        waitForElementAttributeToChange(driver, partialStringFromBackgroundColor, expected);
-    }
-
-    public String getSensorType(WebElement element) {
-        return element.findElement(By.tagName("p")).getText();
-    }
-
-    public String getSensorTypeBackgroundColor(WebElement element) {
-        switch (getSensorType(element)) {
-            case "Temperature":
-            case "Temperatura":
-                return "rgba(255, 230, 204, 1)";
-            case "Window":
-            case "Okno":
-                return "rgba(238, 229, 255, 1)";
-            case "Window blind":
-            case "Rolety":
-                return "rgba(247, 212, 228, 1)";
-            case "RFID":
-                return "rgba(255, 236, 235, 1)";
-            case "Smoke sensor":
-            case "Czujnik dymu":
-                return "rgba(204, 204, 204, 1)";
-            case "RGB light":
-            case "Światło RGB":
-                return "rgba(41, 158, 58, 1)";
-            default:
-                throw new IllegalStateException("Unexpected value: " + getSensorType(element));
-        }
-    }
-
     public void deleteFirstSensorFromHomePlan() {
-        //scrollIntoView(firstConnectedSensor);
         clickElement(firstPointOnHomePlan);
         clickElement(firstConnectedSensor.findElement(By.tagName("button")));
         clickElement(okButtonOnDeletingSensorBox);
@@ -169,4 +126,9 @@ public class AddSensorOnHomePlanPage extends TestCommons {
         JavascriptExecutor js = (JavascriptExecutor) driver;
         js.executeScript("arguments[0].scrollIntoView();", element);
     }
+
+    public String elevationValueOfSensor(WebElement element) {
+        return element.getCssValue("box-shadow");
+    }
+
 }

@@ -20,10 +20,10 @@ public class NotificationsPage extends TestCommons {
     @FindBy(xpath = "//*[@id=\"root\"]/div/div[2]/div/div/div[2]/div/ul")
     private WebElement inactiveNotifications;
 
-    @FindBy(xpath = "//*[@id=\"root\"]/div/div[2]/div/div/div[1]/ul/li[1]")
+    @FindBy(xpath = "//*[@id=\"root\"]/div/div[2]/div/div/div[1]/ul/div[1]")
     public WebElement firstActiveNotification;
 
-    @FindBy(xpath = "//*[@id=\"root\"]/div/div[2]/div/div/div[1]/ul/li[1]")
+    @FindBy(xpath = "//*[@id=\"root\"]/div/div[2]/div/div/div[1]/ul/div[2]")
     public WebElement secondActiveNotification;
 
     @FindBy(xpath = "//*[@id=\"root\"]/div/div[2]/div/div/div[2]/div/ul/div[1]")
@@ -33,10 +33,13 @@ public class NotificationsPage extends TestCommons {
     public WebElement secondInactiveNotification;
 
     @FindBy(xpath = "//*[@id=\"root\"]/div/div[2]/div/div/div[2]/button")
-    private WebElement showMoreButton;
+    private WebElement showMoreButtonDiv2;
+
+    @FindBy(xpath = "//*[@id=\"root\"]/div/div[2]/div/div/div[3]/button")
+    private WebElement showMoreButtonDiv3;
 
     @FindBy(xpath = "//*[@id=\"root\"]/div/div[1]/header/div/div[2]/button/span[1]/span/span")
-    private WebElement activeNotificationsCounter;
+    public WebElement activeNotificationsCounter;
 
     @FindBy(xpath = "//*[@id=\"root\"]/div/div[1]/header/div/div[2]/button")
     private WebElement notificationsButton;
@@ -44,8 +47,8 @@ public class NotificationsPage extends TestCommons {
     @FindBy(xpath = "/html/body/div[2]/div[3]/div[2]/ul")
     private WebElement activeNotificationsInDrawer;
 
-    @FindBy(xpath = "/html/body/div[2]/div[3]/div[2]/ul/li[1]")
-    private WebElement firstNotificationInDrawer;
+    @FindBy(xpath = "/html/body/div[2]/div[3]/div[2]/ul/div[1]")
+    public WebElement firstNotificationInDrawer;
 
     @FindBy(xpath = "//*[@id=\"root\"]/div/div[1]/header/div/div[1]/div/div/a[3]")
     private WebElement authorsButton;
@@ -105,7 +108,7 @@ public class NotificationsPage extends TestCommons {
     public Integer getAllInactiveNotifications() {
         int i;
         if (thereAreInactiveNotifications()) {
-            List<WebElement> allInactiveNotifications = inactiveNotifications.findElements(By.tagName("p"));
+            List<WebElement> allInactiveNotifications = inactiveNotifications.findElements(By.tagName("li"));
             i = allInactiveNotifications.size();
         } else {
             i = 0;
@@ -126,7 +129,13 @@ public class NotificationsPage extends TestCommons {
     }
 
     public boolean showMoreButtonIsDisplayed() {
-        return isElementDisplayed(driver, showMoreButton);
+        boolean elementDisplayed = false;
+        if (thereAreActiveNotifications() && thereAreInactiveNotifications()) {
+            elementDisplayed = isElementDisplayed(driver, showMoreButtonDiv3);
+        } else {
+            elementDisplayed = isElementDisplayed(driver, showMoreButtonDiv2);
+        }
+        return elementDisplayed;
     }
 
     public Integer countAllNotificationsOnPage() {
@@ -136,7 +145,11 @@ public class NotificationsPage extends TestCommons {
     }
 
     public void clickShowMoreButton() {
-        clickElement(showMoreButton);
+        if (thereAreActiveNotifications() && thereAreInactiveNotifications()) {
+            clickElement(showMoreButtonDiv3);
+        } else {
+            clickElement(showMoreButtonDiv2);
+        }
     }
 
     public void clickNotificationsButton() {
@@ -174,20 +187,25 @@ public class NotificationsPage extends TestCommons {
         builder.moveByOffset(xOffset, yOffset).click().perform();
     }
 
-    public void waitForDeletedNotificationInDrawer(String expectedCounter) {
-        if (thereAreNotificationsInDrawer()) {
-            waitForElementAttributeToChange(driver, getAllActiveNotificationsInDrawer().toString(), expectedCounter);
-        }
-    }
-
-    public void waitForDeletedNotificationOnPage(String expectedCounter) {
-        if (thereAreActiveNotifications()) {
-            waitForElementAttributeToChange(driver, getAllActiveNotifications().toString(), expectedCounter);
-        }
-    }
-
     public boolean notificationsHeaderIsDisplayed() {
         return isElementDisplayed(driver, notificationsHeader);
+    }
+
+    public boolean notificationIsInactive(String timestamp) {
+        List<WebElement> allInactiveNotificationsByTimestamp = inactiveNotifications.findElements(By.tagName("p"));
+        boolean isInactive;
+        int i = 0;
+        for (WebElement notification : allInactiveNotificationsByTimestamp) {
+            if (notification.getText().equals(timestamp)) {
+                i = 1;
+            }
+        }
+        if (i == 1) {
+            isInactive = true;
+        } else {
+            isInactive = false;
+        }
+        return isInactive;
     }
 
 }

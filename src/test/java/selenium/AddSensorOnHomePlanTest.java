@@ -16,28 +16,35 @@ public class AddSensorOnHomePlanTest extends TestBase {
     public void beforeClass() {
         addSensorOnMapPage = new AddSensorOnHomePlanPage(driver);
         addSensorOnMapPage.goTo();
+        assertionIfElementWasFound(addSensorOnMapPage.firstConnectedSensor, "first connected sensor");
         addSensorOnMapPage.deleteSensorsWhenRequired();
     }
 
     @Test
-    public void testChangeOfBackgroundColor() {
-
+    public void testChangeOfBackgroundColorAndElevation() {
+        assertionIfElementWasFound(addSensorOnMapPage.firstNotConnectedSensor, "first not connected sensor");
+        assertionIfElementWasFound(addSensorOnMapPage.secondNotConnectedSensor, "second not connected sensor");
         WebElement element = addSensorOnMapPage.firstNotConnectedSensor;
         WebElement secondElement = addSensorOnMapPage.secondNotConnectedSensor;
-        String sensorTypeBackgroundColor = addSensorOnMapPage.getSensorTypeBackgroundColor(element);
         addSensorOnMapPage.clickNotConnectedSensorOnList();
         addSensorOnMapPage.moveMouseToElement(addSensorOnMapPage.homePlan);
-        addSensorOnMapPage.waitForCompleteBackgroundColor(element);
         String selectedSensorBackgroundColor = addSensorOnMapPage.getElementBackgroundColor(element);
         String notSelectedSensorBackgroundColor = addSensorOnMapPage.getElementBackgroundColor(secondElement);
         String whiteBackgroundColor = "rgba(255, 255, 255, 1)";
+        String actualElevationValueOfSelectedSensor = addSensorOnMapPage.elevationValueOfSensor(addSensorOnMapPage.firstNotConnectedSensor);
+        String actualElevationValueOfNotSelectedSensor = addSensorOnMapPage.elevationValueOfSensor(addSensorOnMapPage.secondNotConnectedSensor);
+        String noElevationDisplayed = "none";
 
-        Assert.assertEquals(selectedSensorBackgroundColor, sensorTypeBackgroundColor, "Sensor background color is not matching sensor color");
+        Assert.assertEquals(selectedSensorBackgroundColor, whiteBackgroundColor, "Selected sensor background color is not white");
         Assert.assertEquals(notSelectedSensorBackgroundColor, whiteBackgroundColor, "Not selected sensor background color is not white");
+        Assert.assertNotEquals(actualElevationValueOfSelectedSensor, noElevationDisplayed, "Selected sensor is not elevated");
+        Assert.assertEquals(actualElevationValueOfNotSelectedSensor, noElevationDisplayed, "Not selected sensor is elevated");
     }
 
     @Test
     public void testAddingSensorOnHomePlan() {
+        assertionIfElementWasFound(addSensorOnMapPage.firstNotConnectedSensorType, "type of first not connected sensor");
+        assertionIfElementWasFound(addSensorOnMapPage.firstNotConnectedSensorId, "Id of first not connected sensor");
         String notConnectedSensorType = addSensorOnMapPage.getTextFromElement(addSensorOnMapPage.firstNotConnectedSensorType);
         String notConnectedSensorId = addSensorOnMapPage.getTextFromElement(addSensorOnMapPage.firstNotConnectedSensorId);
         addSensorOnMapPage.clickNotConnectedSensorOnList();

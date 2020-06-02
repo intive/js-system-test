@@ -12,15 +12,19 @@ public class MapTest extends TestBase {
     public void beforeClass() {
         dashboardPage = new DashboardPage(driver);
         dashboardPage.goTo();
+        assertionIfElementWasFound(dashboardPage.firstConnectedSensor, "first connected sensor");
         dashboardPage.deleteSensorsWhenRequired();
     }
 
-    @Test
-    public void testACursorChangeOnHomePlan() {
+    @Test(priority = 3)
+    public void testCursorChangeOnHomePlan() {
+        assertionIfElementWasFound(dashboardPage.firstNotConnectedSensor, "first not connected sensor");
         dashboardPage.clickFirstNotConnectedSensor();
         String cursorType = dashboardPage.getCursorType();
         String expectedCursorType = "cell";
         Assert.assertEquals(cursorType, expectedCursorType);
+        driver.manage().window().maximize();
+        dashboardPage.clickFirstNotConnectedSensor();
     }
 
     @DataProvider(name = "incorrectOffsets")
@@ -30,9 +34,10 @@ public class MapTest extends TestBase {
         return new Object[][]{{0, (-100 + incorrectOffsetHeight)}, {0, (-100 - incorrectOffsetHeight)}, {-(incorrectOffsetWidth), -100}, {(incorrectOffsetWidth), -100}};
     }
 
-    @Test(dataProvider = "incorrectOffsets")
+    @Test(dataProvider = "incorrectOffsets", priority = 5)
     public void testAddingPointWithin3percentCircle(Integer x, Integer y) {
         dashboardPage.waitUntilHomePlanIsLoaded();
+        assertionIfElementWasFound(dashboardPage.firstNotConnectedSensor, "first not connected sensor");
         dashboardPage.clickFirstNotConnectedSensor();
         dashboardPage.clickToAddPoint(0, -100);
         String lastPointBeforeClick = dashboardPage.getPointUniqueInformation();
@@ -55,19 +60,21 @@ public class MapTest extends TestBase {
         return new Object[][]{{0, correctOffsetHeight}, {0, -(correctOffsetHeight)}, {correctOffsetWidth, 0}, {-(correctOffsetWidth), 0}};
     }
 
-    @Test(dataProvider = "correctOffsets")
-    public void testAddingNewPointOnHomePlan(Integer x, Integer y) {
+    @Test(dataProvider = "correctOffsets", priority = 4)
+    public void testAddingNewPointOnHomePlan(Integer x, Integer y) throws InterruptedException {
         dashboardPage.waitUntilHomePlanIsLoaded();
+        assertionIfElementWasFound(dashboardPage.firstNotConnectedSensor, "first not connected sensor");
         dashboardPage.clickFirstNotConnectedSensor();
         dashboardPage.clickToAddPoint(0, 0);
         String lastPointBeforeClick = dashboardPage.getPointUniqueInformation();
         dashboardPage.clickFirstNotConnectedSensor();
         dashboardPage.clickToAddPoint(x, y);
+        Thread.sleep(500);
         dashboardPage.clickOnCoordinates(60, 180);
         String lastPointAfterClick = dashboardPage.getPointUniqueInformation();
 
         Assert.assertNotEquals(lastPointAfterClick, lastPointBeforeClick, "Point was not added on home plan");
-        Assert.assertEquals(dashboardPage.getSecondPointWidth(), dashboardPage.getSecondPointHeight(), "Point is not a circle");  //Check if point is a circle
+        Assert.assertEquals(dashboardPage.getLastPointWidth(), dashboardPage.getLastPointHeight(), "Point is not a circle");  //Check if point is a circle
 
 
         String secondSensorId = dashboardPage.getSensorId(dashboardPage.lastConnectedSensor);
@@ -75,9 +82,10 @@ public class MapTest extends TestBase {
         dashboardPage.waitForDeletedSensor(secondSensorId);
     }
 
-    @Test
+    @Test(priority = 2)
     public void testHomePlanRWD() {
         dashboardPage.waitUntilHomePlanIsLoaded();
+        assertionIfElementWasFound(dashboardPage.firstNotConnectedSensor, "first not connected sensor");
         double mapWidthBeforeResize = dashboardPage.getMapWidth();
         double mapHeightBeforeResize = dashboardPage.getMapHeight();
         dashboardPage.clickFirstNotConnectedSensor();
@@ -97,5 +105,18 @@ public class MapTest extends TestBase {
 
         Assert.assertEquals(mapWidthRatio, pointXOffsetRatio, "Width point/map proportion not correct");
         Assert.assertEquals(mapHeightRatio, pointYOffsetRatio, "Height point/map proportion not correct");
+    }
+
+    @Test(priority = 1)
+    public void testSensorDimension() {
+        dashboardPage.waitUntilHomePlanIsLoaded();
+        assertionIfElementWasFound(dashboardPage.firstNotConnectedSensor, "first not connected sensor");
+        int mapHeight = dashboardPage.getMapHeight();
+        dashboardPage.clickFirstNotConnectedSensor();
+        dashboardPage.clickToAddPoint(-100, -100);
+        int pointHeight = dashboardPage.getLastPointHeight();
+        int pointWidth = dashboardPage.getLastPointWidth();
+        Assert.assertEquals(pointHeight, mapHeight / 20);
+        Assert.assertEquals(pointWidth, mapHeight / 20);
     }
 }

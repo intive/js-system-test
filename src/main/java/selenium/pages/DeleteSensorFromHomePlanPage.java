@@ -156,11 +156,7 @@ public class DeleteSensorFromHomePlanPage extends TestCommons {
         boolean isConditionMet = true;
         while (System.currentTimeMillis() < endWaitTime && isConditionMet) {
             isConditionMet = isSnackbarForErrorDuringRemovingSensorDisplayed();
-            if (isConditionMet == false) {
-                break;
-            } else {
-                Thread.sleep(100);
-            }
+            Thread.sleep(100);
         }
         return !isConditionMet;
     }
@@ -196,4 +192,5 @@ public class DeleteSensorFromHomePlanPage extends TestCommons {
             y = y + 30;
         }
     }
+
 }
