@@ -22,8 +22,8 @@ public class DefaultLanguageTest extends TestBase{
         languagePage.verifyEnTranslation(total_Assertion);
         languagePage.internetConnection(false);
         languagePage.verifySnackbarsEn(total_Assertion);
-//        powrot do stanu poczatkowego
         languagePage.internetConnection(true);
         languagePage.switchLanguage("pl");
+        total_Assertion.assertAll();
     }
 }
