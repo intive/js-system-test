@@ -31,41 +31,37 @@ public class LanguagesTest extends TestBase {
         languagePage.switchLanguage("pl");
         languagePage.verifySnackbarsPlAfterLanguageChange(total_Assertion);
         languagePage.internetConnection(true);
-        languagePage.clickElement(languagePage.sensor1);
+        languagePage.clickSensor1();
         languagePage.clickToAddPoint(-50, -75);
-        languagePage.clickElement(languagePage.sensor2);
-        languagePage.clickToAddPoint(-70, -95);
+        languagePage.clickSensor2();
+        languagePage.clickToAddPoint(-60, -85);
         languagePage.verifyProximityWarningPl();
-        languagePage.clickElement(languagePage.sensorProximityWarningExitButton);
+        languagePage.clickSensorProximityWarningExitButton();
         languagePage.switchLanguage("en");
-        languagePage.clickElement(languagePage.sensor3);
+        languagePage.languageLabelExists();
+        languagePage.clickSensor3();
         languagePage.clickToAddPoint(90, 100);
-        languagePage.clickElement(languagePage.sensor4);
-        languagePage.clickToAddPoint(110, 120);
+        languagePage.clickSensor4();
+        languagePage.clickToAddPoint(100, 110);
         languagePage.verifyProximityWarningEn();
         languagePage.goTo();
         languagePage.languageLabelExists();
         languagePage.internetConnection(false);
         languagePage.switchLanguage("pl");
-        String loadMapSnackBar = languagePage.getElementTranslations(languagePage.loadMapSnackBar);
-        String refreshButton = languagePage.getElementTranslations(languagePage.refreshButton);
-        languagePage.verifyLoadMapPl(total_Assertion, loadMapSnackBar, refreshButton);
+        languagePage.verifyLoadMapPl(total_Assertion);
         languagePage.switchLanguage("en");
-        loadMapSnackBar = languagePage.getElementTranslations(languagePage.loadMapSnackBar);
-        refreshButton = languagePage.getElementTranslations(languagePage.refreshButton);
-        languagePage.verifyLoadMapEn(total_Assertion, loadMapSnackBar, refreshButton);
+        languagePage.verifyLoadMapEn(total_Assertion);
         languagePage.internetConnection(true);
         languagePage.switchLanguage("pl");
         total_Assertion.assertAll();
     }
 
     @Test(priority = 1)
-    public void languageChoiceMemory () throws IOException, InterruptedException {
+    public void languageChoiceMemory () throws IOException {
         SoftAssert total_Assertion = new SoftAssert();
         languagePage.goTo();
         languagePage.languageLabelExists();
         languagePage.mapExists();
-//        Thread.sleep(1000);
         languagePage.verifyChosenLanguagePl();
         languagePage.verifyPlTranslation(total_Assertion);
         languagePage.switchLanguage("en");
