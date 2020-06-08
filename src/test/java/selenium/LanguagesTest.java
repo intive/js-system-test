@@ -18,18 +18,18 @@ public class LanguagesTest extends TestBase {
     }
 
     @Test(priority = 0)
-    public void languageLabelsAndSnackbarsTest () throws IOException, InterruptedException {
-        SoftAssert total_Assertion = new SoftAssert();
+    public void languageLabelsAndSnackbarsTest () throws IOException {
+        SoftAssert softAssert = new SoftAssert();
         languagePage.mapExists();
         languagePage.languageLabelExists();
-        languagePage.verifyPlTranslation(total_Assertion);
+        languagePage.verifyPlTranslation(softAssert);
         languagePage.internetConnection(false);
-        languagePage.verifySnackbarsPl(total_Assertion);
+        languagePage.verifySnackbarsPl(softAssert);
         languagePage.switchLanguage("en");
-        languagePage.verifyEnTranslation(total_Assertion);
-        languagePage.verifySnackbarsEn(total_Assertion);
+        languagePage.verifyEnTranslation(softAssert);
+        languagePage.verifySnackbarsEn(softAssert);
         languagePage.switchLanguage("pl");
-        languagePage.verifySnackbarsPlAfterLanguageChange(total_Assertion);
+        languagePage.verifySnackbarsPlAfterLanguageChange(softAssert);
         languagePage.internetConnection(true);
         languagePage.clickSensor1();
         languagePage.clickToAddPoint(-50, -75);
@@ -48,33 +48,33 @@ public class LanguagesTest extends TestBase {
         languagePage.languageLabelExists();
         languagePage.internetConnection(false);
         languagePage.switchLanguage("pl");
-        languagePage.verifyLoadMapPl(total_Assertion);
+        languagePage.verifyLoadMapPl(softAssert);
         languagePage.switchLanguage("en");
-        languagePage.verifyLoadMapEn(total_Assertion);
+        languagePage.verifyLoadMapEn(softAssert);
         languagePage.internetConnection(true);
         languagePage.switchLanguage("pl");
-        total_Assertion.assertAll();
+        softAssert.assertAll();
     }
 
     @Test(priority = 1)
     public void languageChoiceMemory () throws IOException {
-        SoftAssert total_Assertion = new SoftAssert();
+        SoftAssert softAssert = new SoftAssert();
         languagePage.goTo();
         languagePage.languageLabelExists();
         languagePage.mapExists();
         languagePage.verifyChosenLanguagePl();
-        languagePage.verifyPlTranslation(total_Assertion);
+        languagePage.verifyPlTranslation(softAssert);
         languagePage.switchLanguage("en");
-        languagePage.verifyEnTranslation(total_Assertion);
+        languagePage.verifyEnTranslation(softAssert);
         languagePage.internetConnection(false);
-        languagePage.verifySnackbarsEn(total_Assertion);
+        languagePage.verifySnackbarsEn(softAssert);
         languagePage.internetConnection(true);
         languagePage.goTo();
         languagePage.languageLabelExists();
         languagePage.verifyChosenLanguageEn();
-        languagePage.verifyEnTranslation(total_Assertion);
+        languagePage.verifyEnTranslation(softAssert);
         languagePage.internetConnection(true);
         languagePage.switchLanguage("pl");
-        total_Assertion.assertAll();
+        softAssert.assertAll();
     }
 }
