@@ -17,13 +17,13 @@ public class DefaultLanguageTest extends TestBase{
     }
     @Test
     public void defaultLanguageTest() throws IOException {
-        SoftAssert total_Assertion = new SoftAssert();
+        SoftAssert softAssert = new SoftAssert();
         languagePage.verifyChosenLanguageEn();
-        languagePage.verifyEnTranslation(total_Assertion);
+        languagePage.verifyEnTranslation(softAssert);
         languagePage.internetConnection(false);
-        languagePage.verifySnackbarsEn(total_Assertion);
+        languagePage.verifySnackbarsEn(softAssert);
         languagePage.internetConnection(true);
         languagePage.switchLanguage("pl");
-        total_Assertion.assertAll();
+        softAssert.assertAll();
     }
 }
