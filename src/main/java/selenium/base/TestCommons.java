@@ -171,12 +171,26 @@ public abstract class TestCommons {
         });
     }
 
-    protected double convertPixelCssValueToDouble(String cssValue){
+    protected double convertPixelCssValueToDouble(String cssValue) {
         String trimmedValue = cssValue.replaceFirst("px", "");
         return Double.parseDouble(trimmedValue);
     }
 
-    public void removeAllSensorsFromMap(){
+    public void removeAllSensorsFromMap() {
         goTo("/api/v1/dashboard/delete");
     }
+
+    protected boolean isAttributePresent(WebElement element, String attribute) {
+        Boolean result = false;
+        try {
+            String value = element.getAttribute(attribute);
+            if (value != null) {
+                result = true;
+            }
+        } catch (Exception e) {
+        }
+
+        return result;
+    }
+
 }

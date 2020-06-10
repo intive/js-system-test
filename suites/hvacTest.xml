@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd" >
+
+<suite name="HVAC test suite">
+    <test name="HVAC test">
+    <classes>
+        <class name="selenium.HvacTest"></class>
+    </classes>
+    </test>
+    <test name="HVAC test2">
+        <classes>
+            <class name="selenium.HvacTest2"></class>
+        </classes>
+    </test>
+    <test name="HVAC test3">
+        <classes>
+            <class name="selenium.HvacTest3"></class>
+        </classes>
+    </test>
+    <test name="HVAC test4">
+        <classes>
+            <class name="selenium.HvacTest4"></class>
+        </classes>
+    </test>
+</suite>
